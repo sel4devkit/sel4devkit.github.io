@@ -219,7 +219,7 @@
 <h3 id="microkit"><a class="header" href="#microkit">Microkit</a></h3>
 <pre><code class="language-text">&lt;manifest root&gt;
 |
-└───microkit
+└───project_libs
     ├───include
     │   └───&lt;platform&gt;
     │       └───all_platform_devices.h
@@ -245,10 +245,10 @@
     └───uboot
 </code></pre>
 <ul>
-<li><code>microkit/boards</code>: Location of platform device trees.</li>
+<li><code>project_libs/boards</code>: Location of platform device trees.</li>
 <li><code>example/&lt;platform&gt;/uboot-driver-example</code>: <a href="uboot_driver_usage.html">The test application</a>.</li>
-<li><code>microkit/libubootdrivers</code>: Referred to as "the library" throughout. See <a href="https://github.com/sel4-cap/dev-kit-libs/tree/main/libubootdrivers">linked Git repository</a>.</li>
-<li><code>microkit/uboot</code>: Fork of the U-Boot project source code (note, this is also symlinked to <code>microkit/libubootdrivers/uboot</code>).</li>
+<li><code>project_libs/libubootdrivers</code>: Referred to as "the library" throughout. See <a href="https://github.com/sel4-cap/dev-kit-libs/tree/main/libubootdrivers">linked Git repository</a>.</li>
+<li><code>project_libs/uboot</code>: Fork of the U-Boot project source code (note, this is also symlinked to <code>microkit/libubootdrivers/uboot</code>).</li>
 </ul>
 <h2 id="required-reading"><a class="header" href="#required-reading">Required Reading</a></h2>
 <p>The developer should be familiar with the following tools and concepts in order to add platform and driver support to the library.</p>
@@ -269,7 +269,7 @@
 <h2 id="add-basic-support-to-library"><a class="header" href="#add-basic-support-to-library">Add basic support to library</a></h2>
 <p>To allow the library to be successfully compiled for a new platform, the following changes will need to be made to the library.</p>
 <h3 id="update-the-librarys-cmake-file-to-support-the-platform"><a class="header" href="#update-the-librarys-cmake-file-to-support-the-platform">Update the library's CMake file to support the platform</a></h3>
-<p>The library's CMake file (located at <code>projects/project_libs/libubootdrivers/CMakeLists.txt</code> or <code>microkit/libubootdrivers/CMakeLists.txt</code>) contains a section titled <code>Platform specific settings</code> to control the settings for each platform. This section:</p>
+<p>The library's CMake file (located at <code>project_libs/libubootdrivers/CMakeLists.txt</code>) contains a section titled <code>Platform specific settings</code> to control the settings for each platform. This section:</p>
 <ol>
 <li>
 <p>Declares a set of variables to control which drivers and optional capabilities are to be built for each platform. The default values produce a build including only a dummy timer driver; this is the minimum necessary to allow the library to be built.</p>

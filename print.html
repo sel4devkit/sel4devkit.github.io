@@ -401,7 +401,7 @@ Kit is presented to support their navigation:</p>
 </ul>
 <p>In line with the goals stated above this guide therefore focuses on the porting of drivers from U-Boot to seL4.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="u-boot-driver-library-overview"><a class="header" href="#u-boot-driver-library-overview">U-Boot Driver Library Overview</a></h1>
-<p>To achieve the goals specified in <a href="activity/device_drivers/device_driver_intro.html">device driver introduction</a> section, an extensible library of device drivers ported from U-Boot has been created. This library provides an extensive set of drivers for the Avnet MaaXBoard platform as a worked example of its usage. The library is supported by documentation in the following sections on usage, maintenance, and guidance on the extension of the library to support additional platforms and devices.</p>
+<p>To achieve the goals specified in <a href="activity/device_drivers/main.html">device driver introduction</a> section, an extensible library of device drivers ported from U-Boot has been created. This library provides an extensive set of drivers for the Avnet MaaXBoard platform as a worked example of its usage. The library is supported by documentation in the following sections on usage, maintenance, and guidance on the extension of the library to support additional platforms and devices.</p>
 <p>Information on the design and structure of the library is provided under the following sections:</p>
 <ul>
 <li><a href="activity/device_drivers/uboot_driver_library.html#design-summary">Design Summary</a></li>
@@ -685,7 +685,7 @@ Kit is presented to support their navigation:</p>
 <p>Sections below give a basic overview of the test applications and how to build and run them.</p>
 <h2 id="test-application-uboot-driver-example"><a class="header" href="#test-application-uboot-driver-example">Test application: <code>uboot-driver-example</code></a></h2>
 <h3 id="overview-of-the-uboot-driver-example-test-application"><a class="header" href="#overview-of-the-uboot-driver-example-test-application">Overview of the <code>uboot-driver-example</code> test application</a></h3>
-<p>The source file at <code>camkes/apps/uboot-driver-example/components/Test/src/test.c</code>/ <code>microkit/example/maaxboard/uboot-driver-example/uboot-driver-example.c</code> represents the script for the test application. It contains <code>run_uboot_cmd("...")</code> calls to U-Boot commands that are supported by the library. The set of supported commands can be readily seen in the <code>cmd_tbl</code> entries of <code>projects_libs/libubootdrivers/include/plat/maaxboard/plat_driver_data.h</code> or <code>microkit/libubootdrivers/include/plat/maaxboard/plat_driver_data.h</code>.</p>
+<p>The source file at <code>camkes/apps/uboot-driver-example/components/Test/src/test.c</code>/ <code>project_libs/example/maaxboard/uboot-driver-example/uboot-driver-example.c</code> represents the script for the test application. It contains <code>run_uboot_cmd("...")</code> calls to U-Boot commands that are supported by the library. The set of supported commands can be readily seen in the <code>cmd_tbl</code> entries of <code>projects_libs/libubootdrivers/include/plat/maaxboard/plat_driver_data.h</code>.</p>
 <p>It is left to the reader to look through the test script in detail, but the features demonstrated include the following.</p>
 <ul>
 <li>The MaaXBoard's two integral LEDs are toggled.</li>
@@ -753,10 +753,10 @@ run_uboot_command("ping yyy.yyy.yyy.yyy"); // IP address of host machine
 run_uboot_command("setenv netmask 255.255.255.0");
 run_uboot_command("ping 8.8.8.8"); // An example internet IP address (Google DNS)
 </code></pre>
-<p>From the <code>/host/uboot_test/microkit</code> directory, execute the following command:</p>
+<p>From the <code>/host/uboot_test/project_libs</code> directory, execute the following command:</p>
 <pre><code class="language-bash">./init-build.sh -DMICROKIT_APP=uboot-driver-example -DPLATFORM=maaxboard
 </code></pre>
-<p>A successful build will result in an executable file called <code>sel4_image</code> in the <code>microkit/example/maaxboard/uboot-driver-example/example-build</code> subdirectory. This file should be made available to the preferred loading mechanism, such as TFTP, as per <a href="activity/device_drivers/execution_on_target_platform.html">Execution on Target Platform</a>.</p>
+<p>A successful build will result in an executable file called <code>sel4_image</code> in the <code>project_libs/example/maaxboard/uboot-driver-example/example-build</code> subdirectory. This file should be made available to the preferred loading mechanism, such as TFTP, as per <a href="activity/device_drivers/execution_on_target_platform.html">Execution on Target Platform</a>.</p>
 <h2 id="test-application-picoserver_uboot"><a class="header" href="#test-application-picoserver_uboot">Test application: <code>picoserver_uboot</code></a></h2>
 <h3 id="overview-of-the-picoserver_uboot-test-application"><a class="header" href="#overview-of-the-picoserver_uboot-test-application">Overview of the <code>picoserver_uboot</code> test application</a></h3>
 <p>It is not the purpose of this developer kit to give a CAmkES tutorial (e.g. see <a href="https://docs.sel4.systems/projects/camkes/">seL4's documentation</a>), but this application is based on the following CAmkES model:</p>
@@ -853,7 +853,7 @@ echo: Connection closed on socket 2
 <h3 id="microkit-3"><a class="header" href="#microkit-3">Microkit</a></h3>
 <pre><code class="language-text">&lt;manifest root&gt;
 |
-└───microkit
+└───project_libs
     ├───include
     │   └───&lt;platform&gt;
     │       └───all_platform_devices.h
@@ -879,10 +879,10 @@ echo: Connection closed on socket 2
     └───uboot
 </code></pre>
 <ul>
-<li><code>microkit/boards</code>: Location of platform device trees.</li>
+<li><code>project_libs/boards</code>: Location of platform device trees.</li>
 <li><code>example/&lt;platform&gt;/uboot-driver-example</code>: <a href="activity/device_drivers/uboot_driver_usage.html">The test application</a>.</li>
-<li><code>microkit/libubootdrivers</code>: Referred to as "the library" throughout. See <a href="https://github.com/sel4-cap/dev-kit-libs/tree/main/libubootdrivers">linked Git repository</a>.</li>
-<li><code>microkit/uboot</code>: Fork of the U-Boot project source code (note, this is also symlinked to <code>microkit/libubootdrivers/uboot</code>).</li>
+<li><code>project_libs/libubootdrivers</code>: Referred to as "the library" throughout. See <a href="https://github.com/sel4-cap/dev-kit-libs/tree/main/libubootdrivers">linked Git repository</a>.</li>
+<li><code>project_libs/uboot</code>: Fork of the U-Boot project source code (note, this is also symlinked to <code>microkit/libubootdrivers/uboot</code>).</li>
 </ul>
 <h2 id="required-reading"><a class="header" href="#required-reading">Required Reading</a></h2>
 <p>The developer should be familiar with the following tools and concepts in order to add platform and driver support to the library.</p>
@@ -903,7 +903,7 @@ echo: Connection closed on socket 2
 <h2 id="add-basic-support-to-library"><a class="header" href="#add-basic-support-to-library">Add basic support to library</a></h2>
 <p>To allow the library to be successfully compiled for a new platform, the following changes will need to be made to the library.</p>
 <h3 id="update-the-librarys-cmake-file-to-support-the-platform"><a class="header" href="#update-the-librarys-cmake-file-to-support-the-platform">Update the library's CMake file to support the platform</a></h3>
-<p>The library's CMake file (located at <code>projects/project_libs/libubootdrivers/CMakeLists.txt</code> or <code>microkit/libubootdrivers/CMakeLists.txt</code>) contains a section titled <code>Platform specific settings</code> to control the settings for each platform. This section:</p>
+<p>The library's CMake file (located at <code>project_libs/libubootdrivers/CMakeLists.txt</code>) contains a section titled <code>Platform specific settings</code> to control the settings for each platform. This section:</p>
 <ol>
 <li>
 <p>Declares a set of variables to control which drivers and optional capabilities are to be built for each platform. The default values produce a build including only a dummy timer driver; this is the minimum necessary to allow the library to be built.</p>
@@ -2561,8 +2561,14 @@ run_uboot_command@uboot_wrapper.c:181 --- command 'fatwrite mmc 0:2 0x55b010 tra
 <h2 id="introduction-2"><a class="header" href="#introduction-2">Introduction</a></h2>
 <p>For this activity the goal was to create an Sel4 native xHCI driver. Writing an entire xHCI driver from scratch is a long and complicated task, so we opted to re-work an existing solution. We chose to use NetBSD's xHCI driver because it has good portability, supports a wide range of hardware, is BSD licenced, is updated often and makes use of interrupts which are more performant compared to other solutions that use polling. The plan was to use this as a base to pull drivers from in the future.</p>
 <h2 id="project-layout"><a class="header" href="#project-layout">Project Layout</a></h2>
-<p>The set up and structure of this project is different to other activites we've completed. See the following repository for more details:</p>
-<p>LINK TO MK MANIFEST WITH UPDATED README (and/or explain here a little bit)</p>
+<p>This project uses "repo" to initialise the xHCI driver repository and to clone the dependant repositories into specific directories. To install microkit we use "make get" and "make all" in the microkit directory.</p>
+<p>The repository can be found here at https://github.com/sel4devkit/sel4devkit-maaxboard-microkit-xhci-manifest.</p>
+<p>The dependant projects can be found at:</p>
+<ul>
+<li>https://github.com/sel4devkit/sel4devkit-maaxboard-microkit-xhci-driver - The xHCI driver</li>
+<li>https://github.com/sel4devkit/sel4devkit-maaxboard-microkit-netbsd-fork - Fork of NetBSD</li>
+<li>https://github.com/sel4devkit/picolibc - C library</li>
+</ul>
 <h2 id="xhci"><a class="header" href="#xhci">xHCI</a></h2>
 <p>xHCI is a standardised interface used for USB host controllers. Also known as the USB 3.0 host controller specification, it is designed to be backward compatible, supporting a wide range of USB devices from older USB 1.x to the more recent USB 3.x versions. Compared to its predecessors (OHCI, UHCI and EHCI) it is designed to handle multiple data transfer speeds within a single unified standard, making it more efficient at handling computer resources. The standard describes the basic communication between the software and the host controller including memory layout, data structures, MMIO and DMA.</p>
 <h2 id="camkes-5"><a class="header" href="#camkes-5">CAmkES</a></h2>
@@ -2572,7 +2578,7 @@ run_uboot_command@uboot_wrapper.c:181 --- command 'fatwrite mmc 0:2 0x55b010 tra
 <p>We created a separate DMA library which can be found here: LINK TBD</p>
 <h3 id="architecture"><a class="header" href="#architecture">Architecture</a></h3>
 <p><img src="activity/microkit_usb_driver/system_architecture.png" alt="screenshot" /></p>
-<p>One Protection Domain (PD) acts as a central driver which handles all of the initialization and communicates with the hardware via MMIO. There are additional PD's for the memory handler, software interrupts and hardware interrupts. Task thread is for hotplugging and is not currently implemented.</p>
+<p>One Protection Domain (PD) acts as a central driver which handles all of the initialization and communicates with the hardware via MMIO. There are additional PD's for the memory handler, software interrupts and hardware interrupts.</p>
 <h3 id="memory-considerations"><a class="header" href="#memory-considerations">Memory considerations</a></h3>
 <p>Between the core driver PD and the software interrupt PD there are some function pointers to callback functions. In NetBSD's it expects these function callbacks to be running in the same memory address space but with our setup this part of the communication is done between PD's, meaning that they don't have access to the same blocks of memory. Our first attempt at resolving this solution involved using a master PD that handles all of these functions, where the driver would call into the master PD, then the master PD would call into the software interrupt PD. This however was not a viable solution because the software interrupt PD was of a lower priority than the driver which had an affect on performance. Instead we opted to use a context switch, where both PD's at initialisation notify each other of the memory addresses that they will be using for the function pointers. The appropriate memory address is then selected during the function callback.</p>
 <h3 id="devices"><a class="header" href="#devices">Devices</a></h3>

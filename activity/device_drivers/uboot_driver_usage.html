@@ -218,7 +218,7 @@
 <p>Sections below give a basic overview of the test applications and how to build and run them.</p>
 <h2 id="test-application-uboot-driver-example"><a class="header" href="#test-application-uboot-driver-example">Test application: <code>uboot-driver-example</code></a></h2>
 <h3 id="overview-of-the-uboot-driver-example-test-application"><a class="header" href="#overview-of-the-uboot-driver-example-test-application">Overview of the <code>uboot-driver-example</code> test application</a></h3>
-<p>The source file at <code>camkes/apps/uboot-driver-example/components/Test/src/test.c</code>/ <code>microkit/example/maaxboard/uboot-driver-example/uboot-driver-example.c</code> represents the script for the test application. It contains <code>run_uboot_cmd("...")</code> calls to U-Boot commands that are supported by the library. The set of supported commands can be readily seen in the <code>cmd_tbl</code> entries of <code>projects_libs/libubootdrivers/include/plat/maaxboard/plat_driver_data.h</code> or <code>microkit/libubootdrivers/include/plat/maaxboard/plat_driver_data.h</code>.</p>
+<p>The source file at <code>camkes/apps/uboot-driver-example/components/Test/src/test.c</code>/ <code>project_libs/example/maaxboard/uboot-driver-example/uboot-driver-example.c</code> represents the script for the test application. It contains <code>run_uboot_cmd("...")</code> calls to U-Boot commands that are supported by the library. The set of supported commands can be readily seen in the <code>cmd_tbl</code> entries of <code>projects_libs/libubootdrivers/include/plat/maaxboard/plat_driver_data.h</code>.</p>
 <p>It is left to the reader to look through the test script in detail, but the features demonstrated include the following.</p>
 <ul>
 <li>The MaaXBoard's two integral LEDs are toggled.</li>
@@ -286,10 +286,10 @@ run_uboot_command("ping yyy.yyy.yyy.yyy"); // IP address of host machine
 run_uboot_command("setenv netmask 255.255.255.0");
 run_uboot_command("ping 8.8.8.8"); // An example internet IP address (Google DNS)
 </code></pre>
-<p>From the <code>/host/uboot_test/microkit</code> directory, execute the following command:</p>
+<p>From the <code>/host/uboot_test/project_libs</code> directory, execute the following command:</p>
 <pre><code class="language-bash">./init-build.sh -DMICROKIT_APP=uboot-driver-example -DPLATFORM=maaxboard
 </code></pre>
-<p>A successful build will result in an executable file called <code>sel4_image</code> in the <code>microkit/example/maaxboard/uboot-driver-example/example-build</code> subdirectory. This file should be made available to the preferred loading mechanism, such as TFTP, as per <a href="execution_on_target_platform.html">Execution on Target Platform</a>.</p>
+<p>A successful build will result in an executable file called <code>sel4_image</code> in the <code>project_libs/example/maaxboard/uboot-driver-example/example-build</code> subdirectory. This file should be made available to the preferred loading mechanism, such as TFTP, as per <a href="execution_on_target_platform.html">Execution on Target Platform</a>.</p>
 <h2 id="test-application-picoserver_uboot"><a class="header" href="#test-application-picoserver_uboot">Test application: <code>picoserver_uboot</code></a></h2>
 <h3 id="overview-of-the-picoserver_uboot-test-application"><a class="header" href="#overview-of-the-picoserver_uboot-test-application">Overview of the <code>picoserver_uboot</code> test application</a></h3>
 <p>It is not the purpose of this developer kit to give a CAmkES tutorial (e.g. see <a href="https://docs.sel4.systems/projects/camkes/">seL4's documentation</a>), but this application is based on the following CAmkES model:</p>
