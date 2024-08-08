@@ -177,6 +177,83 @@
                 <div id="content" class="content">
                     <main>
                         <h1 id="build-environment-setup"><a class="header" href="#build-environment-setup">Build Environment Setup</a></h1>
+<p>The build environment is the environment within which all binaries for the target environment are built; i.e. the environment that provides the required compilation toolchain.</p>
+<p>To simplify the requirements on the host environment and to enable rapid setup, the build environment is provided as a pre-built Docker image.</p>
+<h2 id="environment-details"><a class="header" href="#environment-details">Environment Details</a></h2>
+<p>The build environment is a Debian Linux system pre-installed with all of the required development tools. The primary tools supplied are:</p>
+<ul>
+<li><a href="https://git-scm.com"><strong>Git</strong></a> version control system.</li>
+<li><a href="https://gerrit.googlesource.com/git-repo/+/refs/heads/master/README.md"><strong>Repo</strong></a> Git repository management tool.</li>
+<li><a href="https://gcc.gnu.org"><strong>aarch64-linux-gnu</strong></a> cross compiler toolchain targeting the ARM AArch64 instruction set.</li>
+<li><a href="https://gcc.gnu.org"><strong>arm-linux-gnueabi</strong></a> cross compiler toolchain targeting the ARM AArch32 instruction set.</li>
+<li><a href="https://www.gnu.org/software/make/"><strong>Make</strong></a>, <a href="https://cmake.org"><strong>CMake</strong></a>, <a href="https://ninja-build.org"><strong>Ninja</strong></a> and <a href="https://mesonbuild.com/"><strong>MESON</strong></a> build automation tools.</li>
+</ul>
+<h2 id="installation"><a class="header" href="#installation">Installation</a></h2>
+<p><a href="host_machine_setup.html">Host machine setup</a> must be completed, specifically installation of Docker, and the Docker tools must be active prior to installation of the build environment.</p>
+<p>Installation of the build environment comprises the download of a pre-built Docker image into the Docker tools. This can be performed from the command line on the host machine as follows:</p>
+<h3 id="camkes"><a class="header" href="#camkes">Camkes</a></h3>
+<pre><code class="language-bash">git clone "git@github.com:sel4devkit/sel4devkit-maaxboard-camkes-docker-dev-env.git"
+</code></pre>
+<h3 id="microkit"><a class="header" href="#microkit">Microkit</a></h3>
+<pre><code class="language-bash">git clone "git@github.com:sel4devkit/sel4devkit-maaxboard-microkit-docker-dev-env.git"
+</code></pre>
+<h2 id="usage"><a class="header" href="#usage">Usage</a></h2>
+<p>Normal usage would involve pulling a pre-built Docker Image, and then running
+this Docker Image, optionally mapping in a local development area (HOST_PATH),
+and a local home area (HOME_PATH).</p>
+<p>Note that, apart from any mapped areas, the entirety of the Docker Image will
+be lost when the Docker Image is exited. This is deliberate and desirable,
+ensuring a consistent starting environment for each session.</p>
+<p>Two different entry points are provided, as "user-dev" and "user-me":</p>
+<ul>
+<li>The "user-dev" operates with a fixed user name "developer", granted password
+free access to root, via sudo. This configuration is fully defined, and thus
+may be prepared in advance. This property permits a very simple deployment,
+and is particularly suited to Windows.</li>
+<li>The "user-me" is intended to be built, and then deployed, for a specific
+invoking user. It operates with the username of the invoking user, granted
+password free access to root, via sudo. This configuration can not be prepared
+in advance, but does provide a smoother integration for the invoking user. It
+is particularly suited to Linux.</li>
+</ul>
+<p>Once the Docker Image is started, its version may be inspected as follows:</p>
+<pre><code>cat /version.txt
+</code></pre>
+<h3 id="windows"><a class="header" href="#windows">Windows</a></h3>
+<p>Only Deployment is supported on Windows.</p>
+<p>Pulling Docker Image (user-dev):</p>
+<pre><code>docker pull ghcr.io/sel4devkit/sel4devkit-maaxboard-camkes-docker-dev-env/user-dev:latest
+</code></pre>
+<p>Running Docker Image (user-dev):</p>
+<pre><code>docker run --rm --interactive --tty --hostname "sel4devkit-maaxboard-camkes" \
+    ghcr.io/sel4devkit/sel4devkit-maaxboard-camkes-docker-dev-env/user-dev:latest \
+    --mount type=bind,source="&lt;HOST_PATH&gt;",target="/host"
+    /bin/bash --login
+</code></pre>
+<h3 id="linux"><a class="header" href="#linux">Linux</a></h3>
+<p>Deployment, and Maintenance, is supported on Linux.</p>
+<p>Show usage instructions:</p>
+<pre><code>make
+</code></pre>
+<h4 id="user-developer"><a class="header" href="#user-developer">User Developer</a></h4>
+<p>Pulling Docker Image (user-dev):</p>
+<pre><code>make pull IMAGE=user-dev
+</code></pre>
+<p>Running Docker Image (user-dev):</p>
+<pre><code>make run IMAGE=user-dev HOST_PATH=&lt;HOST_PATH&gt; HOME_PATH=&lt;HOME_PATH&gt;
+</code></pre>
+<h4 id="user-me"><a class="header" href="#user-me">User Me</a></h4>
+<p>Pulling pre-built Docker Image (dep):</p>
+<pre><code>make pull IMAGE=dep
+</code></pre>
+<p>Building Docker Image (user-me):</p>
+<pre><code>make build IMAGE=user-me
+</code></pre>
+<p>Running Docker Image (user-dev):</p>
+<pre><code>make run IMAGE=user-me HOST_PATH=&lt;HOST_PATH&gt; HOME_PATH=&lt;HOME_PATH&gt;
+</code></pre>
+<p>On build environment startup the user will be placed into an interactive shell within the <code>/host</code> directory.</p>
+<p>How the build environment can be used to compile an seL4 binary for the MaaXBoard is documented in the <a href="building_applications.html">Building Applications</a> section.</p>
 
                     </main>
 

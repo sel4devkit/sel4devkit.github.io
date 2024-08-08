@@ -176,7 +176,79 @@
 
                 <div id="content" class="content">
                     <main>
-                        
+                        <h1 id="bootloader"><a class="header" href="#bootloader">Bootloader</a></h1>
+<h2 id="overview"><a class="header" href="#overview">Overview</a></h2>
+<p>When a computer is turned off, its software remains stored in non-volatile memory. When the computer is powered on, a bootstrap loader is required: a small, low-level program to configure the computer's memory and devices sufficient to then be able to load further software, such as a bare-metal application or operating system, into RAM and then call it.</p>
+<p><strong>Das U-Boot</strong> (known as "the Universal Boot Loader" and often shortened to U-Boot) is an open-source bootloader commonly used in embedded devices. For such low-level operations, it has to be customized for the hardware on which it is running.</p>
+<p>As part of this developer kit we have provided both prebuilt U-Boot binaries (see <a href="sd_card_preparation.html">here</a>) and tooling to build U-Boot binaries (see <a href="appendices/building_uboot.html">here</a>) suitable for the MaaXBoard.</p>
+<h2 id="loading-the-application"><a class="header" href="#loading-the-application">Loading the Application</a></h2>
+<p>After U-Boot has configured the MaaXBoard's memory and devices, it is able to load an application into RAM and then execute it. It is possible for a user to do this interactively using U-Boot commands via the serial terminal on the host machine. It is also possible and convenient to provide a U-Boot configuration file <code>uEnv.txt</code> that runs automatically; both options are documented below.</p>
+<h3 id="methods-of-loading"><a class="header" href="#methods-of-loading">Methods of Loading</a></h3>
+<p>We cover three primary mechanisms for loading the application into RAM by U-Boot:</p>
+<ul>
+<li>from SD card;</li>
+<li>from USB flash drive;</li>
+<li>via TFTP.</li>
+</ul>
+<p>Additional mechanisms are available, such as downloading over the serial cable; however, this would be much slower compared with the options above and is not considered further here. Downloading from on-board flash memory is another possible mechanism, but that is not applicable to the MaaXBoard.</p>
+<p>The remainder of this section assumes that you have an application in the form of an executable ELF file called <code>sel4_image</code>. We will create this as our test application <a href="building_applications.html">later in this documentation</a>, but this section is concerned with the loading mechanisms rather than the executable itself.</p>
+<h4 id="loading-from-sd-card"><a class="header" href="#loading-from-sd-card">Loading from SD Card</a></h4>
+<p>The SD card is used to store the bootloader, U-Boot. The SD card may also be used to store the application's ELF file that is to be loaded into RAM by the bootloader. If the SD card is partitioned as described in the <a href="sd_card_preparation.html">SD Card Preparation</a> section, the <code>BOOT</code> partition is used for this by placing the <code>sel4_image</code> file in the root of the partition.</p>
+<p>An advantage of this approach is that it makes use of a single medium that (a) is already being used to store U-Boot and (b) generally has a much larger capacity than is required by U-Boot alone.</p>
+<p>A disadvantage is that while U-Boot is likely to be a relatively unchanging artefact (once it has been configured for a particular board), during development the application is likely to be modified repeatedly, and removing, reprogramming, and replacing the SD card is inconvenient and physically stresses the card and its mountings.</p>
+<h4 id="loading-from-usb-flash-drive"><a class="header" href="#loading-from-usb-flash-drive">Loading from USB Flash Drive</a></h4>
+<p>The MaaXBoard has two USB 3.0 connectors that U-Boot is able to access, so the application file may be stored on a removable USB flash drive (i.e. thumb/pen drive) and loaded into RAM by U-Boot. To load the <code>sel4_image</code> binary from a USB flash drive the file needs to be placed in the root of a FAT formatted drive.</p>
+<p>Compared with loading from SD card, this approach has the advantage of leaving the SD card and its U-Boot image undisturbed, although it still involves physical insertion and removal of the flash drive on both the development board and the host machine whenever a new version is to be tested.</p>
+<h4 id="loading-via-tftp"><a class="header" href="#loading-via-tftp">Loading via TFTP</a></h4>
+<p>The MaaXBoard has an Ethernet port that U-Boot is able to access, and the application file may be downloaded from the host machine over TFTP (Trivial File Transfer Protocol), a convenient and popular method for booting.</p>
+<p>Connection options include either a direct wired Ethernet connection between the host machine and the MaaXBoard:</p>
+<p><img src="figures/TFTP-option-direct.png" alt="TFTP option direct connection" /></p>
+<p>Or a network connection via a hub / router:</p>
+<p><img src="figures/TFTP-option-router.png" alt="TFTP option router connection" /></p>
+<p>Loading via TFTP is considered to be the most convenient method within an application development environment as there is no need to keep plugging and unplugging anything from the board. To load the <code>sel4_image</code> binary via TFTP, the file needs to be made available for download from the TFTP server.</p>
+<h3 id="u-boot-configuration-file"><a class="header" href="#u-boot-configuration-file">U-Boot Configuration File</a></h3>
+<p>Booting via U-Boot can be configured via commands stored in a file named <code>uEnv.txt</code> and placed in the <code>BOOT</code> partition of the SD card.</p>
+<p>The example file below (stored on the SD card prepared via the instructions in the <a href="sd_card_preparation.html">SD Card Preparation</a> section) automatically searches for, loads and then executes the binary file named <code>sel4_image</code>. The following potential locations for the <code>sel4_image</code> are searched in order:</p>
+<ol>
+<li>USB flash drive with a FAT filesystem.</li>
+<li>SD Card / eMMC device with a FAT filesystem.</li>
+<li>TFTP server.</li>
+</ol>
+<pre><code class="language-text">### Uncomment and define the 'ipaddr' and 'netmask' variables to statically set
+### the device IP address. If no static IP address is provided one will attempt to
+### assigned using DHCP / BOOTP.
+
+### ipaddr=192.168.100.50
+### netmask=255.255.255.0
+
+### Uncomment and define the 'serverip' address to set the IP address of the
+### TFTP server. If no server IP address is defined then no attempt to boot
+### from TFTP will be made.
+
+serverip=192.168.0.11
+
+### Define the name of the ELF binary to boot.
+
+elf_binary_file=sel4_image
+
+### Attempt to boot the ELF binary. The following locations will be searched in
+### priority order:
+### 1. USB mass storage devices with a FAT filesystem.
+### 2. SD Card / eMMC devices with a FAT filesystem.
+### 3. TFTP server.
+
+elf_dev_boot=if ${devtype} dev ${devnum}; then echo Booting ELF binary from ${devtype} ${devnum} ...; fatload ${devtype} ${devnum} ${loadaddr} ${elf_binary_file}; bootelf ${loadaddr}; fi
+elf_tftp_boot_0=if test -n ${serverip}; then run elf_tftp_boot_1; else echo Skipping booting ELF binary from TFTP, serverip not defined; fi
+elf_tftp_boot_1=if test -n ${ipaddr}; then echo Using statically defined IP address; else echo Setting IP address from DHCP / BOOTP; setenv autoload no; dhcp; fi; run elf_tftp_boot_2
+elf_tftp_boot_2=echo Booting ELF binary from TFTP ...; tftp ${loadaddr} ${elf_binary_file}; bootelf ${loadaddr}
+uenvcmd=usb start; for devtype in usb mmc; do for devnum in 0 1; do run elf_dev_boot; done; done; run elf_tftp_boot_0
+</code></pre>
+<p>Some configuration of the <code>uEnv.txt</code> file is required, e.g. to set IP addresses relevant to the user's network. This is covered in more detail in the <a href="sd_card_preparation.html">SD Card preparation</a> and <a href="first_boot.html">First Boot</a> sections.</p>
+<h2 id="appendices"><a class="header" href="#appendices">Appendices</a></h2>
+<ul>
+<li><a href="./appendices/building_uboot.html">Building U-Boot</a></li>
+</ul>
+
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">

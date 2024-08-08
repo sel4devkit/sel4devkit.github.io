@@ -183,16 +183,6 @@
 <p>The application is held within the following structure (all within the <code>microkit</code> folder), with key folders and files shown:</p>
 <pre><code class="language-text">project_libs
 │
-│      
-├───include
-│   └───plat
-│       └───&lt;platform&gt;
-│            ├───mmc_platform_devices.h
-│            └───usb_platform_devices.h
-│
-│
-├───CMakeLists.txt
-│
 ├───example
 │   └───&lt;platform&gt;
 │       └───security_demo
@@ -201,8 +191,16 @@
 │           │    └───crypto.c
 │           ├───keyreader
 │           │   └───keyreader.c
-│           ├───transmitter
-│           │   └───transmitter.c
+│           └───transmitter
+│               └───transmitter.c
+│      
+├───include
+│   └───plat
+│       └───&lt;platform&gt;
+│            ├───mmc_platform_devices.h
+│            └───usb_platform_devices.h
+│
+└───CMakeLists.txt
 </code></pre>
 <ul>
 <li><code>CMakeLists.txt</code>: Application build file.</li>

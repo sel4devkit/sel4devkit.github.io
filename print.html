@@ -362,12 +362,170 @@ Kit is presented to support their navigation:</p>
 </div><div style="break-before: page; page-break-before: always;"></div><h1 id="development-platform"><a class="header" href="#development-platform">Development Platform</a></h1>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="hardware-requirements"><a class="header" href="#hardware-requirements">Hardware Requirements</a></h1>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="software-requirements"><a class="header" href="#software-requirements">Software Requirements</a></h1>
+<h2 id="sel4"><a class="header" href="#sel4">seL4</a></h2>
+<p>seL4 is a high-assurance, high-performance operating system microkernel. It is unique because of its comprehensive formal verification, without compromising performance. It is meant to be used as a trustworthy foundation for building safety- and security-critical systems. It is available as open source on GitHub and supported by the seL4 Foundation.</p>
+<p>In the context of the dev kit seL4 is used as the bedrock of all the contributions and the purpose of the dev kit is to build applications on top of seL4.</p>
+<h2 id="camkes"><a class="header" href="#camkes">Camkes</a></h2>
+<h2 id="microkit"><a class="header" href="#microkit">Microkit</a></h2>
+<h2 id="uboot-fork"><a class="header" href="#uboot-fork">Uboot fork</a></h2>
+<h2 id="docker-environment"><a class="header" href="#docker-environment">Docker environment</a></h2>
+<p>How About:
+-A Common Core. This is everything up to, doing a simple small example for each environment.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="first-boot"><a class="header" href="#first-boot">First Boot</a></h1>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="host-setup"><a class="header" href="#host-setup">Host Setup</a></h1>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="build-environment-setup"><a class="header" href="#build-environment-setup">Build Environment Setup</a></h1>
+<p>The build environment is the environment within which all binaries for the target environment are built; i.e. the environment that provides the required compilation toolchain.</p>
+<p>To simplify the requirements on the host environment and to enable rapid setup, the build environment is provided as a pre-built Docker image.</p>
+<h2 id="environment-details"><a class="header" href="#environment-details">Environment Details</a></h2>
+<p>The build environment is a Debian Linux system pre-installed with all of the required development tools. The primary tools supplied are:</p>
+<ul>
+<li><a href="https://git-scm.com"><strong>Git</strong></a> version control system.</li>
+<li><a href="https://gerrit.googlesource.com/git-repo/+/refs/heads/master/README.md"><strong>Repo</strong></a> Git repository management tool.</li>
+<li><a href="https://gcc.gnu.org"><strong>aarch64-linux-gnu</strong></a> cross compiler toolchain targeting the ARM AArch64 instruction set.</li>
+<li><a href="https://gcc.gnu.org"><strong>arm-linux-gnueabi</strong></a> cross compiler toolchain targeting the ARM AArch32 instruction set.</li>
+<li><a href="https://www.gnu.org/software/make/"><strong>Make</strong></a>, <a href="https://cmake.org"><strong>CMake</strong></a>, <a href="https://ninja-build.org"><strong>Ninja</strong></a> and <a href="https://mesonbuild.com/"><strong>MESON</strong></a> build automation tools.</li>
+</ul>
+<h2 id="installation"><a class="header" href="#installation">Installation</a></h2>
+<p><a href="install_and_configure/host_machine_setup.html">Host machine setup</a> must be completed, specifically installation of Docker, and the Docker tools must be active prior to installation of the build environment.</p>
+<p>Installation of the build environment comprises the download of a pre-built Docker image into the Docker tools. This can be performed from the command line on the host machine as follows:</p>
+<h3 id="camkes-1"><a class="header" href="#camkes-1">Camkes</a></h3>
+<pre><code class="language-bash">git clone "git@github.com:sel4devkit/sel4devkit-maaxboard-camkes-docker-dev-env.git"
+</code></pre>
+<h3 id="microkit-1"><a class="header" href="#microkit-1">Microkit</a></h3>
+<pre><code class="language-bash">git clone "git@github.com:sel4devkit/sel4devkit-maaxboard-microkit-docker-dev-env.git"
+</code></pre>
+<h2 id="usage"><a class="header" href="#usage">Usage</a></h2>
+<p>Normal usage would involve pulling a pre-built Docker Image, and then running
+this Docker Image, optionally mapping in a local development area (HOST_PATH),
+and a local home area (HOME_PATH).</p>
+<p>Note that, apart from any mapped areas, the entirety of the Docker Image will
+be lost when the Docker Image is exited. This is deliberate and desirable,
+ensuring a consistent starting environment for each session.</p>
+<p>Two different entry points are provided, as "user-dev" and "user-me":</p>
+<ul>
+<li>The "user-dev" operates with a fixed user name "developer", granted password
+free access to root, via sudo. This configuration is fully defined, and thus
+may be prepared in advance. This property permits a very simple deployment,
+and is particularly suited to Windows.</li>
+<li>The "user-me" is intended to be built, and then deployed, for a specific
+invoking user. It operates with the username of the invoking user, granted
+password free access to root, via sudo. This configuration can not be prepared
+in advance, but does provide a smoother integration for the invoking user. It
+is particularly suited to Linux.</li>
+</ul>
+<p>Once the Docker Image is started, its version may be inspected as follows:</p>
+<pre><code>cat /version.txt
+</code></pre>
+<h3 id="windows"><a class="header" href="#windows">Windows</a></h3>
+<p>Only Deployment is supported on Windows.</p>
+<p>Pulling Docker Image (user-dev):</p>
+<pre><code>docker pull ghcr.io/sel4devkit/sel4devkit-maaxboard-camkes-docker-dev-env/user-dev:latest
+</code></pre>
+<p>Running Docker Image (user-dev):</p>
+<pre><code>docker run --rm --interactive --tty --hostname "sel4devkit-maaxboard-camkes" \
+    ghcr.io/sel4devkit/sel4devkit-maaxboard-camkes-docker-dev-env/user-dev:latest \
+    --mount type=bind,source="&lt;HOST_PATH&gt;",target="/host"
+    /bin/bash --login
+</code></pre>
+<h3 id="linux"><a class="header" href="#linux">Linux</a></h3>
+<p>Deployment, and Maintenance, is supported on Linux.</p>
+<p>Show usage instructions:</p>
+<pre><code>make
+</code></pre>
+<h4 id="user-developer"><a class="header" href="#user-developer">User Developer</a></h4>
+<p>Pulling Docker Image (user-dev):</p>
+<pre><code>make pull IMAGE=user-dev
+</code></pre>
+<p>Running Docker Image (user-dev):</p>
+<pre><code>make run IMAGE=user-dev HOST_PATH=&lt;HOST_PATH&gt; HOME_PATH=&lt;HOME_PATH&gt;
+</code></pre>
+<h4 id="user-me"><a class="header" href="#user-me">User Me</a></h4>
+<p>Pulling pre-built Docker Image (dep):</p>
+<pre><code>make pull IMAGE=dep
+</code></pre>
+<p>Building Docker Image (user-me):</p>
+<pre><code>make build IMAGE=user-me
+</code></pre>
+<p>Running Docker Image (user-dev):</p>
+<pre><code>make run IMAGE=user-me HOST_PATH=&lt;HOST_PATH&gt; HOME_PATH=&lt;HOME_PATH&gt;
+</code></pre>
+<p>On build environment startup the user will be placed into an interactive shell within the <code>/host</code> directory.</p>
+<p>How the build environment can be used to compile an seL4 binary for the MaaXBoard is documented in the <a href="install_and_configure/building_applications.html">Building Applications</a> section.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="bootloader-setup"><a class="header" href="#bootloader-setup">Bootloader Setup</a></h1>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="bootloader-setup-1"><a class="header" href="#bootloader-setup-1">Bootloader Setup</a></h1>
-<div style="break-before: page; page-break-before: always;"></div><div style="break-before: page; page-break-before: always;"></div><div style="break-before: page; page-break-before: always;"></div><div style="break-before: page; page-break-before: always;"></div><div style="break-before: page; page-break-before: always;"></div><div style="break-before: page; page-break-before: always;"></div><h1 id="activities"><a class="header" href="#activities">Activities</a></h1>
+<div style="break-before: page; page-break-before: always;"></div><div style="break-before: page; page-break-before: always;"></div><h1 id="bootloader"><a class="header" href="#bootloader">Bootloader</a></h1>
+<h2 id="overview-1"><a class="header" href="#overview-1">Overview</a></h2>
+<p>When a computer is turned off, its software remains stored in non-volatile memory. When the computer is powered on, a bootstrap loader is required: a small, low-level program to configure the computer's memory and devices sufficient to then be able to load further software, such as a bare-metal application or operating system, into RAM and then call it.</p>
+<p><strong>Das U-Boot</strong> (known as "the Universal Boot Loader" and often shortened to U-Boot) is an open-source bootloader commonly used in embedded devices. For such low-level operations, it has to be customized for the hardware on which it is running.</p>
+<p>As part of this developer kit we have provided both prebuilt U-Boot binaries (see <a href="first_boot/sd_card_preparation.html">here</a>) and tooling to build U-Boot binaries (see <a href="first_boot/appendices/building_uboot.html">here</a>) suitable for the MaaXBoard.</p>
+<h2 id="loading-the-application"><a class="header" href="#loading-the-application">Loading the Application</a></h2>
+<p>After U-Boot has configured the MaaXBoard's memory and devices, it is able to load an application into RAM and then execute it. It is possible for a user to do this interactively using U-Boot commands via the serial terminal on the host machine. It is also possible and convenient to provide a U-Boot configuration file <code>uEnv.txt</code> that runs automatically; both options are documented below.</p>
+<h3 id="methods-of-loading"><a class="header" href="#methods-of-loading">Methods of Loading</a></h3>
+<p>We cover three primary mechanisms for loading the application into RAM by U-Boot:</p>
+<ul>
+<li>from SD card;</li>
+<li>from USB flash drive;</li>
+<li>via TFTP.</li>
+</ul>
+<p>Additional mechanisms are available, such as downloading over the serial cable; however, this would be much slower compared with the options above and is not considered further here. Downloading from on-board flash memory is another possible mechanism, but that is not applicable to the MaaXBoard.</p>
+<p>The remainder of this section assumes that you have an application in the form of an executable ELF file called <code>sel4_image</code>. We will create this as our test application <a href="first_boot/building_applications.html">later in this documentation</a>, but this section is concerned with the loading mechanisms rather than the executable itself.</p>
+<h4 id="loading-from-sd-card"><a class="header" href="#loading-from-sd-card">Loading from SD Card</a></h4>
+<p>The SD card is used to store the bootloader, U-Boot. The SD card may also be used to store the application's ELF file that is to be loaded into RAM by the bootloader. If the SD card is partitioned as described in the <a href="first_boot/sd_card_preparation.html">SD Card Preparation</a> section, the <code>BOOT</code> partition is used for this by placing the <code>sel4_image</code> file in the root of the partition.</p>
+<p>An advantage of this approach is that it makes use of a single medium that (a) is already being used to store U-Boot and (b) generally has a much larger capacity than is required by U-Boot alone.</p>
+<p>A disadvantage is that while U-Boot is likely to be a relatively unchanging artefact (once it has been configured for a particular board), during development the application is likely to be modified repeatedly, and removing, reprogramming, and replacing the SD card is inconvenient and physically stresses the card and its mountings.</p>
+<h4 id="loading-from-usb-flash-drive"><a class="header" href="#loading-from-usb-flash-drive">Loading from USB Flash Drive</a></h4>
+<p>The MaaXBoard has two USB 3.0 connectors that U-Boot is able to access, so the application file may be stored on a removable USB flash drive (i.e. thumb/pen drive) and loaded into RAM by U-Boot. To load the <code>sel4_image</code> binary from a USB flash drive the file needs to be placed in the root of a FAT formatted drive.</p>
+<p>Compared with loading from SD card, this approach has the advantage of leaving the SD card and its U-Boot image undisturbed, although it still involves physical insertion and removal of the flash drive on both the development board and the host machine whenever a new version is to be tested.</p>
+<h4 id="loading-via-tftp"><a class="header" href="#loading-via-tftp">Loading via TFTP</a></h4>
+<p>The MaaXBoard has an Ethernet port that U-Boot is able to access, and the application file may be downloaded from the host machine over TFTP (Trivial File Transfer Protocol), a convenient and popular method for booting.</p>
+<p>Connection options include either a direct wired Ethernet connection between the host machine and the MaaXBoard:</p>
+<p><img src="first_boot/figures/TFTP-option-direct.png" alt="TFTP option direct connection" /></p>
+<p>Or a network connection via a hub / router:</p>
+<p><img src="first_boot/figures/TFTP-option-router.png" alt="TFTP option router connection" /></p>
+<p>Loading via TFTP is considered to be the most convenient method within an application development environment as there is no need to keep plugging and unplugging anything from the board. To load the <code>sel4_image</code> binary via TFTP, the file needs to be made available for download from the TFTP server.</p>
+<h3 id="u-boot-configuration-file"><a class="header" href="#u-boot-configuration-file">U-Boot Configuration File</a></h3>
+<p>Booting via U-Boot can be configured via commands stored in a file named <code>uEnv.txt</code> and placed in the <code>BOOT</code> partition of the SD card.</p>
+<p>The example file below (stored on the SD card prepared via the instructions in the <a href="first_boot/sd_card_preparation.html">SD Card Preparation</a> section) automatically searches for, loads and then executes the binary file named <code>sel4_image</code>. The following potential locations for the <code>sel4_image</code> are searched in order:</p>
+<ol>
+<li>USB flash drive with a FAT filesystem.</li>
+<li>SD Card / eMMC device with a FAT filesystem.</li>
+<li>TFTP server.</li>
+</ol>
+<pre><code class="language-text">### Uncomment and define the 'ipaddr' and 'netmask' variables to statically set
+### the device IP address. If no static IP address is provided one will attempt to
+### assigned using DHCP / BOOTP.
+
+### ipaddr=192.168.100.50
+### netmask=255.255.255.0
+
+### Uncomment and define the 'serverip' address to set the IP address of the
+### TFTP server. If no server IP address is defined then no attempt to boot
+### from TFTP will be made.
+
+serverip=192.168.0.11
+
+### Define the name of the ELF binary to boot.
+
+elf_binary_file=sel4_image
+
+### Attempt to boot the ELF binary. The following locations will be searched in
+### priority order:
+### 1. USB mass storage devices with a FAT filesystem.
+### 2. SD Card / eMMC devices with a FAT filesystem.
+### 3. TFTP server.
+
+elf_dev_boot=if ${devtype} dev ${devnum}; then echo Booting ELF binary from ${devtype} ${devnum} ...; fatload ${devtype} ${devnum} ${loadaddr} ${elf_binary_file}; bootelf ${loadaddr}; fi
+elf_tftp_boot_0=if test -n ${serverip}; then run elf_tftp_boot_1; else echo Skipping booting ELF binary from TFTP, serverip not defined; fi
+elf_tftp_boot_1=if test -n ${ipaddr}; then echo Using statically defined IP address; else echo Setting IP address from DHCP / BOOTP; setenv autoload no; dhcp; fi; run elf_tftp_boot_2
+elf_tftp_boot_2=echo Booting ELF binary from TFTP ...; tftp ${loadaddr} ${elf_binary_file}; bootelf ${loadaddr}
+uenvcmd=usb start; for devtype in usb mmc; do for devnum in 0 1; do run elf_dev_boot; done; done; run elf_tftp_boot_0
+</code></pre>
+<p>Some configuration of the <code>uEnv.txt</code> file is required, e.g. to set IP addresses relevant to the user's network. This is covered in more detail in the <a href="first_boot/sd_card_preparation.html">SD Card preparation</a> and <a href="first_boot/first_boot.html">First Boot</a> sections.</p>
+<h2 id="appendices"><a class="header" href="#appendices">Appendices</a></h2>
+<ul>
+<li><a href="first_boot/./appendices/building_uboot.html">Building U-Boot</a></li>
+</ul>
+<div style="break-before: page; page-break-before: always;"></div><div style="break-before: page; page-break-before: always;"></div><div style="break-before: page; page-break-before: always;"></div><div style="break-before: page; page-break-before: always;"></div><h1 id="activities"><a class="header" href="#activities">Activities</a></h1>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="todo-2"><a class="header" href="#todo-2">TODO</a></h1>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="device-driver-introduction"><a class="header" href="#device-driver-introduction">Device Driver Introduction</a></h1>
 <p>This section seeks to provide guidance on adding device drivers to seL4.</p>
@@ -468,7 +626,7 @@ Kit is presented to support their navigation:</p>
 <p>One of the core mechanisms for providing a software interface to a hardware device is through the use of <a href="https://en.wikipedia.org/wiki/Memory-mapped_I/O">memory mapped IO</a>.</p>
 <p>The memory addresses that a U-Boot driver uses for communication with a device can be either read from the device tree (i.e. from a device's <code>reg</code> property) or in some cases can be hard-coded into the driver.</p>
 <p>At this point it should be noted that U-Boot source code is intended to be executed in an environment with direct access to the system's physical address space; however, the library is executed within a virtual address space provided by seL4. As such, the addresses used by U-Boot drivers are <em>physical</em> addresses which are not directly accessible by the library. To work around this issue:</p>
-<h4 id="camkes"><a class="header" href="#camkes">CAmkES</a></h4>
+<h4 id="camkes-2"><a class="header" href="#camkes-2">CAmkES</a></h4>
 <ol>
 <li>
 <p>During library initialisation the list of all platform-dependent devices that need to be accessed must be provided. For each device:</p>
@@ -483,7 +641,7 @@ Kit is presented to support their navigation:</p>
 </li>
 </ol>
 <p>U-Boot drivers performing memory mapped IO should perform seamlessly without the need for any modifications to the driver.</p>
-<h4 id="microkit"><a class="header" href="#microkit">Microkit</a></h4>
+<h4 id="microkit-2"><a class="header" href="#microkit-2">Microkit</a></h4>
 <p>The physical addresses of all platform-dependent devices must be provided in the system file in this format:</p>
 <pre><code>&lt;system&gt;
     &lt;memory_region name="&lt;physical_device_name&gt;" size="&lt;physical_device_size&gt;" phys_addr="&lt;physical_device address&gt;"/&gt;
@@ -536,7 +694,7 @@ Kit is presented to support their navigation:</p>
 <h3 id="initialisation"><a class="header" href="#initialisation">Initialisation</a></h3>
 <p>As part of library initialisation, any U-Boot subsystems that require explicit initialisation are handled (see <code>uboot_wrapper.c:initialise_uboot_wrapper</code>). This mimics the initialisation that would normally be performed by <a href="https://github.com/u-boot/u-boot/blob/master/common/board_r.c">U-Boot's start-up routine</a>.</p>
 <p>Initialisation of the library comprises:</p>
-<h4 id="camkes-1"><a class="header" href="#camkes-1">CAmkES</a></h4>
+<h4 id="camkes-3"><a class="header" href="#camkes-3">CAmkES</a></h4>
 <ul>
 <li>Initialisation of the memory mapped IO and DMA wrappers;</li>
 <li>Initialisation of the monotonic timer;</li>
@@ -553,7 +711,7 @@ Kit is presented to support their navigation:</p>
 <li>The list of device tree paths containing physical addresses to be memory mapped (through the <code>reg</code> property).</li>
 <li>The list of device tree paths for the devices to enable. Note that all sub-nodes of the device tree paths will be automatically enabled; only the root node for the required devices need to be listed. All other nodes in the device tree will be marked as disabled.</li>
 </ul>
-<h4 id="microkit-1"><a class="header" href="#microkit-1">Microkit</a></h4>
+<h4 id="microkit-3"><a class="header" href="#microkit-3">Microkit</a></h4>
 <ul>
 <li>Initialisation of the DMA wrappers;</li>
 <li>Initialisation of the monotonic timer;</li>
@@ -707,7 +865,7 @@ Kit is presented to support their navigation:</p>
 <h4 id="configuration-for-different-platforms"><a class="header" href="#configuration-for-different-platforms">Configuration for different platforms</a></h4>
 <p>Although <code>uboot-driver-example</code> was created to demonstrate the device drivers developed for this MaaXBoard developer kit, it is configurable to support other platforms. For example, in the <a href="activity/device_drivers/add_odroidc2.html">worked example appendix for the Odroid-C2</a>, a small subset of drivers has been developed for that platform, and the <code>test.c</code> source file for <code>uboot-driver-example</code> uses the preprocessor macros <code>CONFIG_PLAT_MAAXBOARD</code> and <code>CONFIG_PLAT_ODROIDC2</code> to configure which commands are run for each platform. By default, all tests are enabled for an unrecognised platform, but this would be readily configured for a new platform's <code>CONFIG_PLAT_...</code> preprocessor macro.</p>
 <h3 id="instructions-for-running-uboot-driver-example"><a class="header" href="#instructions-for-running-uboot-driver-example">Instructions for running <code>uboot-driver-example</code></a></h3>
-<h4 id="camkes-2"><a class="header" href="#camkes-2">CAmkES</a></h4>
+<h4 id="camkes-4"><a class="header" href="#camkes-4">CAmkES</a></h4>
 <p>As usual, this assumes that the user is already running a Docker container within the <a href="activity/device_drivers/build_environment_setup.html">build environment</a>, where we can create a directory and clone the code and dependencies.</p>
 <pre><code class="language-text">mkdir /host/uboot_test
 cd /host/uboot_test
@@ -735,7 +893,7 @@ cd build
 </code></pre>
 <p>A successful build will result in an executable file called <code>capdl-loader-image-arm-maaxboard</code> in the <code>images</code> subdirectory. This should be copied to a file named <code>sel4_image</code> and then made available to the preferred loading mechanism, such as TFTP, as per <a href="activity/device_drivers/execution_on_target_platform.html">Execution on Target Platform</a>.</p>
 <h3 id="instructions-for-running-uboot-driver-example-1"><a class="header" href="#instructions-for-running-uboot-driver-example-1">Instructions for running <code>uboot-driver-example</code></a></h3>
-<h4 id="microkit-2"><a class="header" href="#microkit-2">Microkit</a></h4>
+<h4 id="microkit-4"><a class="header" href="#microkit-4">Microkit</a></h4>
 <p>As usual, this assumes that the user is already running a Docker container within the <a href="activity/device_drivers/build_environment_setup.html">build environment</a>, where we can create a directory and clone the code and dependencies.</p>
 <pre><code class="language-text">mkdir /host/uboot_test
 cd /host/uboot_test
@@ -814,7 +972,7 @@ echo: Connection closed on socket 2
 <p>This section documents the required actions and guidance to add support for a new platform to the library.</p>
 <p>By the end of this section, an seL4 executable will be built for the new platform that can initialise the library (although the library may not support any of the platform's devices). Later sections of this guide cover the required actions to add driver support into the library for the new platform (e.g. see the <a href="activity/device_drivers/add_odroidc2.html">Odroid-C2 worked example</a>).</p>
 <p>Throughout the sections of this guide devoted to extension of the U-Boot driver library, it is expected the developer is working within the folder structure created by the <code>repo</code> tool (e.g. as used to build the <a href="activity/device_drivers/uboot_driver_usage.html">test applications</a>). Key folders and files within the hierarchy are shown below:</p>
-<h3 id="camkes-3"><a class="header" href="#camkes-3">CAmkES</a></h3>
+<h3 id="camkes-5"><a class="header" href="#camkes-5">CAmkES</a></h3>
 <pre><code class="language-text">&lt;manifest root&gt;
 |
 ├───kernel
@@ -850,7 +1008,7 @@ echo: Connection closed on socket 2
 <li><code>projects/project_libs/libubootdrivers</code>: Referred to as "the library" throughout. See <a href="https://github.com/sel4devkit/projects_libs/tree/master/libubootdrivers">linked Git repository</a>.</li>
 <li><code>projects/uboot</code>: Fork of the U-Boot project source code (note, this is also symlinked to <code>projects/project_libs/libubootdrivers/uboot</code>).</li>
 </ul>
-<h3 id="microkit-3"><a class="header" href="#microkit-3">Microkit</a></h3>
+<h3 id="microkit-5"><a class="header" href="#microkit-5">Microkit</a></h3>
 <pre><code class="language-text">&lt;manifest root&gt;
 |
 └───project_libs
@@ -1014,7 +1172,7 @@ void initialise_driver_data(void) {
 <h2 id="add-support-to-example-application"><a class="header" href="#add-support-to-example-application">Add support to example application</a></h2>
 <p>Section <a href="activity/device_drivers/uboot_driver_usage.html">Using the U-Boot Driver Library</a> introduced the demonstration application  <code>uboot-driver-example</code>. This section documents the changes required to the <code>uboot-driver-example</code> application to allow it to be built for the new platform.</p>
 <p>The following empty template file needs to be added to the application <code>include/plat/foo/platform_devices.h</code>:</p>
-<h3 id="camkes-4"><a class="header" href="#camkes-4">CAmkES</a></h3>
+<h3 id="camkes-6"><a class="header" href="#camkes-6">CAmkES</a></h3>
 <pre><code class="language-c">#pragma once
 
 /* List the set of device tree paths that include the 'reg' entries
@@ -1037,7 +1195,7 @@ void initialise_driver_data(void) {
 
 #define HARDWARE_CONFIGURATION
 </code></pre>
-<h3 id="microkit-4"><a class="header" href="#microkit-4">Microkit</a></h3>
+<h3 id="microkit-6"><a class="header" href="#microkit-6">Microkit</a></h3>
 <pre><code class="language-c">#pragma once
 
 /* List the set of device tree paths that include the 'reg' entries
@@ -2169,7 +2327,7 @@ extern struct env_clbk_tbl _u_boot_env_clbk__dnsip;
 <p>Extra functionality within the demonstration application is deliberately kept to a minimum to leave the source code less cluttered, so that the developer can readily see the 'more interesting' seL4 inter-component and device interactions without too much extra, feature-supporting code. In line with the rest of the developer kit, the demonstration application is intended to be more of a springboard for a developer kit user than a polished product for an end user.
 This case study works through an example to show some of our device drivers being used within a larger application. It is nominally labelled as a 'security domain' demonstrator (named <code>security_demo</code>) but this is mainly in the context of being a keyboard-based encryption device that was inspired by an Enigma machine! It is intentionally simple and its main purpose is to show data separation and to provide worked examples of inter-component communications using different seL4 mechanisms.</p>
 <p>Extra functionality within the demonstration application is deliberately kept to a minimum to leave the source code less cluttered, so that the developer can readily see the 'more interesting' seL4 inter-component and device interactions without too much extra, feature-supporting code. In line with the rest of the developer kit, the demonstration application is intended to be more of a springboard for a developer kit user than a polished product for an end user.</p>
-<div style="break-before: page; page-break-before: always;"></div><h1 id="introduction-2"><a class="header" href="#introduction-2">Introduction</a></h1>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="architecture"><a class="header" href="#architecture">Architecture</a></h1>
 <p>We defer to the seL4 Foundation's documentation of CAmkES as the primary source of understanding of CAmkES, but this section will cover aspects of the use of CAmkES where appropriate.</p>
 <h2 id="basic-description"><a class="header" href="#basic-description">Basic Description</a></h2>
 <p>An operator types a plaintext message using a USB-connected keyboard. The application encrypts the message and transmits the resulting ciphertext via Ethernet to a client that has connected to a predetermined port. The application also records the ciphertext messages in a logfile on the SD card of the device.</p>
@@ -2382,7 +2540,7 @@ run_uboot_command@uboot_wrapper.c:181 --- command 'fatwrite mmc 0:2 0x55b010 tra
 <p>The application will continue indefinitely. <code>netcat</code> sessions on the host machine may be terminated (Ctrl-C) and restarted, whereupon the application will establish a new connection (buffering output in the meantime).</p>
 <p>If the MaaXBoard is powered off and its SD card removed and transferred to the host machine, the <code>transmitter_log.txt</code> can be accessed from the <code>FILESYS</code> partition as one would expect.</p>
 <p>To reduce the risk of corrupting the SD card, it is advisable to avoid powering off the MaaXBoard during a write operation of the logfile. As this operation lasts in the order of 10 ms and only occurs every 30 seconds (and only then if there are any ciphertext characters that have not yet been logged to file), the risk is both remote and avoidable (e.g. power off soon after a <code>fatwrite</code> command message, or wait for &gt;30 seconds after the last <code>fatwrite</code> command message).</p>
-<div style="break-before: page; page-break-before: always;"></div><h1 id="introduction-3"><a class="header" href="#introduction-3">Introduction</a></h1>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="introduction-2"><a class="header" href="#introduction-2">Introduction</a></h1>
 <p>This section works through the changes completed to port the case study application to Microkit.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="architecture-overview-1"><a class="header" href="#architecture-overview-1">Architecture Overview</a></h1>
 <p>It is assumed the CAmkES case study <a href="activity/microkit_case_study_application/../camkes_case_study_application/architecture.html">architecture document</a> had been read previous to reading this document.</p>
@@ -2409,16 +2567,6 @@ run_uboot_command@uboot_wrapper.c:181 --- command 'fatwrite mmc 0:2 0x55b010 tra
 <p>The application is held within the following structure (all within the <code>microkit</code> folder), with key folders and files shown:</p>
 <pre><code class="language-text">project_libs
 │
-│      
-├───include
-│   └───plat
-│       └───&lt;platform&gt;
-│            ├───mmc_platform_devices.h
-│            └───usb_platform_devices.h
-│
-│
-├───CMakeLists.txt
-│
 ├───example
 │   └───&lt;platform&gt;
 │       └───security_demo
@@ -2427,8 +2575,16 @@ run_uboot_command@uboot_wrapper.c:181 --- command 'fatwrite mmc 0:2 0x55b010 tra
 │           │    └───crypto.c
 │           ├───keyreader
 │           │   └───keyreader.c
-│           ├───transmitter
-│           │   └───transmitter.c
+│           └───transmitter
+│               └───transmitter.c
+│      
+├───include
+│   └───plat
+│       └───&lt;platform&gt;
+│            ├───mmc_platform_devices.h
+│            └───usb_platform_devices.h
+│
+└───CMakeLists.txt
 </code></pre>
 <ul>
 <li><code>CMakeLists.txt</code>: Application build file.</li>
@@ -2532,7 +2688,7 @@ run_uboot_command@uboot_wrapper.c:181 --- command 'fatwrite mmc 0:2 0x55b010 tra
 <p>If the MaaXBoard is powered off and its SD card removed and transferred to the host machine, the <code>transmitter_log.txt</code> can be accessed from the <code>FILESYS</code> partition as one would expect.</p>
 <p>To reduce the risk of corrupting the SD card, it is advisable to avoid powering off the MaaXBoard during a write operation of the logfile. As this operation lasts in the order of 10 ms, the risk is both remote and avoidable (e.g. power off soon after a <code>fatwrite</code> command message).</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="microkit-xhci-usb-driver"><a class="header" href="#microkit-xhci-usb-driver">Microkit xHCI USB Driver</a></h1>
-<h2 id="introduction-4"><a class="header" href="#introduction-4">Introduction</a></h2>
+<h2 id="introduction-3"><a class="header" href="#introduction-3">Introduction</a></h2>
 <p>For this activity the goal was to create an Sel4 native xHCI driver. Writing an entire xHCI driver from scratch is a long and complicated task, so we opted to re-work an existing solution. We chose to use NetBSD's xHCI driver because it has good portability, supports a wide range of hardware, is BSD licenced, is updated often and makes use of interrupts which are more performant compared to other solutions that use polling. The plan was to use this as a base to pull drivers from in the future.</p>
 <h2 id="project-layout"><a class="header" href="#project-layout">Project Layout</a></h2>
 <p>This project uses "repo" to initialise the xHCI driver repository and to clone the dependant repositories into specific directories. To install microkit we use "make get" and "make all" in the microkit directory.</p>
@@ -2545,12 +2701,12 @@ run_uboot_command@uboot_wrapper.c:181 --- command 'fatwrite mmc 0:2 0x55b010 tra
 </ul>
 <h2 id="xhci"><a class="header" href="#xhci">xHCI</a></h2>
 <p>xHCI is a standardised interface used for USB host controllers. Also known as the USB 3.0 host controller specification, it is designed to be backward compatible, supporting a wide range of USB devices from older USB 1.x to the more recent USB 3.x versions. Compared to its predecessors (OHCI, UHCI and EHCI) it is designed to handle multiple data transfer speeds within a single unified standard, making it more efficient at handling computer resources. The standard describes the basic communication between the software and the host controller including memory layout, data structures, MMIO and DMA.</p>
-<h2 id="camkes-5"><a class="header" href="#camkes-5">CAmkES</a></h2>
+<h2 id="camkes-7"><a class="header" href="#camkes-7">CAmkES</a></h2>
 <p>For our initial development we used CAmkES with the first goal of interfacing with the hardware. We compiled NetBSD, then traced the initialisation of the xHCI, noting down the input/output read and write commands. We then hardcoded the necessary memory register addresses and worked out the changes that we needed to make to the driver so that it was compatible with seL4 and CAmkES. We were then able to initialise the host controller by setting up the correct memory registers, DMA and interrupts. Once we got it to this point we decided to port the example to Microkit.</p>
-<h2 id="microkit-5"><a class="header" href="#microkit-5">Microkit</a></h2>
+<h2 id="microkit-7"><a class="header" href="#microkit-7">Microkit</a></h2>
 <p>The first goal was to understand the differences between CAmkES and Microkit and become familiar with its features. Compared to CAmkES, Microkit has no standard libraries which meant that we had to export libraries for simple functionality such as logging and memory handling. We also had to create a simple DMA handler, and in the absence of a build system we opted to use GNU Make. Once we had an understanding of Microkit we got our new example to initialise the host controller as we did with CAmkES.</p>
 <p>We created a separate DMA library which can be found here: LINK TBD</p>
-<h3 id="architecture"><a class="header" href="#architecture">Architecture</a></h3>
+<h3 id="architecture-1"><a class="header" href="#architecture-1">Architecture</a></h3>
 <p><img src="activity/microkit_usb_driver/system_architecture.png" alt="screenshot" /></p>
 <p>One Protection Domain (PD) acts as a central driver which handles all of the initialization and communicates with the hardware via MMIO. There are additional PD's for the memory handler, software interrupts and hardware interrupts.</p>
 <h3 id="memory-considerations"><a class="header" href="#memory-considerations">Memory considerations</a></h3>
@@ -2559,7 +2715,7 @@ run_uboot_command@uboot_wrapper.c:181 --- command 'fatwrite mmc 0:2 0x55b010 tra
 <p>Once we initialised host controller, we moved onto devices. We started with keyboard as it was straightforward to get an example up and running and easy to test as it is a human interface device. Next we added a mouse which was conceptually very similar to the keyboard as they were both human interface devices and had the same fundamental layer. Additionally we just needed to include the mouse set up files from NetBSD. We also added touchscreen support by making use of the generic code for the mouse and by implementing extra functionality to account for the Z axis. When probing the bus for drivers we needed to state what device was being attached. This meant modifying the code and recompiling the program when switching between devices. To resolve this we introduced NetBSD's autoconfiguration which reads from a  prebuilt list of devices created at kernel compile time to evaluate which USB devices drivers should be assigned.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="hdmi-driver"><a class="header" href="#hdmi-driver">HDMI Driver</a></h1>
 <p>For this task the aim was to create an hdmi display driver. For inspiration we looked at U-Boot’s implementation of an imx8m display driver because it is BSD licensed and minimally featured, which was useful to build upon as an initial foundation.</p>
-<p>The repository for this project is located at: <a href="https://github.com/sel4devkit/sel4devkit-maaxboard-microkit-hdmi-driver">https://github.com/sel4-cap/sel4-hdmi </a></p>
+<p>The repository for this project is located <a href="https://github.com/sel4devkit/sel4devkit-maaxboard-microkit-hdmi-driver">here</a>.</p>
 <h2 id="displaying-a-static-image"><a class="header" href="#displaying-a-static-image">Displaying a static image</a></h2>
 <p>The first goal was to understand U-Boot’s display driver and to set up our memory regions for the frame buffer and the physical devices required by the driver. After building and running the U-Boot example, we looked through the source code and found relevant sections in IMX8M technical specification to get a better understanding of how to write the display driver. We currently rely on the firmware provided by U-Boot which needs to be configured when setting up the development environment.</p>
 <p>Through reading the technical specification we learnt that the two main components of the Maaxboard needed for the driver are the DCSS (Display Controller Subsystem) and the HDMI TX Controller. With this information we were able to understand the purpose of the memory register read and write operations and which register bits needed to be set for specific functionality. We decided to use one protection domain for the simplicity of having one area to handle all operations.</p>
@@ -2585,7 +2741,7 @@ run_uboot_command@uboot_wrapper.c:181 --- command 'fatwrite mmc 0:2 0x55b010 tra
 <li>Information on how to read the specification to find the memory register and how each memory register is set up, how to toggle bits, read and write to memory etc</li>
 </ul>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="single-linux-guest"><a class="header" href="#single-linux-guest">Single Linux guest</a></h1>
-<h2 id="introduction-5"><a class="header" href="#introduction-5">Introduction</a></h2>
+<h2 id="introduction-4"><a class="header" href="#introduction-4">Introduction</a></h2>
 <p>For this task, the goal was to load up a virtual machine (VM) on a host with serial TTY pass-through, so that we could type input to and recive output from the Linux guest. Our starting point for this activity was to rework an example from the Trustworthy Systems Libvmm repository so that it runs on the Maaxboard. This repo contains a virtual machine monitor for the seL4 microkernel with various examples built for the Odroid board and the open source emulator Qemu. Libvmm provides a virtual machine monitor (VMM) which is used to start and manage the guest VM.</p>
 <p>The repository for this project is located at: https://github.com/sel4devkit/sel4devkit-maaxboard-microkit-vmm-single-linux-guest</p>
 <h2 id="design"><a class="header" href="#design">Design</a></h2>
@@ -2610,7 +2766,7 @@ run_uboot_command@uboot_wrapper.c:181 --- command 'fatwrite mmc 0:2 0x55b010 tra
 <li>https://github.com/au-ts/Libvmm - Libvmm repository</li>
 </ul>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="vmm-with-dual-linux-guests-and-tty-multiplex"><a class="header" href="#vmm-with-dual-linux-guests-and-tty-multiplex">VMM with dual linux guests and TTY Multiplex</a></h1>
-<h2 id="introduction-6"><a class="header" href="#introduction-6">Introduction</a></h2>
+<h2 id="introduction-5"><a class="header" href="#introduction-5">Introduction</a></h2>
 <p>For this activity the goal was to load two Linux Virtual Machines (VM) on one host. We built upon our previous single guest example and took inspiration from an existing libvmm contribution that makes use of VirtIO console.</p>
 <p>The repository for this project is located at: https://github.com/sel4devkit/sel4devkit-maaxboard-microkit-vmm-dual-linux-guest-tty-multiplex</p>
 <h2 id="design-1"><a class="header" href="#design-1">Design</a></h2>
@@ -2637,7 +2793,7 @@ run_uboot_command@uboot_wrapper.c:181 --- command 'fatwrite mmc 0:2 0x55b010 tra
 <li><a href="https://blogs.oracle.com/linux/post/introduction-to-virtio">virtio oracle webiste</a> - For more information on VirtIO</li>
 </ul>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="dual-linux-guest-with-usb-routing"><a class="header" href="#dual-linux-guest-with-usb-routing">Dual Linux Guest with USB routing</a></h1>
-<h2 id="introduction-7"><a class="header" href="#introduction-7">Introduction</a></h2>
+<h2 id="introduction-6"><a class="header" href="#introduction-6">Introduction</a></h2>
 <p>In this activity we explored different options for USB routing. Largely, the need for USB routing comes from virtualisation, where the physical hardware has the physical USB port, and there is a virtual system that we wish the USB port is routed into. In our case we are working towards routing a USB device into one of multiple virtual machines (VM).</p>
 <h2 id="usb-ip"><a class="header" href="#usb-ip">USB IP</a></h2>
 <p>USB/IP Project to develops a general USB device sharing system over an IP network. It uses TCP/IP payloads to transmit USB I/O messages between two different computers. We ran a preconfigured Linux natively on the Maaxboard, which included USB IP functionality. We then connected to another server running Linux and routed the USB keyboard traffic from the Maaxboard to it over IP.</p>
