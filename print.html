@@ -507,9 +507,11 @@ is particularly suited to Linux.</li>
 <h2 id="overview-1"><a class="header" href="#overview-1">Overview</a></h2>
 <p>When a computer is turned off, its software remains stored in non-volatile memory. When the computer is powered on, a bootstrap loader is required: a small, low-level program to configure the computer's memory and devices sufficient to then be able to load further software, such as a bare-metal application or operating system, into RAM and then call it.</p>
 <p><strong>Das U-Boot</strong> (known as "the Universal Boot Loader" and often shortened to U-Boot) is an open-source bootloader commonly used in embedded devices. For such low-level operations, it has to be customized for the hardware on which it is running.</p>
-<p>There are two options for using U-Boot:
-- <a href="install_and_configure/using_the_prebuilt_image.html">Using the prebuilt image</a>
-- <a href="install_and_configure/building_uboot_manually.html">Building U-Boot manually</a></p>
+<p>There are two options for using U-Boot:</p>
+<ul>
+<li><a href="install_and_configure/using_the_prebuilt_image.html">Using the prebuilt image</a></li>
+<li><a href="install_and_configure/building_uboot_manually.html">Building U-Boot manually</a></li>
+</ul>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="using-the-prebuilt-image"><a class="header" href="#using-the-prebuilt-image">Using the prebuilt image</a></h1>
 <h2 id="sd-card-preparation"><a class="header" href="#sd-card-preparation">SD Card preparation</a></h2>
 <p>The SD card must be partitioned correctly in order to contain U-Boot and partitions to hold a binary / kernel plus additional filesystem. For convenience, a prebuilt disk image is provided. <em>Note: the disk images have been created for a 16GB SD card; please use a card that is 16GB or larger.</em></p>
@@ -659,7 +661,7 @@ sudo mkfs.vfat /dev/&lt;disk&gt;2 -F 32 -n FILESYS
 </li>
 <li>
 <p>After the script has completed the build process, if successful you should see the following:
-<img src="install_and_configure/../figures/successful-uboot-build.png" alt="successful-uboot-build" /></p>
+<img src="install_and_configure/figures/successful-uboot-build.png" alt="successful-uboot-build" /></p>
 <p><em>Note: During compilation of U-Boot the following spurious warning is generated and can be safely ignored:</em> <code>WARNING 'lpddr4_pmu_train_1d_imem.bin' not found, resulting binary is not-functional</code>.</p>
 </li>
 <li>
@@ -683,11 +685,12 @@ sudo mkfs.vfat /dev/&lt;disk&gt;2 -F 32 -n FILESYS
 <p>The image should now be written to your SD card and should be bootable by the MaaXBoard.</p>
 </li>
 </ol>
-<div class="footnote-definition" id="1"><sup class="footnote-definition-label">1</sup></div>
-<h3 id="understanding-buildsh"><a class="header" href="#understanding-buildsh">Understanding build.sh</a></h3>
+<div class="footnote-definition" id="1"><sup class="footnote-definition-label">1</sup>
+<h2 id="understanding-buildsh"><a class="header" href="#understanding-buildsh">Understanding build.sh</a></h2>
+</div>
 <p>Whilst an understanding of how the build script (<a href="https://github.com/sel4devkit/maaxboard-uboot/blob/main/build.sh"><code>build.sh</code></a>) functions is not required for most use cases, such information is useful in case the developer has a need to modify the script. For example, it may be necessary to adapt the script for a different board or to update the script to use a different version or fork of U-Boot.</p>
 <p>This section seeks to document the origins of the script and provide guidance on potential modifications.</p>
-<h4 id="origin-and-rationale"><a class="header" href="#origin-and-rationale">Origin and rationale</a></h4>
+<h3 id="origin-and-rationale"><a class="header" href="#origin-and-rationale">Origin and rationale</a></h3>
 <p>The steps performed by the build script mirror, and are distilled from, those performed by the much more complex build script <a href="https://github.com/Avnet/uboot-imx/blob/maaxboard_v2020.04_5.4.24_2.1.0/mk-imx-boot.sh"><code>mk-imx-boot.sh</code></a> provided by the Avnet U-Boot fork.</p>
 <p>The <code>build.sh</code> build script was produced to:</p>
 <ol>
@@ -698,7 +701,7 @@ sudo mkfs.vfat /dev/&lt;disk&gt;2 -F 32 -n FILESYS
 <p>Ensure that the build script only uses resources held within the development kit GitHub account, thereby ensuring that the ability to build a known-working U-Boot cannot be broken by changes to upstream repositories.</p>
 </li>
 </ol>
-<h4 id="build-steps"><a class="header" href="#build-steps">Build steps</a></h4>
+<h3 id="build-steps"><a class="header" href="#build-steps">Build steps</a></h3>
 <p>To build U-Boot for the MaaXBoard, and indeed any board, the following resources are generally required:</p>
 <ul>
 <li>
@@ -745,7 +748,7 @@ sudo mkfs.vfat /dev/&lt;disk&gt;2 -F 32 -n FILESYS
 <p>To facilitate <a href="install_and_configure/./devkit_offline_use.html">offline use of the developer kit</a>, these steps are factored into the <code>clone.sh</code> and <code>build-offline.sh</code> scripts called by <code>build.sh</code>.</p>
 </div>
 <p>The build steps, if successful, result in a binary named <code>flash.bin</code> which is suitable for booting the MaaXBoard if placed in a specific location on an SD card as documented within the section <a href="install_and_configure/./writing_uboot_to_sd_card.html">Manually writing U-Boot to an SD card</a>.</p>
-<h4 id="modifying-the-build-script"><a class="header" href="#modifying-the-build-script">Modifying the build script</a></h4>
+<h3 id="modifying-the-build-script"><a class="header" href="#modifying-the-build-script">Modifying the build script</a></h3>
 <p>Given the detailed explanation of the steps performed by the build script above, it is expected that modifying the script should be relatively straightforward.</p>
 <p>Whilst the build steps and their ordering is expected to remain unchanged, the contents of each of those steps can easily be changed, for example:</p>
 <ul>
