@@ -177,6 +177,28 @@
                 <div id="content" class="content">
                     <main>
                         <h1 id="host-setup"><a class="header" href="#host-setup">Host Setup</a></h1>
+<p>The previous <a href="software_requirements.html">Software Requirements</a> section listed the applications required on the host machine. Installation links provided there should be followed, where applicable. This section covers any necessary configuration.</p>
+<h2 id="docker-desktop--docker-engine"><a class="header" href="#docker-desktop--docker-engine">Docker Desktop / Docker Engine</a></h2>
+<p>Docker Desktop is a widely used platform for developing, packaging, and running applications. If you are a new Docker user, you will have to sign up for an account. Depending on your situation, a subscription fee may be applicable (typically if you are acting as a member of a large commercial organisation), but in many cases there is no cost. This development kit documentation does not attempt to guide you about this; please refer to the licensing conditions on <a href="https://www.docker.com/pricing">Docker's website</a>.</p>
+<p>Little configuration of the default setup for Docker is required. Using the Docker Desktop application available for macOS and Windows, the following <em>Settings &gt; Preferences</em> have been found to be sufficient where the RAM setting was increased from a lower default:</p>
+<p><img src="figures/docker-preferences.png" alt="Docker Preferences" /></p>
+<p>When using Linux, the user running the Docker Engine needs to be made a member of the <code>docker</code> group by issuing the following command, substituting your username for <code>&lt;username&gt;</code>:</p>
+<pre><code class="language-bash">sudo usermod -aG docker &lt;username&gt;
+</code></pre>
+<h2 id="etcher"><a class="header" href="#etcher">Etcher</a></h2>
+<p>Although <a href="https://www.balena.io/etcher/">Etcher</a> is assumed and used in some of this developer kit documentation, its core functionality is available at the macOS, Linux, or Windows command line, so it is not strictly necessary if you prefer other methods.</p>
+<p>No special configuration is necessary for Etcher.</p>
+<h2 id="coolterm"><a class="header" href="#coolterm">CoolTerm</a></h2>
+<p>CoolTerm enables the host machine to communicate with the MaaXBoard over the serial interface using the UART pins on the board's GPIO connector (see <a href="target_platform_setup.html">Target Platform Setup</a> section for more details of the necessary connections). Alternative applications are available, but this documentation will use CoolTerm, which is freely available and multi-platform.</p>
+<p>The configuration parameters are accessible via the <em>Connection &gt; Options</em> menu. The following serial port parameters are required (i.e. 115200 baud, 8 data bits, no parity, 1 stop bit):</p>
+<p><img src="figures/coolTerm-serialport.png" alt="CoolTerm serial port configuration" /></p>
+<p>Note: within the <em>Port</em> field, an appropriate USB port on the host machine should be selected; it may differ from the example shown above in the screenshot.</p>
+<p>The following terminal parameters are suggested:</p>
+<p><img src="figures/coolTerm-terminal.png" alt="CoolTerm terminal configuration" /></p>
+<p>Users may also wish to extend the size of the <em>Receive Buffer</em> to be able to scroll back through a longer history. This is accessible via the <em>Receive</em> sub-option within the <em>Connection &gt; Options</em> menu.</p>
+<p>All these settings may be saved for convenience as a CoolTerm configuration file.</p>
+<h2 id="minicom"><a class="header" href="#minicom">Minicom</a></h2>
+<p>Minicom can also be used to communicate with the maaxboard over the serial interface using the UART pins on the board's GPIO connector (see <a href="target_platform_setup.html">Target Platform Setup</a> section for more details of the necessary connections). Minicom can be used on linux machines or on Windows with the PuTTY application. Instructions for installing and running minicom are <a href="https://wiki.emacinc.com/wiki/Getting_Started_With_Minicom">here</a>.</p>
 
                     </main>
 
