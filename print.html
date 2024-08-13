@@ -653,10 +653,10 @@ sudo mkfs.vfat /dev/&lt;disk&gt;2 -F 32 -n FILESYS
 <p>Once git has successfully cloned the repository, a new folder called <code>maaxboard-uboot</code> should be created, containing a README file, some build scripts, and a <code>firmware</code> folder.</p>
 </li>
 <li>
-<p>Once you have verified you have the correct files, run the main build script using <code>./build.sh</code> (the other build scripts are used if building offline<sup class="footnote-reference"><a href="#2">1</a></sup>).</p>
+<p>Once you have verified you have the correct files, run the main build script using <code>./build.sh</code> (the other build scripts are used if <a href="install_and_configure/building_uboot_manually.html#appendix-2">building offline</a>).</p>
 </li>
 <li>
-<p><code>build.sh</code> will clone a number of git repositories and extract necessary files from them (see <sup class="footnote-reference"><a href="#1">2</a></sup> for an explanation of the build script), after which you will be presented with a license agreement for the NXP firmware for the i.MX8. You can navigate this agreement with the up and down arrow keys. Assuming you are happy to accept the agreement, type <code>y</code> to accept when prompted. <em>Note: if you decline the EULA, the build process will be terminated, since the firmware is required to build U-Boot.</em></p>
+<p><code>build.sh</code> will clone a number of git repositories and extract necessary files from them (see the <a href="install_and_configure/building_uboot_manually.html#appendix">appendix</a> for an explanation of the build script), after which you will be presented with a license agreement for the NXP firmware for the i.MX8. You can navigate this agreement with the up and down arrow keys. Assuming you are happy to accept the agreement, type <code>y</code> to accept when prompted. <em>Note: if you decline the EULA, the build process will be terminated, since the firmware is required to build U-Boot.</em></p>
 </li>
 <li>
 <p>After the script has completed the build process, if successful you should see the following:
@@ -684,11 +684,11 @@ sudo mkfs.vfat /dev/&lt;disk&gt;2 -F 32 -n FILESYS
 <p>The image should now be written to your SD card and should be bootable by the MaaXBoard.</p>
 </li>
 </ol>
-<div class="footnote-definition" id="1"><sup class="footnote-definition-label">2</sup>
+<h2 id="appendix"><a class="header" href="#appendix">Appendix</a></h2>
+<h3 id="understanding-buildsh"><a class="header" href="#understanding-buildsh">Understanding build.sh</a></h3>
 <p>Whilst an understanding of how the build script (<a href="https://github.com/sel4devkit/maaxboard-uboot/blob/main/build.sh"><code>build.sh</code></a>) functions is not required for most use cases, such information is useful in case the developer has a need to modify the script. For example, it may be necessary to adapt the script for a different board or to update the script to use a different version or fork of U-Boot.</p>
-</div>
 <p>This section seeks to document the origins of the script and provide guidance on potential modifications.</p>
-<h3 id="origin-and-rationale"><a class="header" href="#origin-and-rationale">Origin and rationale</a></h3>
+<h4 id="origin-and-rationale"><a class="header" href="#origin-and-rationale">Origin and rationale</a></h4>
 <p>The steps performed by the build script mirror, and are distilled from, those performed by the much more complex build script <a href="https://github.com/Avnet/uboot-imx/blob/maaxboard_v2020.04_5.4.24_2.1.0/mk-imx-boot.sh"><code>mk-imx-boot.sh</code></a> provided by the Avnet U-Boot fork.</p>
 <p>The <code>build.sh</code> build script was produced to:</p>
 <ol>
@@ -699,7 +699,7 @@ sudo mkfs.vfat /dev/&lt;disk&gt;2 -F 32 -n FILESYS
 <p>Ensure that the build script only uses resources held within the development kit GitHub account, thereby ensuring that the ability to build a known-working U-Boot cannot be broken by changes to upstream repositories.</p>
 </li>
 </ol>
-<h3 id="build-steps"><a class="header" href="#build-steps">Build steps</a></h3>
+<h4 id="build-steps"><a class="header" href="#build-steps">Build steps</a></h4>
 <p>To build U-Boot for the MaaXBoard, and indeed any board, the following resources are generally required:</p>
 <ul>
 <li>
@@ -715,7 +715,7 @@ sudo mkfs.vfat /dev/&lt;disk&gt;2 -F 32 -n FILESYS
 <p>A tool to compose all of the required elements (e.g. compiled U-Boot binaries and firmware blobs) into the structure and layout expected by the board at boot. In the case of i.MX-based SoCs this tool is <a href="https://github.com/sel4devkit/imx-mkimage"><code>imx-mkimage</code></a>.</p>
 </li>
 </ul>
-<p>To satisfy the requirements above, the build script performs the following steps<sup class="footnote-reference"><a href="#note">3</a></sup>:</p>
+<p>To satisfy the requirements above, the build script performs the following steps<sup class="footnote-reference"><a href="#note">1</a></sup>:</p>
 <ol>
 <li>
 <p>Clones a copy of the U-Boot sources that support the MaaXBoard.</p>
@@ -742,11 +742,11 @@ sudo mkfs.vfat /dev/&lt;disk&gt;2 -F 32 -n FILESYS
 <p>Builds and executes <code>imx-mkimage</code> configured for the i.MX8MQ SoC in 'headless' mode.</p>
 </li>
 </ol>
-<div class="footnote-definition" id="note"><sup class="footnote-definition-label">3</sup>
+<div class="footnote-definition" id="note"><sup class="footnote-definition-label">1</sup>
 <p>These steps are factored into the <code>clone.sh</code> and <code>build-offline.sh</code> scripts called by <code>build.sh</code>.</p>
 </div>
 <p>The build steps, if successful, result in a binary named <code>flash.bin</code> which is suitable for booting the MaaXBoard if placed in a specific location on an SD card as documented within the section <a href="install_and_configure/building_uboot_manually.html#partitioning-the-sd-card">partitioning the SD card</a>.</p>
-<h3 id="modifying-the-build-script"><a class="header" href="#modifying-the-build-script">Modifying the build script</a></h3>
+<h4 id="modifying-the-build-script"><a class="header" href="#modifying-the-build-script">Modifying the build script</a></h4>
 <p>Given the detailed explanation of the steps performed by the build script above, it is expected that modifying the script should be relatively straightforward.</p>
 <p>Whilst the build steps and their ordering is expected to remain unchanged, the contents of each of those steps can easily be changed, for example:</p>
 <ul>
@@ -761,9 +761,8 @@ sudo mkfs.vfat /dev/&lt;disk&gt;2 -F 32 -n FILESYS
 </li>
 </ul>
 <p>It is expected that such changes would be made within a fork of the <a href="https://github.com/sel4devkit/maaxboard-uboot"><code>maaxboard-uboot</code></a> Git repository that provides the build script and folder structure supporting the build.</p>
-<div class="footnote-definition" id="2"><sup class="footnote-definition-label">1</sup>
-<p>Building U-Boot offline</p>
-</div>
+<h2 id="appendix-2"><a class="header" href="#appendix-2">Appendix 2</a></h2>
+<h2 id="building-u-boot-offline"><a class="header" href="#building-u-boot-offline">Building U-Boot offline</a></h2>
 <ol>
 <li>
 <p>On a computer with an internet connection, clone the maaxboard-uboot repository using:</p>
