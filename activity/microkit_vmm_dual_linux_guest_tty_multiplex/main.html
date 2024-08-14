@@ -178,8 +178,8 @@
                     <main>
                         <h1 id="vmm-with-dual-linux-guests-and-tty-multiplex"><a class="header" href="#vmm-with-dual-linux-guests-and-tty-multiplex">VMM with dual linux guests and TTY Multiplex</a></h1>
 <h2 id="introduction"><a class="header" href="#introduction">Introduction</a></h2>
-<p>For this activity the goal was to load two Linux Virtual Machines (VM) on one host. We built upon our previous single guest example and took inspiration from an existing libvmm contribution that makes use of VirtIO console.</p>
-<p>The repository for this project is located at: https://github.com/sel4devkit/sel4devkit-maaxboard-microkit-vmm-dual-linux-guest-tty-multiplex</p>
+<p>For this activity the goal was to load two Linux Virtual Machines (VM) on one host. We built upon our previous single guest example and took inspiration from an existing <a href="https://github.com/au-ts/libvmm">Libvmm</a> contribution that makes use of VirtIO console.</p>
+<p>The repository for this project is located <a href="https://github.com/sel4devkit/sel4devkit-maaxboard-microkit-vmm-dual-linux-guest-tty-multiplex">here</a>.</p>
 <h2 id="design"><a class="header" href="#design">Design</a></h2>
 <p>For this example five Protection Domains (PD) are used. Two PD’s are used for each virtual machine, one for the UART serial driver and the remaining two for the transmit (TX) and receive (RX) communication channels to handle the serial data. Input is routed to only one virtual machine and output from both VM's is seen regardless of which VM is currently being controlled. Currently there are only two VM's set up, but this can be tweaked to have multiple VM's running simultaneously.</p>
 <h3 id="rx"><a class="header" href="#rx">RX</a></h3>
@@ -188,19 +188,18 @@
 <p>For TX communication, the Linux guest puts data in a shared queue through VirtIO. The virtual machine PD receives a notification from the guest and the data is read from the queue and placed in a shared queue with TX PD. A notification is then sent to the TX PD so that it can read this data and place it in a shared queue with the driver. The driver then reads the data from the queue and outputs it to the hosts serial port.</p>
 <h2 id="virtio"><a class="header" href="#virtio">VirtIO</a></h2>
 <p>VirtIO is an interface used by virtual machines to use its hosts’ devices through the means of virtual devices. The main role of these devices is to get data to and from the hosts physical hardware. VirtIO consists of three main parts: front-end drivers, back-end devices, and VirtQueues.</p>
-<h3 id="front-end-drivers"><a class="header" href="#front-end-drivers">Front-end drivers</a></h3>
-<p>Typically, the front-end drivers exist in the hosts kernel. These can be turned on in the config file when creating a linux kernel with buildroot. They are responsible for accepting I/O requests from user processes, transfering I/O requests to its corresponding back-end VirtIO device and retrieving completed requests from the back-end device.</p>
-<h3 id="back-end-devices"><a class="header" href="#back-end-devices">Back-end devices</a></h3>
+<h3 id="front-end-drivers"><a class="header" href="#front-end-drivers">Front-end Drivers</a></h3>
+<p>Typically, the front-end drivers exist in the hosts kernel. These can be turned on in the config file when creating a Linux kernel with buildroot. They are responsible for accepting I/O requests from user processes, transferring I/O requests to its corresponding back-end VirtIO device and retrieving completed requests from the back-end device.</p>
+<h3 id="back-end-devices"><a class="header" href="#back-end-devices">Back-end Devices</a></h3>
 <p>The back-end devices typically exist in the VMM. Libvmm provides implementations for console, network, block and sound devices. They are responsible for accepting I/O requests from the corresponding front-end driver,handling the requests by offloading the I/O operations to the host’s physical hardware, and making the processed and requested data available to the VirtIO driver.</p>
 <h3 id="virtqueues"><a class="header" href="#virtqueues">VirtQueues</a></h3>
-<p>VirtQueues are shared memory regions that are used by a VirtIO front-end driver and back-end device pair. A VRing is a data structure contained within the VirtQueue that facilitates data transfer between the VirtIO device and driver. Libvmm follows version 1.2 of the VirtIO specification and uses the seL4 Device Driver Framework (SDDF) to implement the VirtQueues for specific devices.</p>
+<p>VirtQueues are shared memory regions that are used by a VirtIO front-end driver and back-end device pair. A VRing is a data structure contained within the VirtQueue that facilitates data transfer between the VirtIO device and driver. Libvmm follows version 1.2 of the VirtIO specification and uses the seL4 Device Driver Framework (<a href="https://github.com/au-ts/sddf">SDDF</a>) to implement the VirtQueues for specific devices.</p>
 <h3 id="virtio-console"><a class="header" href="#virtio-console">VirtIO Console</a></h3>
-<p>In our example we make use of the VirtIO Console device to handle serial I/O data. To use VirtIO Console a node was created in the device tree and a multiple settings turned on in the Linux kernel config file. In the “chosen” node of the device tree, the stdout path and the boot arguemnts also needed to be set up specifically for the console device. In our initial implementation we passed through 8 additional devices. We then managed to remove the need for 7 of them by disabling them in the device tree. The remaining “gpc” device was needed by VirtIO Console, but at this stage it is not known why.</p>
-<h2 id="timing-considerations"><a class="header" href="#timing-considerations">Timing considerations</a></h2>
+<p>In our example we make use of the VirtIO Console device to handle serial I/O data. To use VirtIO Console a node was created in the device tree and a multiple settings turned on in the Linux kernel config file. In the “chosen” node of the device tree, the stdout path and the boot arguments also needed to be set up specifically for the console device. In our initial implementation we passed through 8 additional devices. We then managed to remove the need for 7 of them by disabling them in the device tree. The remaining “gpc” device was needed by VirtIO Console, but at this stage it is not known why.</p>
+<h2 id="timing-considerations"><a class="header" href="#timing-considerations">Timing Considerations</a></h2>
 <p>If the two virtual machine PD's have a different priority then the highest priority VM will be loaded first and there will be a long wait (&gt;10 minutes) before control is relinquished to the lower priority VM. To resolve this issue, both of the Virtual machine PD's were made the same priority. Although it is not an issue, this results in the output being muddled together because both VM's output is shown simultaneously.</p>
 <h2 id="links"><a class="header" href="#links">Links</a></h2>
 <ul>
-<li>https://github.com/au-ts/libvmm - Libvmm repository</li>
 <li><a href="https://blogs.oracle.com/linux/post/introduction-to-virtio">virtio oracle webiste</a> - For more information on VirtIO</li>
 </ul>
 
