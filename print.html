@@ -1184,7 +1184,7 @@ elf_tftp_boot_2=echo Booting ELF binary from TFTP ...; tftp ${loadaddr} ${elf_bi
 uenvcmd=usb start; for devtype in usb mmc; do for devnum in 0 1; do run elf_dev_boot; done; done; run elf_tftp_boot_0
 </code></pre>
 <p>Some configuration of the <code>uEnv.txt</code> file is required, e.g. to set IP addresses relevant to the user's network. This is covered in more detail in the <a href="first_boot/../install_and_configure/bootloader_setup.html">Bootloader Setup</a> and <a href="first_boot/main.html">First Boot</a> sections.</p>
-<div style="break-before: page; page-break-before: always;"></div><h1 id="building-sel4test"><a class="header" href="#building-sel4test">Building sel4test</a></h1>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="sel4test"><a class="header" href="#sel4test">sel4test</a></h1>
 <p>As a worked example throughout this section the <a href="https://docs.sel4.systems/projects/sel4test">seL4Test</a> project will be used. seL4Test is a test suite for seL4 developed and maintained by the seL4 Foundation.</p>
 <p>This section of the document assumes the <a href="first_boot/../install_and_configure/build_environment_setup.html">build environment setup</a> has been completed and the user is using the <a href="first_boot/../install_and_configure/build_environment_setup.html#camkes">CAmkES docker environment</a>. All commands provided within this section are to be executed within the build environment; i.e. please ensure that you have followed the instructions in the <a href="first_boot/../install_and_configure/build_environment_setup.html#usage">build environment setup's usage</a> section and that you execute the following commands from inside the Docker container.</p>
 <h2 id="context"><a class="header" href="#context">Context</a></h2>
@@ -3405,6 +3405,37 @@ run_uboot_command@uboot_wrapper.c:181 --- command 'fatwrite mmc 0:2 0x55b010 tra
 <p>To reduce the risk of corrupting the SD card, it is advisable to avoid powering off the MaaXBoard during a write operation of the logfile. As this operation lasts in the order of 10 ms and only occurs every 30 seconds (and only then if there are any ciphertext characters that have not yet been logged to file), the risk is both remote and avoidable (e.g. power off soon after a <code>fatwrite</code> command message, or wait for &gt;30 seconds after the last <code>fatwrite</code> command message).</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="introduction-2"><a class="header" href="#introduction-2">Introduction</a></h1>
 <p>This section works through the changes completed to port the case study application to Microkit.</p>
+<p>As well as the changes to the <a href="activity/microkit_case_study_application/architecture.html">Architecture</a> and <a href="activity/microkit_case_study_application/detail.html">Design</a>, other infrastructure changes had to be made to make the case study compatible with Microkit:</p>
+<h1 id="picolibc"><a class="header" href="#picolibc">Picolibc</a></h1>
+<p>Microkit does not contain a bundled libc; therefore, it was decided to port picolibc to Microkit. Picolibc is a C library specifically designed for use in embedded systems, providing a lightweight and efficient implementation of the C standard library functions. This makes it an ideal choice to complement Microkit, enhancing its capabilities without adding unnecessary overhead.</p>
+<p>The ported picolibc for Microkit is linked [here] https://github.com/sel4devkit/picolibc with instructions for building and linking with Microkit. To use dynamic memory allocation (malloc) the __heap_start and __heap_end symbols (defined in the system file) needed to be added to the picosbrk.c file. This tells picolibc where the memory location of the heap.</p>
+<h1 id="u-boot"><a class="header" href="#u-boot">U-boot</a></h1>
+<p>U-boot has been ported to be used with Microkit (https://github.com/sel4devkit/u-boot/tree/microkit) using the fork and patch method. The majority of the changes were made to remove name space clashes with picolibc.</p>
+<h1 id="device-tree"><a class="header" href="#device-tree">Device tree</a></h1>
+<p>Inline assembly is used to import the device tree to Microkit:</p>
+<pre><code class="language-c">#define STR2(x) #x
+#define STR(x) STR2(x)
+#define INCBIN_SECTION ".rodata"
+#define INCBIN(name, file) \
+    __asm__(".section " INCBIN_SECTION "\n" \
+            ".global incbin_" STR(name) "_start\n" \
+            ".balign 16\n" \
+            "incbin_" STR(name) "_start:\n" \
+            ".incbin \"" file "\"\n" \
+            \
+            ".global incbin_" STR(name) "_end\n" \
+            ".balign 1\n" \
+            "incbin_" STR(name) "_end:\n" \
+            ".byte 0\n" \
+    ); \
+    extern __attribute__((aligned(16))) const char incbin_ ## name ## _start[]; \
+    extern                              const char incbin_ ## name ## _end[] 
+INCBIN(device_tree, DTB_PATH); 
+
+const char* _end = incbin_device_tree_end;
+</code></pre>
+<h1 id="dma-library"><a class="header" href="#dma-library">DMA library</a></h1>
+<p>The CAmkES dma allocated has been adapted to work with Microkit. The initialisation of the DMA library was separated out from the IO operations of CAmkES. The CAmkES DMA library allocated multiple pools of dma to be used in each component however in Microkit multiple pools of DMA can be assigned and allocated in the .system file therefore the library was adapted so only one pool of DMA memory is allocated. The address and size of the DMA pool are also configured in the <a href="https://github.com/sel4devkit/microkit_examples/blob/main/security_demo/security_demo.system">.system file</a>.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="architecture-overview-1"><a class="header" href="#architecture-overview-1">Architecture Overview</a></h1>
 <p>It is assumed the CAmkES case study <a href="activity/microkit_case_study_application/../camkes_case_study_application/architecture.html">architecture document</a> had been read previous to reading this document.</p>
 <p>The architecture of the Microkit demonstrator is shown below.</p>
