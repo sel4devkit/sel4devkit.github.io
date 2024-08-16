@@ -177,7 +177,6 @@
                 <div id="content" class="content">
                     <main>
                         <h1 id="bootloader"><a class="header" href="#bootloader">Bootloader</a></h1>
-<h2 id="loading-the-application"><a class="header" href="#loading-the-application">Loading the Application</a></h2>
 <p>After U-Boot has configured the MaaXBoard's memory and devices, it is able to load an application into RAM and then execute it. It is possible for a user to do this interactively using U-Boot commands via the serial terminal on the host machine. It is also possible and convenient to provide a U-Boot configuration file <code>uEnv.txt</code> that runs automatically; both options are documented below.</p>
 <h3 id="methods-of-loading"><a class="header" href="#methods-of-loading">Methods of Loading</a></h3>
 <p>We cover three primary mechanisms for loading the application into RAM by U-Boot:</p>
@@ -189,7 +188,7 @@
 <p>Additional mechanisms are available, such as downloading over the serial cable; however, this would be much slower compared with the options above and is not considered further here. Downloading from on-board flash memory is another possible mechanism, but that is not applicable to the MaaXBoard.</p>
 <p>The remainder of this section assumes that you have an application in the form of an executable ELF file called <code>sel4_image</code>. We will create this as our test application <a href="sel4test.html">later in this documentation</a>, but this section is concerned with the loading mechanisms rather than the executable itself.</p>
 <h4 id="loading-from-sd-card"><a class="header" href="#loading-from-sd-card">Loading from SD Card</a></h4>
-<p>The SD card is used to store the bootloader, U-Boot. The SD card may also be used to store the application's ELF file that is to be loaded into RAM by the bootloader. If the SD card is partitioned as described in the <a href="bootloader_setup.html">Bootloader setup</a> section, the <code>BOOT</code> partition is used for this by placing the <code>sel4_image</code> file in the root of the partition.</p>
+<p>The SD card is used to store the bootloader, U-Boot. The SD card may also be used to store the application's ELF file that is to be loaded into RAM by the bootloader. If the SD card is partitioned as described in the <a href="../install_and_configure/bootloader_setup.html">Bootloader setup</a> section, the <code>BOOT</code> partition is used for this by placing the <code>sel4_image</code> file in the root of the partition.</p>
 <p>An advantage of this approach is that it makes use of a single medium that (a) is already being used to store U-Boot and (b) generally has a much larger capacity than is required by U-Boot alone.</p>
 <p>A disadvantage is that while U-Boot is likely to be a relatively unchanging artefact (once it has been configured for a particular board), during development the application is likely to be modified repeatedly, and removing, reprogramming, and replacing the SD card is inconvenient and physically stresses the card and its mountings.</p>
 <h4 id="loading-from-usb-flash-drive"><a class="header" href="#loading-from-usb-flash-drive">Loading from USB Flash Drive</a></h4>
@@ -202,8 +201,8 @@
 <p>Or a network connection via a hub / router:</p>
 <p><img src="figures/TFTP-option-router.png" alt="TFTP option router connection" /></p>
 <p>Loading via TFTP is considered to be the most convenient method within an application development environment as there is no need to keep plugging and unplugging anything from the board. To load the <code>sel4_image</code> binary via TFTP, the file needs to be made available for download from the TFTP server.</p>
-<p>Below are the instructions for setting up TFTP on linux.</p>
-<h5 id="setting-up-a-netboot-server-using-tftp"><a class="header" href="#setting-up-a-netboot-server-using-tftp">Setting up a netboot server using TFTP</a></h5>
+<p>Below are the instructions for setting up TFTP on linux:</p>
+<h4 id="setting-up-a-netboot-server-using-tftp"><a class="header" href="#setting-up-a-netboot-server-using-tftp">Setting up a netboot server using TFTP</a></h4>
 <ol>
 <li><a href="https://thekelleys.org.uk/dnsmasq/doc.html">Dnsmasq</a> is the application used to provide a network infrastructure. The program can be installed using your provided package manager (for Debian, this would be <code>apt</code>).</li>
 </ol>
@@ -300,7 +299,7 @@ u-boot=&gt; bootelf 40480000
 </code></pre>
 <h3 id="u-boot-configuration-file"><a class="header" href="#u-boot-configuration-file">U-Boot Configuration File</a></h3>
 <p>Booting via U-Boot can be configured via commands stored in a file named <code>uEnv.txt</code> and placed in the <code>BOOT</code> partition of the SD card.</p>
-<p>The example file below (stored on the SD card prepared via the instructions in the <a href="sd_card_preparation.html">Bootloader Setup</a> section) automatically searches for, loads and then executes the binary file named <code>sel4_image</code>. The following potential locations for the <code>sel4_image</code> are searched in order:</p>
+<p>The example file below (stored on the SD card prepared via the instructions in the <a href="../install_and_configure/bootloader_setup.html">Bootloader Setup</a> section) automatically searches for, loads and then executes the binary file named <code>sel4_image</code>. The following potential locations for the <code>sel4_image</code> are searched in order:</p>
 <ol>
 <li>USB flash drive with a FAT filesystem.</li>
 <li>SD Card / eMMC device with a FAT filesystem.</li>

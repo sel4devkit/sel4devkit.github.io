@@ -178,17 +178,11 @@
                     <main>
                         <h1 id="building-sel4test"><a class="header" href="#building-sel4test">Building sel4test</a></h1>
 <p>As a worked example throughout this section the <a href="https://docs.sel4.systems/projects/sel4test">seL4Test</a> project will be used. seL4Test is a test suite for seL4 developed and maintained by the seL4 Foundation.</p>
-<p>This section of the document assumes the <a href="../install_and_configure/build_environment_setup.html">build environment setup</a> has been completed and the user is using the CAmkES docker environment (../install_and_configure/build_environment_setup.md#Installation#CAmkES). All commands provided within this section are to be executed within the build environment; i.e. please ensure that you have followed the instructions in the <a href="../install_and_configure/build_environment_setup.html#usage">build environment setup's usage</a> section and that you execute the following commands from inside the Docker container.</p>
+<p>This section of the document assumes the <a href="../install_and_configure/build_environment_setup.html">build environment setup</a> has been completed and the user is using the <a href="../install_and_configure/build_environment_setup.html#camkes">CAmkES docker environment</a>. All commands provided within this section are to be executed within the build environment; i.e. please ensure that you have followed the instructions in the <a href="../install_and_configure/build_environment_setup.html#usage">build environment setup's usage</a> section and that you execute the following commands from inside the Docker container.</p>
 <h2 id="context"><a class="header" href="#context">Context</a></h2>
 <p>The seL4Test example that is built in this section is a result of an seL4 port for the Avnet MaaXBoard that we created for this developer kit. Whilst our seL4 port is not documented here in detail, there is some guidance on this in the <a href="#appendices">Guide to Porting seL4</a> appendix, which includes links to the Git commits that added the MaaXBoard port to the main seL4 repositories.</p>
 <h2 id="getting-the-code"><a class="header" href="#getting-the-code">Getting the Code</a></h2>
-<p>Within the build environment a directory named <code>seL4Test</code> will be created and all of the code and dependencies (e.g. the seL4 kernel, libraries and required tools) will be cloned.</p>
-<p>Create a directory to hold the code:</p>
-<pre><code class="language-text">mkdir /host/seL4Test
-</code></pre>
-<pre><code class="language-text">cd /host/seL4Test
-</code></pre>
-<p>Clone the code and dependencies:</p>
+<p>Clone the repository:</p>
 <pre><code class="language-bash">git clone git@github.com:sel4devkit/sel4devkit-maaxboard-first-boot-sel4test.git
 </code></pre>
 <h2 id="building"><a class="header" href="#building">Building</a></h2>
@@ -208,7 +202,7 @@ make all
 <p>A device tree (DTS file) contains plain text data that describes a platform's hardware. A key requirement in porting seL4 to a new platform is the provision of a device tree describing the platform. A device tree can normally either be sourced from the Linux kernel or from a Linux distribution supplied by the platform manufacturer.</p>
 <p>Device tree files are stored within the Linux kernel within the <code>/arch/&lt;arch_identifier&gt;/boot/dts</code> folders. For example, for ARM based devices DTS files may be retrieved from <a href="https://github.com/torvalds/linux/tree/master/arch/arm/boot/dts">this link</a>.</p>
 <p>Support has not been incorporated into the mainline Linux kernel for the Avnet MaaXBoard, and therefore the device tree needed to be sourced from the platform-specific Linux distribution supplied by Avnet at <a href="https://github.com/Avnet/linux-imx/blob/maaxboard_5.4.24_2.1.0/arch/arm64/boot/dts/freescale/maaxboard-base.dts">this link</a>.</p>
-<p>Once a DTS file has been located it needs to be processed into a form suitable for inclusion in seL4, e.g. to remove use of C-style includes and macros. For the Avnet MaaXBoard this processing was performed using the following commands to generate DTS file named <code>maaxboard.dts</code>. It is expected the commands should be easily modifiable for other boards and sources of the Linux kernel. The following commands to be are executed within the <a href="../build_environment_setup.html">build environment</a> (i.e. the Docker container).</p>
+<p>Once a DTS file has been located it needs to be processed into a form suitable for inclusion in seL4, e.g. to remove use of C-style includes and macros. For the Avnet MaaXBoard this processing was performed using the following commands to generate DTS file named <code>maaxboard.dts</code>. It is expected the commands should be easily modifiable for other boards and sources of the Linux kernel. The following commands to be are executed within the <a href="../install_and_configure/build_environment_setup.html">build environment</a> (i.e. the Docker container).</p>
 <pre><code class="language-text">git clone https://github.com/Avnet/linux-imx.git
 cd linux-imx
 cpp -nostdinc -I include -I arch -undef -x assembler-with-cpp \
@@ -271,15 +265,12 @@ dtc -o maaxboard.dts temp.dtb
 </ul>
 </li>
 <li>
-<p>Check out the newly updated manifest within the build environment:</p>
-<pre><code class="language-text">mkdir /host/seL4test
-cd /host/seL4test
-repo init -u https://github.com/work_account/sel4test-manifest.git -b my_port
-repo sync
+<p>Modify the Makefile in the sel4devkit-maaxboard-first-boot-sel4test directory to clone the repositories for your port:</p>
+<pre><code class="language-bash">cd ${TMP_PATH}/sel4test-manifest ; repo init --manifest-url "git@github.com:seL4/sel4test-manifest.git" -b my_port
 </code></pre>
 </li>
 <li>
-<p>Building and executing seL4Test can be performed by following the instructions previously provided in the <a href="../building_applications.html">Building Applications</a> and <a href="../execution_on_target_platform.html">Execution on Target Platform</a> sections with the build commands modified appropriately to target the newly added platform.</p>
+<p>Building and executing seL4Test can be performed by following the instructions previously provided in the <a href="#building">Building Applications</a> and <a href="bootloader.html">Bootloader</a> sections with the build commands modified appropriately to target the newly added platform.</p>
 </li>
 </ol>
 

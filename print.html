@@ -799,10 +799,10 @@ sudo mkfs.vfat /dev/&lt;disk&gt;2 -F 32 -n FILESYS
 <p>Prior to powering the MaaXBoard ensure the following setup is in place, building on previous sections:</p>
 <ol>
 <li>
-<p>The SD card has been prepared as per the instructions in the <a href="first_boot/../install_and_configure/bootloader_setup.html">SD Card Preparation</a> section.</p>
+<p>The SD card has been prepared as per the instructions in the <a href="first_boot/../install_and_configure/bootloader_setup.html">Bootloader Setup</a> section.</p>
 </li>
 <li>
-<p>The MaaXBoard has been set up as per the <a href="first_boot/../install_and_configure/target_setup.html">Target Platform Setup</a> section with only the USB-to-TTL cable connected and the SD card inserted.</p>
+<p>The MaaXBoard has been set up as per the <a href="first_boot/../install_and_configure/target_setup.html">Target Setup</a> section with only the USB-to-TTL cable connected and the SD card inserted.</p>
 </li>
 <li>
 <p>The USB-to-TTL cable is connected to the host machine with CoolTerm configured as per the <a href="first_boot/../install_and_configure/host_setup.html">Host Setup</a> section.</p>
@@ -958,7 +958,6 @@ sudo mkfs.vfat /dev/&lt;disk&gt;2 -F 32 -n FILESYS
 <p>A full reference to U-Boot commands can be found <a href="https://u-boot.readthedocs.io/en/latest/usage/index.html?highlight=shell">here</a> but we only use a few of them directly in this developer kit.</p>
 <p>The following sections build upon this step by demonstrating the building and execution of an seL4 application on the MaaXBoard.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="bootloader"><a class="header" href="#bootloader">Bootloader</a></h1>
-<h2 id="loading-the-application"><a class="header" href="#loading-the-application">Loading the Application</a></h2>
 <p>After U-Boot has configured the MaaXBoard's memory and devices, it is able to load an application into RAM and then execute it. It is possible for a user to do this interactively using U-Boot commands via the serial terminal on the host machine. It is also possible and convenient to provide a U-Boot configuration file <code>uEnv.txt</code> that runs automatically; both options are documented below.</p>
 <h3 id="methods-of-loading"><a class="header" href="#methods-of-loading">Methods of Loading</a></h3>
 <p>We cover three primary mechanisms for loading the application into RAM by U-Boot:</p>
@@ -970,7 +969,7 @@ sudo mkfs.vfat /dev/&lt;disk&gt;2 -F 32 -n FILESYS
 <p>Additional mechanisms are available, such as downloading over the serial cable; however, this would be much slower compared with the options above and is not considered further here. Downloading from on-board flash memory is another possible mechanism, but that is not applicable to the MaaXBoard.</p>
 <p>The remainder of this section assumes that you have an application in the form of an executable ELF file called <code>sel4_image</code>. We will create this as our test application <a href="first_boot/sel4test.html">later in this documentation</a>, but this section is concerned with the loading mechanisms rather than the executable itself.</p>
 <h4 id="loading-from-sd-card"><a class="header" href="#loading-from-sd-card">Loading from SD Card</a></h4>
-<p>The SD card is used to store the bootloader, U-Boot. The SD card may also be used to store the application's ELF file that is to be loaded into RAM by the bootloader. If the SD card is partitioned as described in the <a href="first_boot/bootloader_setup.html">Bootloader setup</a> section, the <code>BOOT</code> partition is used for this by placing the <code>sel4_image</code> file in the root of the partition.</p>
+<p>The SD card is used to store the bootloader, U-Boot. The SD card may also be used to store the application's ELF file that is to be loaded into RAM by the bootloader. If the SD card is partitioned as described in the <a href="first_boot/../install_and_configure/bootloader_setup.html">Bootloader setup</a> section, the <code>BOOT</code> partition is used for this by placing the <code>sel4_image</code> file in the root of the partition.</p>
 <p>An advantage of this approach is that it makes use of a single medium that (a) is already being used to store U-Boot and (b) generally has a much larger capacity than is required by U-Boot alone.</p>
 <p>A disadvantage is that while U-Boot is likely to be a relatively unchanging artefact (once it has been configured for a particular board), during development the application is likely to be modified repeatedly, and removing, reprogramming, and replacing the SD card is inconvenient and physically stresses the card and its mountings.</p>
 <h4 id="loading-from-usb-flash-drive"><a class="header" href="#loading-from-usb-flash-drive">Loading from USB Flash Drive</a></h4>
@@ -983,8 +982,8 @@ sudo mkfs.vfat /dev/&lt;disk&gt;2 -F 32 -n FILESYS
 <p>Or a network connection via a hub / router:</p>
 <p><img src="first_boot/figures/TFTP-option-router.png" alt="TFTP option router connection" /></p>
 <p>Loading via TFTP is considered to be the most convenient method within an application development environment as there is no need to keep plugging and unplugging anything from the board. To load the <code>sel4_image</code> binary via TFTP, the file needs to be made available for download from the TFTP server.</p>
-<p>Below are the instructions for setting up TFTP on linux.</p>
-<h5 id="setting-up-a-netboot-server-using-tftp"><a class="header" href="#setting-up-a-netboot-server-using-tftp">Setting up a netboot server using TFTP</a></h5>
+<p>Below are the instructions for setting up TFTP on linux:</p>
+<h4 id="setting-up-a-netboot-server-using-tftp"><a class="header" href="#setting-up-a-netboot-server-using-tftp">Setting up a netboot server using TFTP</a></h4>
 <ol>
 <li><a href="https://thekelleys.org.uk/dnsmasq/doc.html">Dnsmasq</a> is the application used to provide a network infrastructure. The program can be installed using your provided package manager (for Debian, this would be <code>apt</code>).</li>
 </ol>
@@ -1081,7 +1080,7 @@ u-boot=&gt; bootelf 40480000
 </code></pre>
 <h3 id="u-boot-configuration-file"><a class="header" href="#u-boot-configuration-file">U-Boot Configuration File</a></h3>
 <p>Booting via U-Boot can be configured via commands stored in a file named <code>uEnv.txt</code> and placed in the <code>BOOT</code> partition of the SD card.</p>
-<p>The example file below (stored on the SD card prepared via the instructions in the <a href="first_boot/sd_card_preparation.html">Bootloader Setup</a> section) automatically searches for, loads and then executes the binary file named <code>sel4_image</code>. The following potential locations for the <code>sel4_image</code> are searched in order:</p>
+<p>The example file below (stored on the SD card prepared via the instructions in the <a href="first_boot/../install_and_configure/bootloader_setup.html">Bootloader Setup</a> section) automatically searches for, loads and then executes the binary file named <code>sel4_image</code>. The following potential locations for the <code>sel4_image</code> are searched in order:</p>
 <ol>
 <li>USB flash drive with a FAT filesystem.</li>
 <li>SD Card / eMMC device with a FAT filesystem.</li>
@@ -1119,17 +1118,11 @@ uenvcmd=usb start; for devtype in usb mmc; do for devnum in 0 1; do run elf_dev_
 <p>Some configuration of the <code>uEnv.txt</code> file is required, e.g. to set IP addresses relevant to the user's network. This is covered in more detail in the <a href="first_boot/../install_and_configure/bootloader_setup.html">Bootloader Setup</a> and <a href="first_boot/main.html">First Boot</a> sections.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="building-sel4test"><a class="header" href="#building-sel4test">Building sel4test</a></h1>
 <p>As a worked example throughout this section the <a href="https://docs.sel4.systems/projects/sel4test">seL4Test</a> project will be used. seL4Test is a test suite for seL4 developed and maintained by the seL4 Foundation.</p>
-<p>This section of the document assumes the <a href="first_boot/../install_and_configure/build_environment_setup.html">build environment setup</a> has been completed and the user is using the CAmkES docker environment (../install_and_configure/build_environment_setup.md#Installation#CAmkES). All commands provided within this section are to be executed within the build environment; i.e. please ensure that you have followed the instructions in the <a href="first_boot/../install_and_configure/build_environment_setup.html#usage">build environment setup's usage</a> section and that you execute the following commands from inside the Docker container.</p>
+<p>This section of the document assumes the <a href="first_boot/../install_and_configure/build_environment_setup.html">build environment setup</a> has been completed and the user is using the <a href="first_boot/../install_and_configure/build_environment_setup.html#camkes">CAmkES docker environment</a>. All commands provided within this section are to be executed within the build environment; i.e. please ensure that you have followed the instructions in the <a href="first_boot/../install_and_configure/build_environment_setup.html#usage">build environment setup's usage</a> section and that you execute the following commands from inside the Docker container.</p>
 <h2 id="context"><a class="header" href="#context">Context</a></h2>
 <p>The seL4Test example that is built in this section is a result of an seL4 port for the Avnet MaaXBoard that we created for this developer kit. Whilst our seL4 port is not documented here in detail, there is some guidance on this in the <a href="first_boot/sel4test.html#appendices">Guide to Porting seL4</a> appendix, which includes links to the Git commits that added the MaaXBoard port to the main seL4 repositories.</p>
 <h2 id="getting-the-code"><a class="header" href="#getting-the-code">Getting the Code</a></h2>
-<p>Within the build environment a directory named <code>seL4Test</code> will be created and all of the code and dependencies (e.g. the seL4 kernel, libraries and required tools) will be cloned.</p>
-<p>Create a directory to hold the code:</p>
-<pre><code class="language-text">mkdir /host/seL4Test
-</code></pre>
-<pre><code class="language-text">cd /host/seL4Test
-</code></pre>
-<p>Clone the code and dependencies:</p>
+<p>Clone the repository:</p>
 <pre><code class="language-bash">git clone git@github.com:sel4devkit/sel4devkit-maaxboard-first-boot-sel4test.git
 </code></pre>
 <h2 id="building"><a class="header" href="#building">Building</a></h2>
@@ -1149,7 +1142,7 @@ make all
 <p>A device tree (DTS file) contains plain text data that describes a platform's hardware. A key requirement in porting seL4 to a new platform is the provision of a device tree describing the platform. A device tree can normally either be sourced from the Linux kernel or from a Linux distribution supplied by the platform manufacturer.</p>
 <p>Device tree files are stored within the Linux kernel within the <code>/arch/&lt;arch_identifier&gt;/boot/dts</code> folders. For example, for ARM based devices DTS files may be retrieved from <a href="https://github.com/torvalds/linux/tree/master/arch/arm/boot/dts">this link</a>.</p>
 <p>Support has not been incorporated into the mainline Linux kernel for the Avnet MaaXBoard, and therefore the device tree needed to be sourced from the platform-specific Linux distribution supplied by Avnet at <a href="https://github.com/Avnet/linux-imx/blob/maaxboard_5.4.24_2.1.0/arch/arm64/boot/dts/freescale/maaxboard-base.dts">this link</a>.</p>
-<p>Once a DTS file has been located it needs to be processed into a form suitable for inclusion in seL4, e.g. to remove use of C-style includes and macros. For the Avnet MaaXBoard this processing was performed using the following commands to generate DTS file named <code>maaxboard.dts</code>. It is expected the commands should be easily modifiable for other boards and sources of the Linux kernel. The following commands to be are executed within the <a href="first_boot/../build_environment_setup.html">build environment</a> (i.e. the Docker container).</p>
+<p>Once a DTS file has been located it needs to be processed into a form suitable for inclusion in seL4, e.g. to remove use of C-style includes and macros. For the Avnet MaaXBoard this processing was performed using the following commands to generate DTS file named <code>maaxboard.dts</code>. It is expected the commands should be easily modifiable for other boards and sources of the Linux kernel. The following commands to be are executed within the <a href="first_boot/../install_and_configure/build_environment_setup.html">build environment</a> (i.e. the Docker container).</p>
 <pre><code class="language-text">git clone https://github.com/Avnet/linux-imx.git
 cd linux-imx
 cpp -nostdinc -I include -I arch -undef -x assembler-with-cpp \
@@ -1212,19 +1205,16 @@ dtc -o maaxboard.dts temp.dtb
 </ul>
 </li>
 <li>
-<p>Check out the newly updated manifest within the build environment:</p>
-<pre><code class="language-text">mkdir /host/seL4test
-cd /host/seL4test
-repo init -u https://github.com/work_account/sel4test-manifest.git -b my_port
-repo sync
+<p>Modify the Makefile in the sel4devkit-maaxboard-first-boot-sel4test directory to clone the repositories for your port:</p>
+<pre><code class="language-bash">cd ${TMP_PATH}/sel4test-manifest ; repo init --manifest-url "git@github.com:seL4/sel4test-manifest.git" -b my_port
 </code></pre>
 </li>
 <li>
-<p>Building and executing seL4Test can be performed by following the instructions previously provided in the <a href="first_boot/../building_applications.html">Building Applications</a> and <a href="first_boot/../execution_on_target_platform.html">Execution on Target Platform</a> sections with the build commands modified appropriately to target the newly added platform.</p>
+<p>Building and executing seL4Test can be performed by following the instructions previously provided in the <a href="first_boot/sel4test.html#building">Building Applications</a> and <a href="first_boot/bootloader.html">Bootloader</a> sections with the build commands modified appropriately to target the newly added platform.</p>
 </li>
 </ol>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="camkes-adder"><a class="header" href="#camkes-adder">CAmkES adder</a></h1>
-<p>The purpose of this example is to confirm that the CAmkES environment is configured correctly. As usual, this assumes that the user is already running the CAmkES Docker container within the <a href="first_boot/../../install_and_configure/build_environment_setup.html">build environment</a>, where we can create a directory and clone the code and dependencies.</p>
+<p>The purpose of this example is to confirm that the CAmkES environment is configured correctly. As usual, this assumes that the user is already running the CAmkES Docker container within the <a href="first_boot/../install_and_configure/build_environment_setup.html">build environment</a>, where we can create a directory and clone the code and dependencies.</p>
 <h2 id="getting-the-code-1"><a class="header" href="#getting-the-code-1">Getting the code</a></h2>
 <pre><code>git clone git@github.com:sel4devkit/sel4devkit-maaxboard-camkes-first-boot-adder.git
 </code></pre>
