@@ -177,15 +177,39 @@
                 <div id="content" class="content">
                     <main>
                         <h1 id="software-requirements"><a class="header" href="#software-requirements">Software Requirements</a></h1>
-<h2 id="sel4"><a class="header" href="#sel4">seL4</a></h2>
-<p>seL4 is a high-assurance, high-performance operating system microkernel. It is unique because of its comprehensive formal verification, without compromising performance. It is meant to be used as a trustworthy foundation for building safety- and security-critical systems. It is available as open source on GitHub and supported by the seL4 Foundation.</p>
-<p>In the context of the dev kit seL4 is used as the bedrock of all the contributions and the purpose of the dev kit is to build applications on top of seL4.</p>
-<h2 id="camkes"><a class="header" href="#camkes">Camkes</a></h2>
-<h2 id="microkit"><a class="header" href="#microkit">Microkit</a></h2>
-<h2 id="uboot-fork"><a class="header" href="#uboot-fork">Uboot fork</a></h2>
-<h2 id="docker-environment"><a class="header" href="#docker-environment">Docker environment</a></h2>
-<p>How About:
--A Common Core. This is everything up to, doing a simple small example for each environment.</p>
+<p>This developer kit is intended to have minimal software requirements on the host machine by using Docker containment as much as possible. The applications that follow are either needed or assumed on the host machine.</p>
+<p>Installation instructions are not reproduced here; please follow the instructions given by the application providers. Configuration of the applications is considered in the <a href="../install_and_configure/host_setup.html">Host Setup</a> section.</p>
+<p>This guide assumes that the user has sufficiently elevated privileges on the host machine to install and configure the applications; for example on macOS and Linux it is assumed that the user has <code>sudo</code> privileges.</p>
+<h2 id="mandatory-requirements"><a class="header" href="#mandatory-requirements">Mandatory Requirements</a></h2>
+<p>The following mandatory applications are assumed on the host machine:</p>
+<ul>
+<li>
+<p><strong>Container toolset</strong>: Used to provide the build environment. This guide assumes use of <a href="https://www.docker.com/products/docker-desktop">Docker Desktop</a> for macOS or Windows host environments or <a href="https://hub.docker.com/search?offering=community&amp;operating_system=linux&amp;q=&amp;type=edition">Docker Engine</a> for Linux-based host environments.</p>
+<p>Docker Engine is licensed under the Apache License Version 2.0, see <a href="https://docs.docker.com/engine/">here</a> for more information. Docker Desktop is free to use for small companies, education and non-commercial open source projects, see <a href="https://www.docker.com/pricing/faq/">here</a> for details and pricing.</p>
+</li>
+<li>
+<p><strong>SD card writer application</strong>: Used to write the SD card from which the MaaXBoard boots. <a href="https://www.balena.io/etcher/">Balena Etcher</a> has been selected due to its availability on macOS, Windows and Linux environments. Alternative means of writing SD cards are available but not supported by this document.</p>
+<p>Balena Etcher is licensed under the Apache License Version 2.0, see <a href="https://github.com/balena-io/etcher/blob/master/LICENSE">here</a> for more information.</p>
+</li>
+<li>
+<p><strong>Serial terminal application</strong>: Used for serial communication with the target platform. <a href="https://freeware.the-meiers.org/">CoolTerm</a> has been selected due to its availability on macOS and Windows. For Linux environments <a href="https://wiki.emacinc.com/wiki/Getting_Started_With_Minicom">Minicom</a> can be used. Alternative applications are available but not supported by this document.</p>
+<p>CoolTerm and Minicom is distributed as freeware with no documented limitations on use.</p>
+</li>
+</ul>
+<h2 id="optional-requirements"><a class="header" href="#optional-requirements">Optional Requirements</a></h2>
+<p>If the user wishes to perform TFTP transfer of executables from the host environment to the target platform (see the <a href="../first_boot/bootloader.html">Bootloader</a> section) then installation of a TFTP server is required.</p>
+<p>Full details of the installation and configuration of a TFTP server is considered to be outside the scope of this developer kit, however the following guidance is offered:</p>
+<ul>
+<li>
+<p><strong>macOS</strong>: A TFTP server is included in macOS by default. The <a href="https://www.macupdate.com/app/mac/11116/tftpserver">TftpServer</a> application provides a graphical user interface to simplify use of the in-built server.</p>
+</li>
+<li>
+<p><strong>Linux</strong>: TFTP servers are available for all major Linux distributions. On Fedora and CentOS a server can be installed via <code>yum -y install tftp-server</code>; on Debian and Ubuntu a server can be installed via <code>apt-get install tftpd-hpa</code>.</p>
+</li>
+<li>
+<p><strong>Windows</strong>: Multiple free TFTP server applications are available, e.g. <a href="https://www.solarwinds.com/free-tools/free-tftp-server">SolarWinds TFTP Server</a> (distributed as "100% free" with no documented limitations on use) and <a href="https://pjo2.github.io/tftpd64">Tftpd64</a> (licensed under GNU General Public License, version 2).</p>
+</li>
+</ul>
 
                     </main>
 

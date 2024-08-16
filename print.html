@@ -361,16 +361,70 @@ Kit is presented to support their navigation:</p>
 </tbody></table>
 </div><div style="break-before: page; page-break-before: always;"></div><h1 id="development-platform"><a class="header" href="#development-platform">Development Platform</a></h1>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="hardware-requirements"><a class="header" href="#hardware-requirements">Hardware Requirements</a></h1>
+<p>This section details the hardware related to the target platform that the guide assumes is available to the developer. Before following the guide the developer will need to have access to all items marked as mandatory.</p>
+<p>As detailed in the <a href="development_platform/../first_boot/bootloader.html">Bootloader</a> section, there are multiple methods of transferring a compiled seL4 binary from the host machine to the target platform. Where a hardware item is required to support only one potential transfer method it is marked as 'optional'. The developer should decide which transfer method(s) are to be used to determine which items need to be available.</p>
+<p>For convenience, the following table includes order codes and hyperlinks for the <a href="https://uk.farnell.com">Farnell UK store</a> correct as of 16th August 2024; clearly, equivalent items are available from many other sources.</p>
+<div class="table-wrapper"><table><thead><tr><th>Item</th><th>Notes</th><th>Order Code</th></tr></thead><tbody>
+<tr><td>Avnet MaaXBoard (AES-MC-SBC-IMX8M-G)</td><td>Mandatory</td><td><a href="https://uk.farnell.com/avnet/aes-mc-sbc-imx8m-g/sbc-quad-arm-cortex-a53-cortex/dp/3436577?ost=3436577">3436577</a></td></tr>
+<tr><td>USB-to-TTL Serial UART Cable</td><td>Mandatory</td><td><a href="https://uk.farnell.com/ftdi/ttl-232r-rpi/cable-debug-ttl-232-usb-rpi/dp/2147356">2147356</a></td></tr>
+<tr><td>16GB Micro SD Card</td><td>Mandatory</td><td><a href="https://uk.farnell.com/integral/inmsdh16g10-90u1/16gb-ultimapro-microsd-c10-90/dp/3498607?ost=3498607">3498607</a></td></tr>
+<tr><td>USB Micro SD Card Reader/Writer</td><td>Mandatory</td><td><a href="https://uk.farnell.com/tripp-lite/u452-000-sd-a/usb-c-memory-card-reader-sd-micro/dp/3493850?ost=3493850">3493850</a></td></tr>
+<tr><td>15W USB-C Power Adapter</td><td>Mandatory</td><td><a href="https://uk.farnell.com/stontronics/t7725dv/adapter-ac-dc-1-o-p-5-1v-3a/dp/3106255?ost=3106255">3106255</a></td></tr>
+<tr><td>USB Flash Drive</td><td>Optional - USB transfer only</td><td>General<sup class="footnote-reference"><a href="#1">1</a></sup></td></tr>
+<tr><td>Ethernet Cable</td><td>Optional - TFTP transfer and some of the test applications</td><td>General<sup class="footnote-reference"><a href="#1">1</a></sup></td></tr>
+<tr><td>USB Keyboard</td><td>Optional - some of the test applications</td><td><a href="https://uk.farnell.com/logitech/920-002524/keyboard-k120-business-logitech/dp/1848111">1848111</a><sup class="footnote-reference"><a href="#2">2</a></sup></td></tr>
+<tr><td>SPI Bus Pressure Sensor</td><td>Optional - test application only</td><td><a href="development_platform/appendices/spi_bmp280.html">See SPI sensor appendix</a></td></tr>
+</tbody></table>
+</div>
+<div class="footnote-definition" id="1"><sup class="footnote-definition-label">1</sup>
+<p>Where items are considered to be ubiquitous with no special requirements, no example order code is given.</p>
+</div>
+<div class="footnote-definition" id="2"><sup class="footnote-definition-label">2</sup>
+<p>Although USB keyboards are fairly ubiquitous, experience leads us to recommend a 'basic' model such as this, which works with our keyboard driver; the driver may not work with more feature-rich models (e.g. a keyboard with an integral USB hub; nor does it work with <a href="https://uk.farnell.com/a4-tech/rp011/keyboard-mini-slim-black-uk/dp/2113614">this compact keyboard</a>).</p>
+</div>
+<p>This guide assumes the following basic hardware capabilities of the user's development environment:</p>
+<ol>
+<li>
+<p>The ability to connect the MaaXBoard to a wired network to which the host machine is also connected. This is required if the user wishes to perform TFTP transfer of executables from the host environment to the target platform (see the <a href="development_platform/../first_boot/bootloader.html">Bootloader</a> section).</p>
+</li>
+<li>
+<p>The ability to connect USB devices (i.e. the USB flash drive and USB SD card reader / writer) to the host machine.</p>
+</li>
+</ol>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="software-requirements"><a class="header" href="#software-requirements">Software Requirements</a></h1>
-<h2 id="sel4"><a class="header" href="#sel4">seL4</a></h2>
-<p>seL4 is a high-assurance, high-performance operating system microkernel. It is unique because of its comprehensive formal verification, without compromising performance. It is meant to be used as a trustworthy foundation for building safety- and security-critical systems. It is available as open source on GitHub and supported by the seL4 Foundation.</p>
-<p>In the context of the dev kit seL4 is used as the bedrock of all the contributions and the purpose of the dev kit is to build applications on top of seL4.</p>
-<h2 id="camkes"><a class="header" href="#camkes">Camkes</a></h2>
-<h2 id="microkit"><a class="header" href="#microkit">Microkit</a></h2>
-<h2 id="uboot-fork"><a class="header" href="#uboot-fork">Uboot fork</a></h2>
-<h2 id="docker-environment"><a class="header" href="#docker-environment">Docker environment</a></h2>
-<p>How About:
--A Common Core. This is everything up to, doing a simple small example for each environment.</p>
+<p>This developer kit is intended to have minimal software requirements on the host machine by using Docker containment as much as possible. The applications that follow are either needed or assumed on the host machine.</p>
+<p>Installation instructions are not reproduced here; please follow the instructions given by the application providers. Configuration of the applications is considered in the <a href="development_platform/../install_and_configure/host_setup.html">Host Setup</a> section.</p>
+<p>This guide assumes that the user has sufficiently elevated privileges on the host machine to install and configure the applications; for example on macOS and Linux it is assumed that the user has <code>sudo</code> privileges.</p>
+<h2 id="mandatory-requirements"><a class="header" href="#mandatory-requirements">Mandatory Requirements</a></h2>
+<p>The following mandatory applications are assumed on the host machine:</p>
+<ul>
+<li>
+<p><strong>Container toolset</strong>: Used to provide the build environment. This guide assumes use of <a href="https://www.docker.com/products/docker-desktop">Docker Desktop</a> for macOS or Windows host environments or <a href="https://hub.docker.com/search?offering=community&amp;operating_system=linux&amp;q=&amp;type=edition">Docker Engine</a> for Linux-based host environments.</p>
+<p>Docker Engine is licensed under the Apache License Version 2.0, see <a href="https://docs.docker.com/engine/">here</a> for more information. Docker Desktop is free to use for small companies, education and non-commercial open source projects, see <a href="https://www.docker.com/pricing/faq/">here</a> for details and pricing.</p>
+</li>
+<li>
+<p><strong>SD card writer application</strong>: Used to write the SD card from which the MaaXBoard boots. <a href="https://www.balena.io/etcher/">Balena Etcher</a> has been selected due to its availability on macOS, Windows and Linux environments. Alternative means of writing SD cards are available but not supported by this document.</p>
+<p>Balena Etcher is licensed under the Apache License Version 2.0, see <a href="https://github.com/balena-io/etcher/blob/master/LICENSE">here</a> for more information.</p>
+</li>
+<li>
+<p><strong>Serial terminal application</strong>: Used for serial communication with the target platform. <a href="https://freeware.the-meiers.org/">CoolTerm</a> has been selected due to its availability on macOS and Windows. For Linux environments <a href="https://wiki.emacinc.com/wiki/Getting_Started_With_Minicom">Minicom</a> can be used. Alternative applications are available but not supported by this document.</p>
+<p>CoolTerm and Minicom is distributed as freeware with no documented limitations on use.</p>
+</li>
+</ul>
+<h2 id="optional-requirements"><a class="header" href="#optional-requirements">Optional Requirements</a></h2>
+<p>If the user wishes to perform TFTP transfer of executables from the host environment to the target platform (see the <a href="development_platform/../first_boot/bootloader.html">Bootloader</a> section) then installation of a TFTP server is required.</p>
+<p>Full details of the installation and configuration of a TFTP server is considered to be outside the scope of this developer kit, however the following guidance is offered:</p>
+<ul>
+<li>
+<p><strong>macOS</strong>: A TFTP server is included in macOS by default. The <a href="https://www.macupdate.com/app/mac/11116/tftpserver">TftpServer</a> application provides a graphical user interface to simplify use of the in-built server.</p>
+</li>
+<li>
+<p><strong>Linux</strong>: TFTP servers are available for all major Linux distributions. On Fedora and CentOS a server can be installed via <code>yum -y install tftp-server</code>; on Debian and Ubuntu a server can be installed via <code>apt-get install tftpd-hpa</code>.</p>
+</li>
+<li>
+<p><strong>Windows</strong>: Multiple free TFTP server applications are available, e.g. <a href="https://www.solarwinds.com/free-tools/free-tftp-server">SolarWinds TFTP Server</a> (distributed as "100% free" with no documented limitations on use) and <a href="https://pjo2.github.io/tftpd64">Tftpd64</a> (licensed under GNU General Public License, version 2).</p>
+</li>
+</ul>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="install-and-configure"><a class="header" href="#install-and-configure">Install and Configure</a></h1>
 <h2 id="host-setup"><a class="header" href="#host-setup">Host setup</a></h2>
 <p>Lists the applications needed on the host machine.</p>
@@ -418,10 +472,10 @@ Kit is presented to support their navigation:</p>
 <h2 id="installation"><a class="header" href="#installation">Installation</a></h2>
 <p><a href="install_and_configure/host_setup.html">Host machine setup</a> must be completed, specifically installation of Docker, and the Docker tools must be active prior to installation of the build environment.</p>
 <p>Installation of the build environment comprises the download of a pre-built Docker image into the Docker tools. This can be performed from the command line on the host machine as follows:</p>
-<h3 id="camkes-1"><a class="header" href="#camkes-1">CAmkES</a></h3>
+<h3 id="camkes"><a class="header" href="#camkes">CAmkES</a></h3>
 <pre><code class="language-bash">git clone "git@github.com:sel4devkit/sel4devkit-maaxboard-camkes-docker-dev-env.git"
 </code></pre>
-<h3 id="microkit-1"><a class="header" href="#microkit-1">Microkit</a></h3>
+<h3 id="microkit"><a class="header" href="#microkit">Microkit</a></h3>
 <pre><code class="language-bash">git clone "git@github.com:sel4devkit/sel4devkit-maaxboard-microkit-docker-dev-env.git"
 </code></pre>
 <h2 id="usage"><a class="header" href="#usage">Usage</a></h2>
@@ -1421,7 +1475,7 @@ hello, world
 <p>One of the core mechanisms for providing a software interface to a hardware device is through the use of <a href="https://en.wikipedia.org/wiki/Memory-mapped_I/O">memory mapped IO</a>.</p>
 <p>The memory addresses that a U-Boot driver uses for communication with a device can be either read from the device tree (i.e. from a device's <code>reg</code> property) or in some cases can be hard-coded into the driver.</p>
 <p>At this point it should be noted that U-Boot source code is intended to be executed in an environment with direct access to the system's physical address space; however, the library is executed within a virtual address space provided by seL4. As such, the addresses used by U-Boot drivers are <em>physical</em> addresses which are not directly accessible by the library. To work around this issue:</p>
-<h4 id="camkes-2"><a class="header" href="#camkes-2">CAmkES</a></h4>
+<h4 id="camkes-1"><a class="header" href="#camkes-1">CAmkES</a></h4>
 <ol>
 <li>
 <p>During library initialisation the list of all platform-dependent devices that need to be accessed must be provided. For each device:</p>
@@ -1436,7 +1490,7 @@ hello, world
 </li>
 </ol>
 <p>U-Boot drivers performing memory mapped IO should perform seamlessly without the need for any modifications to the driver.</p>
-<h4 id="microkit-2"><a class="header" href="#microkit-2">Microkit</a></h4>
+<h4 id="microkit-1"><a class="header" href="#microkit-1">Microkit</a></h4>
 <p>The physical addresses of all platform-dependent devices must be provided in the system file in this format:</p>
 <pre><code>&lt;system&gt;
     &lt;memory_region name="&lt;physical_device_name&gt;" size="&lt;physical_device_size&gt;" phys_addr="&lt;physical_device address&gt;"/&gt;
@@ -1489,7 +1543,7 @@ hello, world
 <h3 id="initialisation"><a class="header" href="#initialisation">Initialisation</a></h3>
 <p>As part of library initialisation, any U-Boot subsystems that require explicit initialisation are handled (see <code>uboot_wrapper.c:initialise_uboot_wrapper</code>). This mimics the initialisation that would normally be performed by <a href="https://github.com/u-boot/u-boot/blob/master/common/board_r.c">U-Boot's start-up routine</a>.</p>
 <p>Initialisation of the library comprises:</p>
-<h4 id="camkes-3"><a class="header" href="#camkes-3">CAmkES</a></h4>
+<h4 id="camkes-2"><a class="header" href="#camkes-2">CAmkES</a></h4>
 <ul>
 <li>Initialisation of the memory mapped IO and DMA wrappers;</li>
 <li>Initialisation of the monotonic timer;</li>
@@ -1506,7 +1560,7 @@ hello, world
 <li>The list of device tree paths containing physical addresses to be memory mapped (through the <code>reg</code> property).</li>
 <li>The list of device tree paths for the devices to enable. Note that all sub-nodes of the device tree paths will be automatically enabled; only the root node for the required devices need to be listed. All other nodes in the device tree will be marked as disabled.</li>
 </ul>
-<h4 id="microkit-3"><a class="header" href="#microkit-3">Microkit</a></h4>
+<h4 id="microkit-2"><a class="header" href="#microkit-2">Microkit</a></h4>
 <ul>
 <li>Initialisation of the DMA wrappers;</li>
 <li>Initialisation of the monotonic timer;</li>
@@ -1660,7 +1714,7 @@ hello, world
 <h4 id="configuration-for-different-platforms"><a class="header" href="#configuration-for-different-platforms">Configuration for different platforms</a></h4>
 <p>Although <code>uboot-driver-example</code> was created to demonstrate the device drivers developed for this MaaXBoard developer kit, it is configurable to support other platforms. For example, in the <a href="activity/device_drivers/add_odroidc2.html">worked example appendix for the Odroid-C2</a>, a small subset of drivers has been developed for that platform, and the <code>test.c</code> source file for <code>uboot-driver-example</code> uses the preprocessor macros <code>CONFIG_PLAT_MAAXBOARD</code> and <code>CONFIG_PLAT_ODROIDC2</code> to configure which commands are run for each platform. By default, all tests are enabled for an unrecognised platform, but this would be readily configured for a new platform's <code>CONFIG_PLAT_...</code> preprocessor macro.</p>
 <h3 id="instructions-for-running-uboot-driver-example"><a class="header" href="#instructions-for-running-uboot-driver-example">Instructions for running <code>uboot-driver-example</code></a></h3>
-<h4 id="camkes-4"><a class="header" href="#camkes-4">CAmkES</a></h4>
+<h4 id="camkes-3"><a class="header" href="#camkes-3">CAmkES</a></h4>
 <p>As usual, this assumes that the user is already running a Docker container within the <a href="activity/device_drivers/build_environment_setup.html">build environment</a>, where we can create a directory and clone the code and dependencies.</p>
 <pre><code class="language-text">mkdir /host/uboot_test
 cd /host/uboot_test
@@ -1688,7 +1742,7 @@ cd build
 </code></pre>
 <p>A successful build will result in an executable file called <code>capdl-loader-image-arm-maaxboard</code> in the <code>images</code> subdirectory. This should be copied to a file named <code>sel4_image</code> and then made available to the preferred loading mechanism, such as TFTP, as per <a href="activity/device_drivers/execution_on_target_platform.html">Execution on Target Platform</a>.</p>
 <h3 id="instructions-for-running-uboot-driver-example-1"><a class="header" href="#instructions-for-running-uboot-driver-example-1">Instructions for running <code>uboot-driver-example</code></a></h3>
-<h4 id="microkit-4"><a class="header" href="#microkit-4">Microkit</a></h4>
+<h4 id="microkit-3"><a class="header" href="#microkit-3">Microkit</a></h4>
 <p>As usual, this assumes that the user is already running a Docker container within the <a href="activity/device_drivers/build_environment_setup.html">build environment</a>, where we can create a directory and clone the code and dependencies.</p>
 <pre><code class="language-text">mkdir /host/uboot_test
 cd /host/uboot_test
@@ -1767,7 +1821,7 @@ echo: Connection closed on socket 2
 <p>This section documents the required actions and guidance to add support for a new platform to the library.</p>
 <p>By the end of this section, an seL4 executable will be built for the new platform that can initialise the library (although the library may not support any of the platform's devices). Later sections of this guide cover the required actions to add driver support into the library for the new platform (e.g. see the <a href="activity/device_drivers/add_odroidc2.html">Odroid-C2 worked example</a>).</p>
 <p>Throughout the sections of this guide devoted to extension of the U-Boot driver library, it is expected the developer is working within the folder structure created by the <code>repo</code> tool (e.g. as used to build the <a href="activity/device_drivers/uboot_driver_usage.html">test applications</a>). Key folders and files within the hierarchy are shown below:</p>
-<h3 id="camkes-5"><a class="header" href="#camkes-5">CAmkES</a></h3>
+<h3 id="camkes-4"><a class="header" href="#camkes-4">CAmkES</a></h3>
 <pre><code class="language-text">&lt;manifest root&gt;
 |
 ├───kernel
@@ -1803,7 +1857,7 @@ echo: Connection closed on socket 2
 <li><code>projects/project_libs/libubootdrivers</code>: Referred to as "the library" throughout. See <a href="https://github.com/sel4devkit/projects_libs/tree/master/libubootdrivers">linked Git repository</a>.</li>
 <li><code>projects/uboot</code>: Fork of the U-Boot project source code (note, this is also symlinked to <code>projects/project_libs/libubootdrivers/uboot</code>).</li>
 </ul>
-<h3 id="microkit-5"><a class="header" href="#microkit-5">Microkit</a></h3>
+<h3 id="microkit-4"><a class="header" href="#microkit-4">Microkit</a></h3>
 <pre><code class="language-text">&lt;manifest root&gt;
 |
 └───project_libs
@@ -1967,7 +2021,7 @@ void initialise_driver_data(void) {
 <h2 id="add-support-to-example-application"><a class="header" href="#add-support-to-example-application">Add support to example application</a></h2>
 <p>Section <a href="activity/device_drivers/uboot_driver_usage.html">Using the U-Boot Driver Library</a> introduced the demonstration application  <code>uboot-driver-example</code>. This section documents the changes required to the <code>uboot-driver-example</code> application to allow it to be built for the new platform.</p>
 <p>The following empty template file needs to be added to the application <code>include/plat/foo/platform_devices.h</code>:</p>
-<h3 id="camkes-6"><a class="header" href="#camkes-6">CAmkES</a></h3>
+<h3 id="camkes-5"><a class="header" href="#camkes-5">CAmkES</a></h3>
 <pre><code class="language-c">#pragma once
 
 /* List the set of device tree paths that include the 'reg' entries
@@ -1990,7 +2044,7 @@ void initialise_driver_data(void) {
 
 #define HARDWARE_CONFIGURATION
 </code></pre>
-<h3 id="microkit-6"><a class="header" href="#microkit-6">Microkit</a></h3>
+<h3 id="microkit-5"><a class="header" href="#microkit-5">Microkit</a></h3>
 <pre><code class="language-c">#pragma once
 
 /* List the set of device tree paths that include the 'reg' entries
@@ -3488,9 +3542,9 @@ run_uboot_command@uboot_wrapper.c:181 --- command 'fatwrite mmc 0:2 0x55b010 tra
 <p>The repository can be found <a href="https://github.com/sel4devkit/sel4devkit-maaxboard-microkit-xhci-driver">here</a>.</p>
 <h2 id="xhci"><a class="header" href="#xhci">xHCI</a></h2>
 <p>xHCI is a standardised interface used for USB host controllers. Also known as the USB 3.0 host controller specification, it is designed to be backward compatible, supporting a wide range of USB devices from older USB 1.x to the more recent USB 3.x versions. Compared to its predecessors (OHCI, UHCI and EHCI) it is designed to handle multiple data transfer speeds within a single unified standard, making it more efficient at handling computer resources. The standard describes the basic communication between the software and the host controller including memory layout, data structures, MMIO and DMA.</p>
-<h2 id="camkes-7"><a class="header" href="#camkes-7">CAmkES</a></h2>
+<h2 id="camkes-6"><a class="header" href="#camkes-6">CAmkES</a></h2>
 <p>For our initial development we used CAmkES with the first goal of interfacing with the hardware. We compiled NetBSD, then traced the initialisation of the xHCI, noting down the input/output read and write commands. We then hardcoded the necessary memory register addresses and worked out the changes that we needed to make to the driver so that it was compatible with seL4 and CAmkES. We were then able to initialise the host controller by setting up the correct memory registers, DMA and interrupts. Once we got it to this point we decided to port the example to Microkit.</p>
-<h2 id="microkit-7"><a class="header" href="#microkit-7">Microkit</a></h2>
+<h2 id="microkit-6"><a class="header" href="#microkit-6">Microkit</a></h2>
 <p>The first goal was to understand the differences between CAmkES and Microkit and become familiar with its features. Compared to CAmkES, Microkit has no standard libraries which meant that we had to export libraries for simple functionality such as logging and memory handling. We also had to create a simple DMA handler, and in the absence of a build system we opted to use GNU Make. Once we had an understanding of Microkit we got our new example to initialise the host controller as we did with CAmkES.</p>
 <p>We created a separate DMA library which can be found <a href="https://github.com/sel4devkit/libmicrokitdma">here</a></p>
 <h3 id="architecture-1"><a class="header" href="#architecture-1">Architecture</a></h3>

@@ -177,6 +177,36 @@
                 <div id="content" class="content">
                     <main>
                         <h1 id="hardware-requirements"><a class="header" href="#hardware-requirements">Hardware Requirements</a></h1>
+<p>This section details the hardware related to the target platform that the guide assumes is available to the developer. Before following the guide the developer will need to have access to all items marked as mandatory.</p>
+<p>As detailed in the <a href="../first_boot/bootloader.html">Bootloader</a> section, there are multiple methods of transferring a compiled seL4 binary from the host machine to the target platform. Where a hardware item is required to support only one potential transfer method it is marked as 'optional'. The developer should decide which transfer method(s) are to be used to determine which items need to be available.</p>
+<p>For convenience, the following table includes order codes and hyperlinks for the <a href="https://uk.farnell.com">Farnell UK store</a> correct as of 16th August 2024; clearly, equivalent items are available from many other sources.</p>
+<div class="table-wrapper"><table><thead><tr><th>Item</th><th>Notes</th><th>Order Code</th></tr></thead><tbody>
+<tr><td>Avnet MaaXBoard (AES-MC-SBC-IMX8M-G)</td><td>Mandatory</td><td><a href="https://uk.farnell.com/avnet/aes-mc-sbc-imx8m-g/sbc-quad-arm-cortex-a53-cortex/dp/3436577?ost=3436577">3436577</a></td></tr>
+<tr><td>USB-to-TTL Serial UART Cable</td><td>Mandatory</td><td><a href="https://uk.farnell.com/ftdi/ttl-232r-rpi/cable-debug-ttl-232-usb-rpi/dp/2147356">2147356</a></td></tr>
+<tr><td>16GB Micro SD Card</td><td>Mandatory</td><td><a href="https://uk.farnell.com/integral/inmsdh16g10-90u1/16gb-ultimapro-microsd-c10-90/dp/3498607?ost=3498607">3498607</a></td></tr>
+<tr><td>USB Micro SD Card Reader/Writer</td><td>Mandatory</td><td><a href="https://uk.farnell.com/tripp-lite/u452-000-sd-a/usb-c-memory-card-reader-sd-micro/dp/3493850?ost=3493850">3493850</a></td></tr>
+<tr><td>15W USB-C Power Adapter</td><td>Mandatory</td><td><a href="https://uk.farnell.com/stontronics/t7725dv/adapter-ac-dc-1-o-p-5-1v-3a/dp/3106255?ost=3106255">3106255</a></td></tr>
+<tr><td>USB Flash Drive</td><td>Optional - USB transfer only</td><td>General<sup class="footnote-reference"><a href="#1">1</a></sup></td></tr>
+<tr><td>Ethernet Cable</td><td>Optional - TFTP transfer and some of the test applications</td><td>General<sup class="footnote-reference"><a href="#1">1</a></sup></td></tr>
+<tr><td>USB Keyboard</td><td>Optional - some of the test applications</td><td><a href="https://uk.farnell.com/logitech/920-002524/keyboard-k120-business-logitech/dp/1848111">1848111</a><sup class="footnote-reference"><a href="#2">2</a></sup></td></tr>
+<tr><td>SPI Bus Pressure Sensor</td><td>Optional - test application only</td><td><a href="appendices/spi_bmp280.html">See SPI sensor appendix</a></td></tr>
+</tbody></table>
+</div>
+<div class="footnote-definition" id="1"><sup class="footnote-definition-label">1</sup>
+<p>Where items are considered to be ubiquitous with no special requirements, no example order code is given.</p>
+</div>
+<div class="footnote-definition" id="2"><sup class="footnote-definition-label">2</sup>
+<p>Although USB keyboards are fairly ubiquitous, experience leads us to recommend a 'basic' model such as this, which works with our keyboard driver; the driver may not work with more feature-rich models (e.g. a keyboard with an integral USB hub; nor does it work with <a href="https://uk.farnell.com/a4-tech/rp011/keyboard-mini-slim-black-uk/dp/2113614">this compact keyboard</a>).</p>
+</div>
+<p>This guide assumes the following basic hardware capabilities of the user's development environment:</p>
+<ol>
+<li>
+<p>The ability to connect the MaaXBoard to a wired network to which the host machine is also connected. This is required if the user wishes to perform TFTP transfer of executables from the host environment to the target platform (see the <a href="../first_boot/bootloader.html">Bootloader</a> section).</p>
+</li>
+<li>
+<p>The ability to connect USB devices (i.e. the USB flash drive and USB SD card reader / writer) to the host machine.</p>
+</li>
+</ol>
 
                     </main>
 
