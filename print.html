@@ -321,7 +321,10 @@ Kit is presented to support their navigation:</p>
 <ul>
 <li><a href="resources/reference/glossary.html">Glossary</a></li>
 </ul>
-<div style="break-before: page; page-break-before: always;"></div><h1 id="todo"><a class="header" href="#todo">TODO</a></h1>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="sel4-microkernel"><a class="header" href="#sel4-microkernel">seL4 Microkernel</a></h1>
+<p>The <a href="https://sel4.systems">seL4 Microkernel</a> is a technology of increasing interest and has potential to deliver significant benefit across a range of applications that require strong domain separation and software-enforced trusted execution environments.</p>
+<p>seL4 is formally verified software and therefore offers significant benefits over other software-based implementations in terms of the assurance and trust that can be gained. Given it is open source COTS technology, the potential for reduced cost for high assurance products and reduced time to market are significant.</p>
+<p>Developing on top of the seL4 microkernel is currently complex and time-consuming, and the expertise is limited to a small number of individuals and organisations. This developer kit is targeted at reducing the barrier to entry for using (i.e. developing on top of) the seL4 technology and increasing the number of organisations that can cost-effectively adopt seL4 in their products.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="avnet-maaxboard"><a class="header" href="#avnet-maaxboard">Avnet MaaxBoard</a></h1>
 <p>The Avnet MaaxBoard is a powerful single-board computer (SBC) designed to cater to a embedded computing applications. Built around the NXP i.MX 8M Quad processor, the MaaxBoard offers robust performance with its quad-core ARM Cortex-A53 CPU and ARM Cortex-M4 co-processor, making it suitable for multimedia, IoT, and industrial automation projects. It features a rich set of I/O options, including multiple USB ports, Gigabit Ethernet, HDMI output, and support for various display and camera interfaces, providing flexibility for diverse development needs. The board is also equipped with 2GB of LPDDR4 memory and 16GB of eMMC storage, ensuring ample resources for running complex applications. With its compatibility with popular Linux distributions and support from a vibrant community, the Avnet MaaxBoard stands out as a versatile and accessible platform for developers looking to prototype and deploy innovative embedded solutions.</p>
 <h2 id="imx8m-processor"><a class="header" href="#imx8m-processor">IMX8M processor</a></h2>
@@ -363,6 +366,7 @@ Kit is presented to support their navigation:</p>
 <tr><td><a href="https://docs.sel4.systems/projects/sel4test">seL4Test</a></td><td>Test suite for seL4 developed and maintained by the seL4 Foundation.</td></tr>
 </tbody></table>
 </div><div style="break-before: page; page-break-before: always;"></div><h1 id="development-platform"><a class="header" href="#development-platform">Development Platform</a></h1>
+<p>This section details the minimum <a href="development_platform/hardware_requirements.html">hardware</a> and <a href="development_platform/software_requirements.html">software</a> requirements necessary to follow the guide.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="hardware-requirements"><a class="header" href="#hardware-requirements">Hardware Requirements</a></h1>
 <p>This section details the hardware related to the target platform that the guide assumes is available to the developer. Before following the guide the developer will need to have access to all items marked as mandatory.</p>
 <p>As detailed in the <a href="development_platform/../first_boot/bootloader.html">Bootloader</a> section, there are multiple methods of transferring a compiled seL4 binary from the host machine to the target platform. Where a hardware item is required to support only one potential transfer method it is marked as 'optional'. The developer should decide which transfer method(s) are to be used to determine which items need to be available.</p>
@@ -429,15 +433,22 @@ Kit is presented to support their navigation:</p>
 </li>
 </ul>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="install-and-configure"><a class="header" href="#install-and-configure">Install and Configure</a></h1>
-<h2 id="host-setup"><a class="header" href="#host-setup">Host setup</a></h2>
-<p>Lists the applications needed on the host machine.</p>
-<h2 id="build-environment-setup"><a class="header" href="#build-environment-setup">Build Environment Setup</a></h2>
-<p>Explains how to install and configure the docker environment.</p>
-<h2 id="target-setup"><a class="header" href="#target-setup">Target setup</a></h2>
-<p>Explains how to set up the maaxboard.</p>
-<h2 id="bootloader-setup"><a class="header" href="#bootloader-setup">Bootloader setup</a></h2>
-<p>Explains how to build and flash U-Boot onto the maaxboard.</p>
-<div style="break-before: page; page-break-before: always;"></div><h1 id="host-setup-1"><a class="header" href="#host-setup-1">Host Setup</a></h1>
+<p>This section details how to configure a build environment with all tools required to generate seL4 executable images.</p>
+<p>Development is conducted across three different environments</p>
+<ol>
+<li>
+<p><strong>Host Machine</strong>: The developer's host machine. This can be running macOS, Linux, or Windows.</p>
+</li>
+<li>
+<p><strong>Build environment</strong>: The environment within which all binaries for the target environment are built. This is a Linux-based development environment running within a <a href="https://www.docker.com">Docker</a> container on the host machine. The use of a Docker container to provide all of the tooling required to build seL4 applications for the target platform greatly simplifies the requirements of the host machine.</p>
+</li>
+<li>
+<p><strong>Target Platform</strong>: The <a href="https://www.avnet.com/wps/portal/us/products/avnet-boards/avnet-board-families/maaxboard/maaxboard">Avnet MaaXBoard</a>, a single board computer based around the <a href="https://www.nxp.com/products/processors-and-microcontrollers/arm-processors/i-mx-applications-processors/i-mx-8-processors/i-mx-8m-family-armcortex-a53-cortex-m4-audio-voice-video:i.MX8M">NXP i.MX 8M SoC (system on chip)</a>. This is the environment upon which seL4 binaries are executed. User interaction with the target platform is performed via a serial console from the host machine.</p>
+</li>
+</ol>
+<p>The required configuration of the host and target environments are detailed in the <a href="install_and_configure/host_setup.html">Host Setup</a> and <a href="install_and_configure/target_setup.html">Target Setup</a> sections. A preconfigured build environment is supplied as part of this developer kit as detailed in the <a href="install_and_configure/build_environment_setup.html">Build Environment Setup</a> section.</p>
+<p><a href="install_and_configure/bootloader_setup.html">Bootloader setup</a> describes how to install and the bootloader U-Boot.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="host-setup"><a class="header" href="#host-setup">Host Setup</a></h1>
 <p>The previous <a href="install_and_configure/../development_platform/software_requirements.html">Software Requirements</a> section listed the applications required on the host machine. Installation links provided there should be followed, where applicable. This section covers any necessary configuration.</p>
 <h2 id="docker-desktop--docker-engine"><a class="header" href="#docker-desktop--docker-engine">Docker Desktop / Docker Engine</a></h2>
 <p>Docker Desktop is a widely used platform for developing, packaging, and running applications. If you are a new Docker user, you will have to sign up for an account. Depending on your situation, a subscription fee may be applicable (typically if you are acting as a member of a large commercial organisation), but in many cases there is no cost. This development kit documentation does not attempt to guide you about this; please refer to the licensing conditions on <a href="https://www.docker.com/pricing">Docker's website</a>.</p>
@@ -460,7 +471,7 @@ Kit is presented to support their navigation:</p>
 <p>All these settings may be saved for convenience as a CoolTerm configuration file.</p>
 <h2 id="minicom"><a class="header" href="#minicom">Minicom</a></h2>
 <p>Minicom can also be used to communicate with the maaxboard over the serial interface using the UART pins on the board's GPIO connector (see <a href="install_and_configure/target_setup.html">Target Platform Setup</a> section for more details of the necessary connections). Minicom can be used on linux machines or on Windows with the PuTTY application. Instructions for installing and running minicom are <a href="https://wiki.emacinc.com/wiki/Getting_Started_With_Minicom">here</a>.</p>
-<div style="break-before: page; page-break-before: always;"></div><h1 id="build-environment-setup-1"><a class="header" href="#build-environment-setup-1">Build Environment Setup</a></h1>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="build-environment-setup"><a class="header" href="#build-environment-setup">Build Environment Setup</a></h1>
 <p>The build environment is the environment within which all binaries for the target environment are built; i.e. the environment that provides the required compilation toolchain.</p>
 <p>To simplify the requirements on the host environment and to enable rapid setup, the build environment is provided as a pre-built Docker image.</p>
 <h2 id="environment-details"><a class="header" href="#environment-details">Environment Details</a></h2>
@@ -567,7 +578,7 @@ is particularly suited to Linux.</li>
 <li>connected to a USB-to-TTL serial UART cable.</li>
 </ul>
 <p><img src="install_and_configure/figures/maaxboard-populated.png" alt="Avnet MaaXBoard populated" /></p>
-<div style="break-before: page; page-break-before: always;"></div><h1 id="bootloader-setup-1"><a class="header" href="#bootloader-setup-1">Bootloader Setup</a></h1>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="bootloader-setup"><a class="header" href="#bootloader-setup">Bootloader Setup</a></h1>
 <p>When a computer is turned off, its software remains stored in non-volatile memory. When the computer is powered on, a bootstrap loader is required: a small, low-level program to configure the computer's memory and devices sufficient to then be able to load further software, such as a bare-metal application or operating system, into RAM and then call it.</p>
 <p><strong>Das U-Boot</strong> (known as "the Universal Boot Loader" and often shortened to U-Boot) is an open-source bootloader commonly used in embedded devices. For such low-level operations, it has to be customized for the hardware on which it is running.</p>
 <p>There are two options for configuring and installing U-Boot:</p>
@@ -1378,7 +1389,7 @@ MON|INFO: completed system invocations
 hello, world
 </code></pre>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="activities"><a class="header" href="#activities">Activities</a></h1>
-<div style="break-before: page; page-break-before: always;"></div><h1 id="todo-1"><a class="header" href="#todo-1">TODO</a></h1>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="todo"><a class="header" href="#todo">TODO</a></h1>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="device-driver-introduction"><a class="header" href="#device-driver-introduction">Device Driver Introduction</a></h1>
 <p>This section seeks to provide guidance on adding device drivers to seL4.</p>
 <p>It should be noted that seL4 runs all device drivers in user mode; device support is therefore not the kernel’s problem.</p>
@@ -3173,7 +3184,7 @@ extern struct env_clbk_tbl _u_boot_env_clbk__dnsip;
     pinctrl-0 = &lt;0x25&gt;;
 </code></pre>
 <p>Note that not all devices require pin multiplexer settings; e.g. device outputs may be routed to dedicated SoC pins / pads. The SoC's reference manual should be consulted to determine whether configuration is required for a device.</p>
-<div style="break-before: page; page-break-before: always;"></div><h1 id="todo-2"><a class="header" href="#todo-2">TODO</a></h1>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="todo-1"><a class="header" href="#todo-1">TODO</a></h1>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="introduction-1"><a class="header" href="#introduction-1">Introduction</a></h1>
 <p>This section works through an example to show some of our device drivers being used within a larger application. It is nominally labelled as a 'security domain' demonstrator (named <code>security_demo</code>) but this is mainly in the context of being a keyboard-based encryption device that was inspired by an Enigma machine! It is intentionally simple and its main purpose is to show data separation and to provide worked examples of inter-component communications using different seL4 mechanisms.</p>
 <p>Extra functionality within the demonstration application is deliberately kept to a minimum to leave the source code less cluttered, so that the developer can readily see the 'more interesting' seL4 inter-component and device interactions without too much extra, feature-supporting code. In line with the rest of the developer kit, the demonstration application is intended to be more of a springboard for a developer kit user than a polished product for an end user.
