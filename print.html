@@ -322,7 +322,10 @@ Kit is presented to support their navigation:</p>
 <li><a href="resources/reference/glossary.html">Glossary</a></li>
 </ul>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="todo"><a class="header" href="#todo">TODO</a></h1>
-<div style="break-before: page; page-break-before: always;"></div><h1 id="todo-1"><a class="header" href="#todo-1">TODO</a></h1>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="avnet-maaxboard"><a class="header" href="#avnet-maaxboard">Avnet MaaxBoard</a></h1>
+<p>The Avnet MaaxBoard is a powerful single-board computer (SBC) designed to cater to a embedded computing applications. Built around the NXP i.MX 8M Quad processor, the MaaxBoard offers robust performance with its quad-core ARM Cortex-A53 CPU and ARM Cortex-M4 co-processor, making it suitable for multimedia, IoT, and industrial automation projects. It features a rich set of I/O options, including multiple USB ports, Gigabit Ethernet, HDMI output, and support for various display and camera interfaces, providing flexibility for diverse development needs. The board is also equipped with 2GB of LPDDR4 memory and 16GB of eMMC storage, ensuring ample resources for running complex applications. With its compatibility with popular Linux distributions and support from a vibrant community, the Avnet MaaxBoard stands out as a versatile and accessible platform for developers looking to prototype and deploy innovative embedded solutions.</p>
+<h2 id="imx8m-processor"><a class="header" href="#imx8m-processor">IMX8M processor</a></h2>
+<p>The Avnet MaaxBoard uses the i.MX 8M Quad processor developed by NXP. The application processor reference manual is a useful document for developing atop this processor. This link for this manual is <a href="https://www.nxp.com/webapp/sps/download/preDownload.jsp?render=true">here</a>. You will to create an NXP account the gain access to the manual.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="repositories-1"><a class="header" href="#repositories-1">Repositories</a></h1>
 <div class="table-wrapper"><table><thead><tr><th>Repository</th><th>Purpose</th></tr></thead><tbody>
 <tr><td><a href="resources/">https://github.com/sel4devkit/sel4devkit-manual</a></td><td>User Manual and its hosting on GitHub Pages</td></tr>
@@ -349,13 +352,13 @@ Kit is presented to support their navigation:</p>
 <tr><td><a href="https://www.ncsc.gov.uk/whitepaper/security-architecture-anti-patterns">High-side</a></td><td>In a security context, 'more trusted' or 'high-side' refers to a system in which there is more confidence of its integrity.</td></tr>
 <tr><td><a href="https://www.ncsc.gov.uk/whitepaper/security-architecture-anti-patterns">Low-side</a></td><td>In a security context, 'less trusted' or 'low-side' refers to a system in which there is less confidence of its integrity.</td></tr>
 <tr><td><a href="https://www.avnet.com/wps/portal/us/products/avnet-boards/avnet-board-families/maaxboard/maaxboard">MaaXBoard</a></td><td>An <a href="https://www.nxp.com/products/processors-and-microcontrollers/arm-processors/i-mx-applications-processors/i-mx-8-applications-processors/i-mx-8m-family-armcortex-a53-cortex-m4-audio-voice-video:i.MX8M">NXP i.MX 8M SoC</a> based SBC. Selected as the target platform for this developer kit.</td></tr>
+<tr><td><a href="https://docs.sel4.systems/projects/microkit">Microkit</a></td><td>Operating system framework on top of seL4 that provides a small set of simple abstractions that ease the design and implementation of statically structured systems on seL4, while still leveraging the kernel’s benefits of security and performance</td></tr>
 <tr><td><a href="https://en.wikipedia.org/wiki/Single-board_computer">SBC</a></td><td>Single Board Computer. A complete computer on a single circuit board. The Avnet MaaXBoard is an example of a SBC.</td></tr>
 <tr><td><a href="https://docs.sel4.systems/projects/sel4test">seL4Test</a></td><td>Test suite for seL4 developed and maintained by the seL4 Foundation.</td></tr>
 <tr><td><a href="https://en.wikipedia.org/wiki/System_on_a_chip">SoC</a></td><td>System on chip. A chip that integrates all or most components of a computer. The SoC on the MaaXBoard is the <a href="https://www.nxp.com/products/processors-and-microcontrollers/arm-processors/i-mx-applications-processors/i-mx-8-applications-processors/i-mx-8m-family-armcortex-a53-cortex-m4-audio-voice-video:i.MX8M">NXP i.MX 8M</a>.</td></tr>
 <tr><td><a href="https://en.wikipedia.org/wiki/Trivial_File_Transfer_Protocol">TFTP</a></td><td>Trivial File Transfer Protocol. A simple file transfer protocol commonly used in the early stages of bootloading from a local area network.</td></tr>
 <tr><td><a href="https://www.denx.de/wiki/U-Boot">U-Boot</a></td><td>Das U-Boot (known as "the Universal Boot Loader" and often shortened to U-Boot) is an open-source bootloader commonly used in embedded devices.</td></tr>
 <tr><td><a href="https://en.wikipedia.org/wiki/Universal_asynchronous_receiver-transmitter">UART</a></td><td>Universal Asynchronous Receiver-Transmitter. A simple serial communication device commonly used by SBCs.</td></tr>
-<tr><td><a href="https://docs.sel4.systems/projects/microkit">Microkit</a></td><td>Operating system framework on top of seL4 that provides a small set of simple abstractions that ease the design and implementation of statically structured systems on seL4, while still leveraging the kernel’s benefits of security and performance</td></tr>
 <tr><td><a href="https://en.wikipedia.org/wiki/Single-board_computer">SBC</a></td><td>Single Board Computer. A complete computer on a single circuit board. The Avnet MaaXBoard is an example of a SBC.</td></tr>
 <tr><td><a href="https://docs.sel4.systems/projects/sel4test">seL4Test</a></td><td>Test suite for seL4 developed and maintained by the seL4 Foundation.</td></tr>
 </tbody></table>
@@ -385,7 +388,7 @@ Kit is presented to support their navigation:</p>
 <p>This guide assumes the following basic hardware capabilities of the user's development environment:</p>
 <ol>
 <li>
-<p>The ability to connect the MaaXBoard to a wired network to which the host machine is also connected. This is required if the user wishes to perform TFTP transfer of executables from the host environment to the target platform (see the <a href="development_platform/../first_boot/bootloader.html">Bootloader</a> section).</p>
+<p>The ability to connect the MaaXBoard to a wired network to which the host machine is also connected. This is required if the user wishes to perform TFTP transfer of executables from the host environment to the target platform (see the <a href="development_platform/../first_boot/bootloader.html#loading-via-tftp">Bootloader</a> section).</p>
 </li>
 <li>
 <p>The ability to connect USB devices (i.e. the USB flash drive and USB SD card reader / writer) to the host machine.</p>
@@ -859,7 +862,7 @@ sudo mkfs.vfat /dev/&lt;disk&gt;2 -F 32 -n FILESYS
 <p>The MaaXBoard has been set up as per the <a href="first_boot/../install_and_configure/target_setup.html">Target Setup</a> section with only the USB-to-TTL cable connected and the SD card inserted.</p>
 </li>
 <li>
-<p>The USB-to-TTL cable is connected to the host machine with CoolTerm configured as per the <a href="first_boot/../install_and_configure/host_setup.html">Host Setup</a> section.</p>
+<p>The USB-to-TTL cable is connected to the host machine with CoolTerm/Minicom configured as per the <a href="first_boot/../install_and_configure/host_setup.html">Host Setup</a> section.</p>
 </li>
 </ol>
 <h2 id="boot-to-u-boot-prompt"><a class="header" href="#boot-to-u-boot-prompt">Boot to U-Boot Prompt</a></h2>
@@ -1375,7 +1378,7 @@ MON|INFO: completed system invocations
 hello, world
 </code></pre>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="activities"><a class="header" href="#activities">Activities</a></h1>
-<div style="break-before: page; page-break-before: always;"></div><h1 id="todo-2"><a class="header" href="#todo-2">TODO</a></h1>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="todo-1"><a class="header" href="#todo-1">TODO</a></h1>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="device-driver-introduction"><a class="header" href="#device-driver-introduction">Device Driver Introduction</a></h1>
 <p>This section seeks to provide guidance on adding device drivers to seL4.</p>
 <p>It should be noted that seL4 runs all device drivers in user mode; device support is therefore not the kernel’s problem.</p>
@@ -3170,7 +3173,7 @@ extern struct env_clbk_tbl _u_boot_env_clbk__dnsip;
     pinctrl-0 = &lt;0x25&gt;;
 </code></pre>
 <p>Note that not all devices require pin multiplexer settings; e.g. device outputs may be routed to dedicated SoC pins / pads. The SoC's reference manual should be consulted to determine whether configuration is required for a device.</p>
-<div style="break-before: page; page-break-before: always;"></div><h1 id="todo-3"><a class="header" href="#todo-3">TODO</a></h1>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="todo-2"><a class="header" href="#todo-2">TODO</a></h1>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="introduction-1"><a class="header" href="#introduction-1">Introduction</a></h1>
 <p>This section works through an example to show some of our device drivers being used within a larger application. It is nominally labelled as a 'security domain' demonstrator (named <code>security_demo</code>) but this is mainly in the context of being a keyboard-based encryption device that was inspired by an Enigma machine! It is intentionally simple and its main purpose is to show data separation and to provide worked examples of inter-component communications using different seL4 mechanisms.</p>
 <p>Extra functionality within the demonstration application is deliberately kept to a minimum to leave the source code less cluttered, so that the developer can readily see the 'more interesting' seL4 inter-component and device interactions without too much extra, feature-supporting code. In line with the rest of the developer kit, the demonstration application is intended to be more of a springboard for a developer kit user than a polished product for an end user.
