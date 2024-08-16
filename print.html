@@ -418,7 +418,7 @@ Kit is presented to support their navigation:</p>
 <h2 id="installation"><a class="header" href="#installation">Installation</a></h2>
 <p><a href="install_and_configure/host_setup.html">Host machine setup</a> must be completed, specifically installation of Docker, and the Docker tools must be active prior to installation of the build environment.</p>
 <p>Installation of the build environment comprises the download of a pre-built Docker image into the Docker tools. This can be performed from the command line on the host machine as follows:</p>
-<h3 id="camkes-1"><a class="header" href="#camkes-1">Camkes</a></h3>
+<h3 id="camkes-1"><a class="header" href="#camkes-1">CAmkES</a></h3>
 <pre><code class="language-bash">git clone "git@github.com:sel4devkit/sel4devkit-maaxboard-camkes-docker-dev-env.git"
 </code></pre>
 <h3 id="microkit-1"><a class="header" href="#microkit-1">Microkit</a></h3>
@@ -1053,7 +1053,7 @@ iptables -A INPUT -i eno2 -p tcp --dport 67:68 -j accept
 <p>The board is now ready to use the tftp server. The bootloader will try to boot using <code>sel4_image</code> stored in <code>/var/lib/tftpboot</code>.</p>
 </li>
 <li>
-<p>If an error occurs and U-Boot drops to a prompt, the image can still be booted using U-Boot commands. Using <code>bootp sel4_image</code> will load the file to a memory address (usually <code>40480000</code>), where it can then be booted using <code>bootelf 40480000</code>. This method can also be used to boot different images. By using <code>bootp</code>, any file contained within <code>/var/lib/tftpboot</code> can be loaded and then booted.</p>
+<p>If an error occurs and U-Boot drops to a prompt, the image can still be booted using U-Boot commands. Using <code>bootp sel4_image</code> will load the file to a memory address (usually <code>50000000</code>), where it can then be booted using <code>bootelf 50000000</code> for .elf files or <code>go 50000000</code> for .img files. This method can also be used to boot different images. By using <code>bootp</code>, any file contained within <code>/var/lib/tftpboot</code> can be loaded and then booted.</p>
 </li>
 </ol>
 <pre><code>u-boot=&gt; bootp sel4_image
@@ -1119,7 +1119,7 @@ uenvcmd=usb start; for devtype in usb mmc; do for devnum in 0 1; do run elf_dev_
 <p>Some configuration of the <code>uEnv.txt</code> file is required, e.g. to set IP addresses relevant to the user's network. This is covered in more detail in the <a href="first_boot/../install_and_configure/bootloader_setup.html">Bootloader Setup</a> and <a href="first_boot/main.html">First Boot</a> sections.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="building-sel4test"><a class="header" href="#building-sel4test">Building sel4test</a></h1>
 <p>As a worked example throughout this section the <a href="https://docs.sel4.systems/projects/sel4test">seL4Test</a> project will be used. seL4Test is a test suite for seL4 developed and maintained by the seL4 Foundation.</p>
-<p>This section of the document assumes the <a href="first_boot/../install_and_configure/build_environment_setup.html">build environment setup</a> has been completed. All commands provided within this section are to be executed within the build environment; i.e. please ensure that you have followed the instructions in the <a href="first_boot/../install_and_configure/build_environment_setup.html#usage">build environment setup's usage</a> section and that you execute the following commands from inside the Docker container.</p>
+<p>This section of the document assumes the <a href="first_boot/../install_and_configure/build_environment_setup.html">build environment setup</a> has been completed and the user is using the CAmkES docker environment (../install_and_configure/build_environment_setup.md#Installation#CAmkES). All commands provided within this section are to be executed within the build environment; i.e. please ensure that you have followed the instructions in the <a href="first_boot/../install_and_configure/build_environment_setup.html#usage">build environment setup's usage</a> section and that you execute the following commands from inside the Docker container.</p>
 <h2 id="context"><a class="header" href="#context">Context</a></h2>
 <p>The seL4Test example that is built in this section is a result of an seL4 port for the Avnet MaaXBoard that we created for this developer kit. Whilst our seL4 port is not documented here in detail, there is some guidance on this in the <a href="first_boot/sel4test.html#appendices">Guide to Porting seL4</a> appendix, which includes links to the Git commits that added the MaaXBoard port to the main seL4 repositories.</p>
 <h2 id="getting-the-code"><a class="header" href="#getting-the-code">Getting the Code</a></h2>
@@ -1130,34 +1130,16 @@ uenvcmd=usb start; for devtype in usb mmc; do for devnum in 0 1; do run elf_dev_
 <pre><code class="language-text">cd /host/seL4Test
 </code></pre>
 <p>Clone the code and dependencies:</p>
-<pre><code class="language-bash">repo init -u https://github.com/seL4/sel4test-manifest.git
-</code></pre>
-<pre><code class="language-bash">repo sync
+<pre><code class="language-bash">git clone git@github.com:sel4devkit/sel4devkit-maaxboard-first-boot-sel4test.git
 </code></pre>
 <h2 id="building"><a class="header" href="#building">Building</a></h2>
-<p>To support building with multiple different configurations within a single project, a directory is created for each configuration to contain the build artefacts. Different configurations are used for different platforms, architectures, or other build options.</p>
-<p>For the purposes of this example, two configurations are supported for the MaaXBoard: one for AArch32 and one for AArch64.</p>
-<p>The executable files that are produced can be executed on the target platform by following the guidance in the <a href="first_boot/execution_on_target_platform.html">Execution on Target Platform</a> section.</p>
-<h3 id="aarch32-build-instructions"><a class="header" href="#aarch32-build-instructions">AArch32 Build Instructions</a></h3>
-<pre><code class="language-bash"># Create directory for compilation artefacts
-mkdir /host/seL4Test/build-MaaXBoard-AArch32
-cd /host/seL4Test/build-MaaXBoard-AArch32
-# Configure build directory
-../init-build.sh -DPLATFORM=maaxboard -DAARCH32=TRUE
-# Compile
-ninja
+<p>The sel4test example uses the make build system therefore make needs to be run in the repository:</p>
+<pre><code>cd sel4devkit-maaxboard-first-boot-sel4test
 </code></pre>
-<p>On completion of the compilation, the resulting executable is available at <code>/host/seL4Test/build-MaaXBoard-AArch32/images/sel4test-driver-image-arm-maaxboard</code> on the build environment, or available at <code>/&lt;host_directory&gt;/seL4Test/build-MaaXBoard-AArch32/images/sel4test-driver-image-arm-maaxboard</code> on the host machine, where <code>/&lt;host_directory&gt;</code> was the directory on the host mapped to the build environment.</p>
-<h3 id="aarch64-build-instructions"><a class="header" href="#aarch64-build-instructions">AArch64 Build Instructions</a></h3>
-<pre><code class="language-bash"># Create directory for compilation artefacts
-mkdir /host/seL4Test/build-MaaXBoard-AArch64
-cd /host/seL4Test/build-MaaXBoard-AArch64
-# Configure build directory
-../init-build.sh -DPLATFORM=maaxboard -DAARCH64=TRUE
-# Compile
-ninja
+<pre><code>make get
+make all
 </code></pre>
-<p>On completion of the compilation, the resulting executable is available at <code>/host/seL4Test/build-MaaXBoard-AArch64/images/sel4test-driver-image-arm-maaxboard</code> on the build environment, or available at <code>/&lt;host_directory&gt;/seL4Test/build-MaaXBoard-AArch64/images/sel4test-driver-image-arm-maaxboard</code> on the host machine, where <code>/&lt;host_directory&gt;</code> was the directory on the host mapped to the build environment.</p>
+<p>On completion of the compilation, the resulting executable is available at <code>/host/sel4devkit-maaxboard-first-boot-sel4test/out/program.elf</code> on the build environment, or available at <code>/&lt;host_directory&gt;/sel4devkit-maaxboard-first-boot-sel4test/out/program.elf</code> on the host machine, where <code>/&lt;host_directory&gt;</code> was the directory on the host mapped to the build environment.</p>
 <h2 id="appendices"><a class="header" href="#appendices">Appendices</a></h2>
 <h2 id="guide-to-porting-sel4"><a class="header" href="#guide-to-porting-sel4">Guide to Porting seL4</a></h2>
 <p>The level of work required and complexity of porting seL4 to a new platform is directly related to the level of similarity between the system to be ported and systems already supported by seL4. Porting seL4 to a new system based upon a SoC (system-on-chip) already supported by seL4 is likely to be relatively straightforward whilst porting seL4 to a system with a currently unsupported SoC is likely to require more work, e.g. requiring the addition of new serial and timer drivers.</p>
@@ -1241,7 +1223,114 @@ repo sync
 <p>Building and executing seL4Test can be performed by following the instructions previously provided in the <a href="first_boot/../building_applications.html">Building Applications</a> and <a href="first_boot/../execution_on_target_platform.html">Execution on Target Platform</a> sections with the build commands modified appropriately to target the newly added platform.</p>
 </li>
 </ol>
-<div style="break-before: page; page-break-before: always;"></div><div style="break-before: page; page-break-before: always;"></div><div style="break-before: page; page-break-before: always;"></div><h1 id="activities"><a class="header" href="#activities">Activities</a></h1>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="camkes-adder"><a class="header" href="#camkes-adder">CAmkES adder</a></h1>
+<p>The purpose of this example is to confirm that the CAmkES environment is configured correctly. As usual, this assumes that the user is already running the CAmkES Docker container within the <a href="first_boot/../../install_and_configure/build_environment_setup.html">build environment</a>, where we can create a directory and clone the code and dependencies.</p>
+<h2 id="getting-the-code-1"><a class="header" href="#getting-the-code-1">Getting the code</a></h2>
+<pre><code>git clone git@github.com:sel4devkit/sel4devkit-maaxboard-camkes-first-boot-adder.git
+</code></pre>
+<h2 id="building-1"><a class="header" href="#building-1">Building</a></h2>
+<p>The CAmkES adder example uses the make build system therefore make needs to be run in the repository:</p>
+<pre><code>cd sel4devkit-maaxboard-camkes-first-boot-adder
+</code></pre>
+<pre><code>make get
+make all
+</code></pre>
+<p>On completion of the compilation, the resulting executable is available at <code>/host/sel4devkit-maaxboard-camkes-first-boot-adder/out/program.img</code> on the build environment, or available at <code>/&lt;host_directory&gt;/sel4devkit-maaxboard-camkes-first-boot-adder/out/program.img</code> on the host machine, where <code>/&lt;host_directory&gt;</code> was the directory on the host mapped to the build environment.</p>
+<h2 id="example-output"><a class="header" href="#example-output">Example output</a></h2>
+<p>The example output when executed on the target (as described in <a href="first_boot/bootloader.html">bootloader</a>) is demonstrated below:</p>
+<pre><code>u-boot=&gt; bootelf 0x50000000
+## Starting application at 0x4085e000 ...
+
+ELF-loader started on CPU: ARM Ltd. Cortex-A53 r0p4
+  paddr=[4085e000..40b6d137]
+No DTB passed in from boot loader.
+Looking for DTB in CPIO archive...found at 409a0a08.
+Loaded DTB from 409a0a08.
+   paddr=[4023f000..40249fff]
+ELF-loading image 'kernel' to 40000000
+  paddr=[40000000..4023efff]
+  vaddr=[ffffff8040000000..ffffff804023efff]
+  virt_entry=ffffff8040000000
+ELF-loading image 'capdl-loader' to 4024a000
+  paddr=[4024a000..40462fff]
+  vaddr=[400000..618fff]
+  virt_entry=408e98
+Enabling MMU and paging
+Jumping to kernel-image entry point...
+
+Warning:  gpt_cntfrq 8333333, expected 8000000
+Bootstrapping kernel
+available phys memory regions: 1
+  [40000000..c0000000]
+reserved virt address space regions: 3
+  [ffffff8040000000..ffffff804023f000]
+  [ffffff804023f000..ffffff80402492c7]
+  [ffffff804024a000..ffffff8040463000]
+Booting all finished, dropped to user space
+client: what's the answer to 342 + 74 + 283 + 37 + 534 ?
+adder: Adding 342
+adder: Adding 74
+adder: Adding 283
+adder: Adding 37
+adder: Adding 534
+client: result was 1270
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="microkit-hello-world"><a class="header" href="#microkit-hello-world">Microkit Hello World</a></h1>
+<p>The purpose of this example is to confirm that the Microkit environment is configured correctly. As usual, this assumes that the user is already running the Microkit Docker container within the <a href="first_boot/../../install_and_configure/build_environment_setup.html">build environment</a>, where we can create a directory and clone the code and dependencies.</p>
+<h2 id="getting-the-code-2"><a class="header" href="#getting-the-code-2">Getting the code</a></h2>
+<pre><code>git clone git@github.com:sel4devkit/sel4devkit-maaxboard-microkit-first-boot-hello-world.git
+</code></pre>
+<h2 id="building-2"><a class="header" href="#building-2">Building</a></h2>
+<p>The Microkit hello world example uses the make build system therefore make needs to be run in the repository:</p>
+<pre><code>cd sel4devkit-maaxboard-microkit-first-boot-hello-world
+</code></pre>
+<pre><code>make get
+make all
+</code></pre>
+<p>On completion of the compilation, the resulting executable is available at <code>/host/sel4devkit-maaxboard-microkit-first-boot-hello-world/out/program.img</code> on the build environment, or available at <code>/&lt;host_directory&gt;/sel4devkit-maaxboard-microkit-first-boot-hello-world/out/program.img</code> on the host machine, where <code>/&lt;host_directory&gt;</code> was the directory on the host mapped to the build environment.</p>
+<h2 id="example-output-1"><a class="header" href="#example-output-1">Example output</a></h2>
+<p>The example output when executed on the target (as described in <a href="first_boot/bootloader.html">bootloader</a>) is demonstrated below:</p>
+<pre><code>u-boot=&gt; go 0x50000000
+## Starting application at 0x50000000 ...
+LDR|INFO: altloader for seL4 starting
+LDR|INFO: Flags:                0x0000000000000001
+             seL4 configured as hypervisor
+LDR|INFO: Kernel:      entry:   0x0000008040000000
+LDR|INFO: Root server: physmem: 0x0000000040270000 -- 0x0000000040277000
+LDR|INFO:              virtmem: 0x000000008a000000 -- 0x000000008a007000
+LDR|INFO:              entry  : 0x000000008a000000
+LDR|INFO: region: 0x00000000   addr: 0x0000000040000000   size: 0x000000000024c000   offset: 0x0000000000000000   type: 0x01
+LDR|INFO: region: 0x00000001   addr: 0x0000000040270000   size: 0x0000000000006b40   offset: 0x000000000024c000   type: 0x01
+LDR|INFO: region: 0x00000002   addr: 0x000000004024c000   size: 0x00000000000011a8   offset: 0x0000000000252b40   type: 0x01
+LDR|INFO: region: 0x00000003   addr: 0x000000004024e000   size: 0x000000000000046c   offset: 0x0000000000253ce8   type: 0x01
+LDR|INFO: region: 0x00000004   addr: 0x000000004024f000   size: 0x0000000000020070   offset: 0x0000000000254154   type: 0x01
+LDR|INFO: copying region 0x00000000
+LDR|INFO: copying region 0x00000001
+LDR|INFO: copying region 0x00000002
+LDR|INFO: copying region 0x00000003
+LDR|INFO: copying region 0x00000004
+LDR|INFO: CurrentEL=EL2
+LDR|INFO: Resetting CNTVOFF
+LDR|INFO: enabling MMU
+LDR|INFO: jumping to kernel
+Warning:  gpt_cntfrq 8333333, expected 8000000
+Bootstrapping kernel
+available phys memory regions: 1
+  [40000000..c0000000]
+reserved virt address space regions: 3
+  [8040000000..804024c000]
+  [804024c000..8040270000]
+  [8040270000..8040277000]
+Booting all finished, dropped to user space
+MON|INFO: Microkit Bootstrap
+MON|INFO: bootinfo untyped list matches expected list
+MON|INFO: Number of bootstrap invocations: 0x00000009
+MON|INFO: Number of system invocations:    0x0000003f
+MON|INFO: completed bootstrap invocations
+MON|INFO: completed system invocations
+hello, world
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="activities"><a class="header" href="#activities">Activities</a></h1>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="todo-2"><a class="header" href="#todo-2">TODO</a></h1>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="device-driver-introduction"><a class="header" href="#device-driver-introduction">Device Driver Introduction</a></h1>
 <p>This section seeks to provide guidance on adding device drivers to seL4.</p>

@@ -178,7 +178,7 @@
                     <main>
                         <h1 id="building-sel4test"><a class="header" href="#building-sel4test">Building sel4test</a></h1>
 <p>As a worked example throughout this section the <a href="https://docs.sel4.systems/projects/sel4test">seL4Test</a> project will be used. seL4Test is a test suite for seL4 developed and maintained by the seL4 Foundation.</p>
-<p>This section of the document assumes the <a href="../install_and_configure/build_environment_setup.html">build environment setup</a> has been completed. All commands provided within this section are to be executed within the build environment; i.e. please ensure that you have followed the instructions in the <a href="../install_and_configure/build_environment_setup.html#usage">build environment setup's usage</a> section and that you execute the following commands from inside the Docker container.</p>
+<p>This section of the document assumes the <a href="../install_and_configure/build_environment_setup.html">build environment setup</a> has been completed and the user is using the CAmkES docker environment (../install_and_configure/build_environment_setup.md#Installation#CAmkES). All commands provided within this section are to be executed within the build environment; i.e. please ensure that you have followed the instructions in the <a href="../install_and_configure/build_environment_setup.html#usage">build environment setup's usage</a> section and that you execute the following commands from inside the Docker container.</p>
 <h2 id="context"><a class="header" href="#context">Context</a></h2>
 <p>The seL4Test example that is built in this section is a result of an seL4 port for the Avnet MaaXBoard that we created for this developer kit. Whilst our seL4 port is not documented here in detail, there is some guidance on this in the <a href="#appendices">Guide to Porting seL4</a> appendix, which includes links to the Git commits that added the MaaXBoard port to the main seL4 repositories.</p>
 <h2 id="getting-the-code"><a class="header" href="#getting-the-code">Getting the Code</a></h2>
@@ -189,34 +189,16 @@
 <pre><code class="language-text">cd /host/seL4Test
 </code></pre>
 <p>Clone the code and dependencies:</p>
-<pre><code class="language-bash">repo init -u https://github.com/seL4/sel4test-manifest.git
-</code></pre>
-<pre><code class="language-bash">repo sync
+<pre><code class="language-bash">git clone git@github.com:sel4devkit/sel4devkit-maaxboard-first-boot-sel4test.git
 </code></pre>
 <h2 id="building"><a class="header" href="#building">Building</a></h2>
-<p>To support building with multiple different configurations within a single project, a directory is created for each configuration to contain the build artefacts. Different configurations are used for different platforms, architectures, or other build options.</p>
-<p>For the purposes of this example, two configurations are supported for the MaaXBoard: one for AArch32 and one for AArch64.</p>
-<p>The executable files that are produced can be executed on the target platform by following the guidance in the <a href="execution_on_target_platform.html">Execution on Target Platform</a> section.</p>
-<h3 id="aarch32-build-instructions"><a class="header" href="#aarch32-build-instructions">AArch32 Build Instructions</a></h3>
-<pre><code class="language-bash"># Create directory for compilation artefacts
-mkdir /host/seL4Test/build-MaaXBoard-AArch32
-cd /host/seL4Test/build-MaaXBoard-AArch32
-# Configure build directory
-../init-build.sh -DPLATFORM=maaxboard -DAARCH32=TRUE
-# Compile
-ninja
+<p>The sel4test example uses the make build system therefore make needs to be run in the repository:</p>
+<pre><code>cd sel4devkit-maaxboard-first-boot-sel4test
 </code></pre>
-<p>On completion of the compilation, the resulting executable is available at <code>/host/seL4Test/build-MaaXBoard-AArch32/images/sel4test-driver-image-arm-maaxboard</code> on the build environment, or available at <code>/&lt;host_directory&gt;/seL4Test/build-MaaXBoard-AArch32/images/sel4test-driver-image-arm-maaxboard</code> on the host machine, where <code>/&lt;host_directory&gt;</code> was the directory on the host mapped to the build environment.</p>
-<h3 id="aarch64-build-instructions"><a class="header" href="#aarch64-build-instructions">AArch64 Build Instructions</a></h3>
-<pre><code class="language-bash"># Create directory for compilation artefacts
-mkdir /host/seL4Test/build-MaaXBoard-AArch64
-cd /host/seL4Test/build-MaaXBoard-AArch64
-# Configure build directory
-../init-build.sh -DPLATFORM=maaxboard -DAARCH64=TRUE
-# Compile
-ninja
+<pre><code>make get
+make all
 </code></pre>
-<p>On completion of the compilation, the resulting executable is available at <code>/host/seL4Test/build-MaaXBoard-AArch64/images/sel4test-driver-image-arm-maaxboard</code> on the build environment, or available at <code>/&lt;host_directory&gt;/seL4Test/build-MaaXBoard-AArch64/images/sel4test-driver-image-arm-maaxboard</code> on the host machine, where <code>/&lt;host_directory&gt;</code> was the directory on the host mapped to the build environment.</p>
+<p>On completion of the compilation, the resulting executable is available at <code>/host/sel4devkit-maaxboard-first-boot-sel4test/out/program.elf</code> on the build environment, or available at <code>/&lt;host_directory&gt;/sel4devkit-maaxboard-first-boot-sel4test/out/program.elf</code> on the host machine, where <code>/&lt;host_directory&gt;</code> was the directory on the host mapped to the build environment.</p>
 <h2 id="appendices"><a class="header" href="#appendices">Appendices</a></h2>
 <h2 id="guide-to-porting-sel4"><a class="header" href="#guide-to-porting-sel4">Guide to Porting seL4</a></h2>
 <p>The level of work required and complexity of porting seL4 to a new platform is directly related to the level of similarity between the system to be ported and systems already supported by seL4. Porting seL4 to a new system based upon a SoC (system-on-chip) already supported by seL4 is likely to be relatively straightforward whilst porting seL4 to a system with a currently unsupported SoC is likely to require more work, e.g. requiring the addition of new serial and timer drivers.</p>
