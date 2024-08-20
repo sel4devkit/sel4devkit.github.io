@@ -250,40 +250,23 @@ sudo mkfs.vfat /dev/&lt;disk&gt;2 -F 32 -n FILESYS
 <h2 id="building-u-boot"><a class="header" href="#building-u-boot">Building U-Boot</a></h2>
 <p>In order to build U-Boot, the seL4devkit Docker build environment is required, please see <a href="build_environment_setup.html">Build Environment Setup</a> to setup this up if you haven't already done so.</p>
 <ol>
-<li>
-<p>In a suitable location on your host machine, create a new directory with a relevant name, e.g. <code>maaxboard-uboot-build</code></p>
-</li>
-<li>
-<p>Using a terminal, run the following command to start the seL4devkit Docker environment, changing <code>/your/working/folder/path/here</code> to the absolute path of the folder you just created:</p>
-<ul>
-<li>
-<p><code>docker run -it --rm -v /your/working/folder/path/here:/host:z ghcr.io/sel4devkit/maaxboard:latest</code></p>
-</li>
-<li>
-<p>For more information on starting the seL4devkit build environment, refer to the <a href="build_environment_setup.html#usage">usage section of 'Build Environment Setup'</a>.</p>
-</li>
-</ul>
-</li>
-<li>
-<p>Once the bash shell in your build environment has loaded, you can now clone the <a href="https://github.com/sel4devkit/maaxboard-uboot">maaxboard-uboot</a> repository from <code>https://github.com/sel4devkit/maaxboard-uboot.git</code> using git.</p>
-</li>
-<li>
-<p>Once git has successfully cloned the repository, a new folder called <code>maaxboard-uboot</code> should be created, containing a README file, some build scripts, and a <code>firmware</code> folder.</p>
-</li>
-<li>
-<p>Once you have verified you have the correct files, run the main build script using <code>./build.sh</code> (the other build scripts are used if <a href="#appendix-2">building offline</a>).</p>
-</li>
-<li>
-<p><code>build.sh</code> will clone a number of git repositories and extract necessary files from them (see the <a href="#appendix">appendix</a> for an explanation of the build script), after which you will be presented with a license agreement for the NXP firmware for the i.MX8. You can navigate this agreement with the up and down arrow keys. Assuming you are happy to accept the agreement, type <code>y</code> to accept when prompted. <em>Note: if you decline the EULA, the build process will be terminated, since the firmware is required to build U-Boot.</em></p>
-</li>
-<li>
-<p>After the script has completed the build process, if successful you should see the following:
-<img src="figures/successful-uboot-build.png" alt="successful-uboot-build" /></p>
-<p><em>Note: During compilation of U-Boot the following spurious warning is generated and can be safely ignored:</em> <code>WARNING 'lpddr4_pmu_train_1d_imem.bin' not found, resulting binary is not-functional</code>.</p>
-</li>
-<li>
-<p>The generated <code>flash.bin</code> file is now ready to write to storage media.</p>
-</li>
+<li>Clone the repository:</li>
+</ol>
+<pre><code>git clone git@github.com:sel4devkit/sel4devkit-maaxboard-bootloader-u-boot.git
+</code></pre>
+<ol start="2">
+<li>Clone dependencies</li>
+</ol>
+<pre><code>cd sel4devkit-maaxboard-bootloader-u-boot
+make get
+</code></pre>
+<ol start="3">
+<li>Build</li>
+</ol>
+<pre><code>make all
+</code></pre>
+<ol start="4">
+<li>The generated file <code>flash.bin</code> is located in the <code>out</code> file and can be written to storage media.</li>
 </ol>
 <h2 id="writing-u-boot-to-the-sd-card"><a class="header" href="#writing-u-boot-to-the-sd-card">Writing U-Boot to the SD card</a></h2>
 <ol>
@@ -300,108 +283,6 @@ sudo mkfs.vfat /dev/&lt;disk&gt;2 -F 32 -n FILESYS
 </li>
 <li>
 <p>The image should now be written to your SD card and should be bootable by the MaaXBoard.</p>
-</li>
-</ol>
-<h2 id="appendix"><a class="header" href="#appendix">Appendix</a></h2>
-<h3 id="understanding-buildsh"><a class="header" href="#understanding-buildsh">Understanding build.sh</a></h3>
-<p>Whilst an understanding of how the build script (<a href="https://github.com/sel4devkit/maaxboard-uboot/blob/main/build.sh"><code>build.sh</code></a>) functions is not required for most use cases, such information is useful in case the developer has a need to modify the script. For example, it may be necessary to adapt the script for a different board or to update the script to use a different version or fork of U-Boot.</p>
-<p>This section seeks to document the origins of the script and provide guidance on potential modifications.</p>
-<h4 id="origin-and-rationale"><a class="header" href="#origin-and-rationale">Origin and rationale</a></h4>
-<p>The steps performed by the build script mirror, and are distilled from, those performed by the much more complex build script <a href="https://github.com/Avnet/uboot-imx/blob/maaxboard_v2020.04_5.4.24_2.1.0/mk-imx-boot.sh"><code>mk-imx-boot.sh</code></a> provided by the Avnet U-Boot fork.</p>
-<p>The <code>build.sh</code> build script was produced to:</p>
-<ol>
-<li>
-<p>Remove much of the complexity of the <code>mk-imx-boot.sh</code> script, cutting it down to the bare minimum required to support the MaaXBoard, thereby making the required build steps clear; and</p>
-</li>
-<li>
-<p>Ensure that the build script only uses resources held within the development kit GitHub account, thereby ensuring that the ability to build a known-working U-Boot cannot be broken by changes to upstream repositories.</p>
-</li>
-</ol>
-<h4 id="build-steps"><a class="header" href="#build-steps">Build steps</a></h4>
-<p>To build U-Boot for the MaaXBoard, and indeed any board, the following resources are generally required:</p>
-<ul>
-<li>
-<p>A version of U-Boot with drivers supporting the board and a configuration file targeting the board. This will typically be either the U-Boot mainline or a fork of U-Boot provided by the board manufacturer.</p>
-</li>
-<li>
-<p>Firmware for the board hardware, e.g. to initialise and configure hardware such as the memory. This will typically be supplied by the board or SoC manufacturer.</p>
-</li>
-<li>
-<p>Firmware for the processor. In the case of an ARM-based SoC, such as the i.MX8MQ used on the MaaXBoard, this is the ATF (ARM Trusted Firmware).</p>
-</li>
-<li>
-<p>A tool to compose all of the required elements (e.g. compiled U-Boot binaries and firmware blobs) into the structure and layout expected by the board at boot. In the case of i.MX-based SoCs this tool is <a href="https://github.com/sel4devkit/imx-mkimage"><code>imx-mkimage</code></a>.</p>
-</li>
-</ul>
-<p>To satisfy the requirements above, the build script performs the following steps<sup class="footnote-reference"><a href="#note">1</a></sup>:</p>
-<ol>
-<li>
-<p>Clones a copy of the U-Boot sources that support the MaaXBoard.</p>
-</li>
-<li>
-<p>Clones a copy of the ATF (ARM Trusted Firmware).</p>
-</li>
-<li>
-<p>Clones a copy of the source code of the <code>imx-mkimage</code> tool.</p>
-</li>
-<li>
-<p>Configures U-Boot build system for the MaaXBoard and then compiles the U-Boot binaries.</p>
-</li>
-<li>
-<p>Decompresses and compiles the DDR PHY and HDMI firmware.</p>
-</li>
-<li>
-<p>Compiles the ATF configured for the i.MX8MQ SoC as used by the MaaXBoard.</p>
-</li>
-<li>
-<p>Copies all of the binaries and firmware elements produced in the earlier steps into the locations expected by <code>imx-mkimage</code>.</p>
-</li>
-<li>
-<p>Builds and executes <code>imx-mkimage</code> configured for the i.MX8MQ SoC in 'headless' mode.</p>
-</li>
-</ol>
-<div class="footnote-definition" id="note"><sup class="footnote-definition-label">1</sup>
-<p>These steps are factored into the <code>clone.sh</code> and <code>build-offline.sh</code> scripts called by <code>build.sh</code>.</p>
-</div>
-<p>The build steps, if successful, result in a binary named <code>flash.bin</code> which is suitable for booting the MaaXBoard if placed in a specific location on an SD card as documented within the section <a href="#partitioning-the-sd-card">partitioning the SD card</a>.</p>
-<h4 id="modifying-the-build-script"><a class="header" href="#modifying-the-build-script">Modifying the build script</a></h4>
-<p>Given the detailed explanation of the steps performed by the build script above, it is expected that modifying the script should be relatively straightforward.</p>
-<p>Whilst the build steps and their ordering is expected to remain unchanged, the contents of each of those steps can easily be changed, for example:</p>
-<ul>
-<li>
-<p>The locations of Git repositories and the branch cloned by the script can be modified.</p>
-</li>
-<li>
-<p>The version of the <a href="https://github.com/sel4devkit/maaxboard-uboot/tree/main/firmware">firmware</a> supplied by NXP can be changed.</p>
-</li>
-<li>
-<p>The choices of configuration options and firmware to be included can be changed.</p>
-</li>
-</ul>
-<p>It is expected that such changes would be made within a fork of the <a href="https://github.com/sel4devkit/maaxboard-uboot"><code>maaxboard-uboot</code></a> Git repository that provides the build script and folder structure supporting the build.</p>
-<h2 id="appendix-2"><a class="header" href="#appendix-2">Appendix 2</a></h2>
-<h3 id="building-u-boot-offline"><a class="header" href="#building-u-boot-offline">Building U-Boot offline</a></h3>
-<ol>
-<li>
-<p>On a computer with an internet connection, clone the maaxboard-uboot repository using:</p>
-<pre><code class="language-text">git clone https://github.com/sel4devkit/maaxboard-uboot.git
-</code></pre>
-</li>
-<li>
-<p>Run the <code>clone.sh</code> script to download the required files for building U-Boot.</p>
-</li>
-<li>
-<p>When the clone is complete, the following message is shown:</p>
-<pre><code class="language-text">+----------------------------------------------------------------+
-|  Source code for compiling U-Boot now cloned.                  |
-|  This folder can now be transferred to an offline computer     |
-|  and U-Boot built by running build-offline.sh.                 |
-|  If you ran build.sh, build will start now.                    |
-+----------------------------------------------------------------+
-</code></pre>
-</li>
-<li>
-<p>The cloned repository folder can be transferred to an offline machine, and built within the Docker container using <code>build-offline.sh</code>.</p>
 </li>
 </ol>
 
