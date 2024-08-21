@@ -190,10 +190,10 @@ achieved through deliberate design and profiling, potentially accepting
 greater complexity in the formal verification where this achieves higher
 performance.</p>
 <p>The development of the seL4 Microkernel is overseen by the <a href="https://sel4.systems/Foundation/">seL4
-Foundation</a>, operating as project under The
-<a href="https://www.linuxfoundation.org/">Linux Foundation</a>. The entirety of the seL4
-Microkernel, and its associated components, are made available as Open Source,
-on Git Hub (<a href="https://github.com/seL4">seL4 Microkernel and associated
+Foundation</a>, operating as a project under
+The <a href="https://www.linuxfoundation.org/">Linux Foundation</a>. The entirety of the
+seL4 Microkernel, and its associated components, are made available as Open
+Source, on Git Hub (<a href="https://github.com/seL4">seL4 Microkernel and associated
 components</a>).</p>
 <p>In common with all Microkernels, the seL4 Microkernel provides a minimum set
 of essential features as needed to frame a viable OS (Operating System). There
@@ -214,8 +214,8 @@ seL4 in their projects and products.</p>
 </ul>
 <h3 id="complementary-approach"><a class="header" href="#complementary-approach">Complementary Approach</a></h3>
 <p>This seL4 Developer Kit does not intend to cover or replace any of the
-extensive material as maintained by the (<a href="https://sel4.systems">seL4
-Foundation</a>) and associated organisations.</p>
+extensive material as maintained by the <a href="https://sel4.systems">seL4
+Foundation</a> and associated organisations.</p>
 <p>Instead, the purpose is to complement this existing material with practical
 guidance about getting started with seL4. Throughout the seL4 Developer Kit,
 reference is made to externally maintained material where appropriate.</p>
@@ -226,13 +226,13 @@ priority and prominence is given to seL4 specific details, while more routine
 aspects are explained at a higher level or through external reference (such as
 installing software or interacting with configuration management).</p>
 <div style="break-before: page; page-break-before: always;"></div><h2 id="overview"><a class="header" href="#overview">Overview</a></h2>
-<p>The seL4 Developer Kit intends to support developers in gaining familiarity
-with seL4 Microkernel, and ultimately to encourage more use of seL4 within
-projects and products. It does this by:</p>
+<p>The seL4 Developer Kit supports developers in gaining familiarity with seL4
+Microkernel, and ultimately to encourage more use of seL4 within projects and
+products. It does this by:</p>
 <ul>
 <li>
 <p>Selecting a readily available low-cost SBC (Single Board Computer) as the
-target platform ((The <a href="introduction/%22../avent_maaxboard/main.html">Avnet MaaXBoard</a>).</p>
+target platform (The <a href="introduction/%22../avent_maaxboard/main.html">Avnet MaaXBoard</a>).</p>
 </li>
 <li>
 <p>Identifying the minimum needed to create a viable development platform, and
@@ -253,7 +253,7 @@ the chosen target platform.</p>
 <p>Once the fundamentals of building and executing an seL4 program are
 established, the seL4 Developer Kit seeks to explain and encourage further
 development through the presentation of a diverse series of technical
-(<a href="introduction/%22../activities/activities.html">Activities</a>).</p>
+<a href="introduction/%22../activities/activities.html">Activities</a>.</p>
 <div style="break-before: page; page-break-before: always;"></div><h2 id="structure"><a class="header" href="#structure">Structure</a></h2>
 <p>The seL4 Developer Kit is structured into the following sections to provide a
 step-by-step guide:</p>
@@ -265,8 +265,8 @@ Developer Kit as a means to help facilitate and encourage wider adoption.</p>
 </li>
 <li>
 <p><strong>Resources</strong>: Provides an overview of the fundamental aspects of both the
-seL4 Microkernel and the Avent MaaXBoard (our chosen SBC (Single Board
-Computer)), highlighting relevant supporting material from other sources. The
+seL4 Microkernel and our chosen SBC (Single Board Computer), the the Avent
+MaaXBoard, highlighting relevant supporting material from other sources. The
 technical scope of the seL4 Developer Kit is summerised though a list of its
 associated repositories. Finally, a consolidated glossary of key terms is
 presented for easy reference.</p>
@@ -299,37 +299,139 @@ development may be practically progressed.</p>
 </li>
 </ul>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="resources"><a class="header" href="#resources">Resources</a></h1>
-<p>Presents for immediate reference a summary of the various resources associated
-with seL4 Developer Kit.</p>
-<h2 id="supporting-material"><a class="header" href="#supporting-material">Supporting Material</a></h2>
-<p>The seL4 Developer Kit makes use of a large collection of existing material.
-Here, we summarise and reference this material, explaining its relevance to
-the seL4 Developer Kit.</p>
-<p>Distinct areas considered are listed below:</p>
+<p>This section presents a high level overview of the fundamental resources
+associated with the seL4 Developer Kit. The majority of this section is
+deliberately framed in terms of references to external content. The intention
+is that developers will refer to, and return to, this section to find further
+avenues of information to help with their efforts.</p>
+<p>The section is structured as follows:</p>
 <ul>
-<li><a href="resources/%22../resources/sel4_microkernel.html">seL4 Microkernel</a></li>
-<li><a href="resources/%22../resources/avent_maaxboard.html">Avent MaaXBoard</a></li>
+<li><a href="resources/../resources/sel4_microkernel.html">seL4 Microkernel</a>: Provide an overview of the
+seL4 Microkernel, focusing on its capabilities and infrastructure as relates
+to the seL4 Developer Kit.</li>
+<li><a href="resources/../resources/avent_maaxboard.html">Avent MaaXBoard</a>: Describe the rationale
+behind the selection of our chosen SBC, the Avent MaaXBoard. Further,
+summarise and reference entry points into its available resources.</li>
+<li><a href="resources/../resources/glossary.html">Glossary</a>: A consolidated glossary of key terms
+for subsequent reference.</li>
+<li><a href="resources/../resources/repositories.html">Repositories</a>: Summarise the suite of
+repositories that collectively deliver the seL4 Developer Kit.</li>
 </ul>
-<h2 id="repositories"><a class="header" href="#repositories">Repositories</a></h2>
-<p>A summarised list of all the repositories that form part of the seL4 Developer
-Kit is presented to support their navigation:</p>
+<div style="break-before: page; page-break-before: always;"></div><h2 id="sel4-microkernel"><a class="header" href="#sel4-microkernel">seL4 Microkernel</a></h2>
+<p>The <a href="https://sel4.systems">seL4 Microkernel</a>, and its closely associated
+components, is managed by the <a href="https://sel4.systems/Foundation">seL4
+Foundation</a>, operating as a project under the
+<a href="https://www.linuxfoundation.org">Linux Foundation</a>. The entirety of the seL4
+Foundation contribution is made publicly available. More so, there are several
+related efforts that provide further relevant contributions.</p>
+<h3 id="community"><a class="header" href="#community">Community</a></h3>
+<p>The main entry points to the seL4 community are as follows:</p>
 <ul>
-<li><a href="resources/reference/repositories.html">Repositories</a></li>
+<li>
+<p><a href="https://sel4.systems">seL4 Microkernel</a>: The primary landing page for seL4,
+as maintained by the seL4 Foundation. This provides the latest information
+and news related to seL4.</p>
+</li>
+<li>
+<p><a href="https://docs.sel4.systems">seL4 Microkernel Community Documentation</a>: Large
+corpus of community maintained documentation associated with the seL4
+Microkernel itself, many of its associated components, and projects
+incorporating seL4 aspects.</p>
+</li>
+<li>
+<p><a href="https://github.com/sel4">seL4 Foundation Git Hub</a>: The primary location for
+all seL4 content as maintained by the seL4 Foundation.</p>
+</li>
+<li>
+<p><a href="https://trustworthy.systems">Trustworthy Systems</a>: A research group, based
+at the School of CSE (Computer Science and Engineering) of UNSW (University
+of New South Wales) Sydney. The original developers of seL4, still very active
+in the community, with various ongoing seL4 related research and projects.</p>
+</li>
+<li>
+<p><a href="https://trustworthy.systems/projects/microkit/tutorial/welcome.html">seL4 Microkit Tutorial</a>:
+A tutorial, prepared by Trustworthy Systems, for getting started with the seL4
+Microkit, principally focusing on an emulated target (via the QEMU simulator).</p>
+</li>
+<li>
+<p><a href="https://github.com/au-ts">Trustworthy Systems Git Hub</a>: The primary
+location for all seL4 content as maintained by Trustworthy Systems.</p>
+</li>
 </ul>
-<h2 id="glossary"><a class="header" href="#glossary">Glossary</a></h2>
-<p>A consolidated glossary of key terms is presented for easy reference:</p>
+<h3 id="components"><a class="header" href="#components">Components</a></h3>
+<p>Several significant seL4 components are highlighted below. Many of these
+components are directly utilised within this seL4 Developer Kit:</p>
 <ul>
-<li><a href="resources/reference/glossary.html">Glossary</a></li>
+<li>
+<p><a href="https://github.com/seL4/seL4">seL4 Microkernel</a>: The seL4 Microkernel.</p>
+</li>
+<li>
+<p><a href="https://github.com/seL4/camkes-manifest">CAmkES</a>: The entry point to CAmkES
+(component architecture for microkernel-based embedded systems).</p>
+</li>
+<li>
+<p><a href="https://github.com/seL4/microkit">Microkit</a>: Retains Microkit, a simple and
+small framework for building and running applications atop the seL4
+Microkernel.</p>
+</li>
+<li>
+<p><a href="https://github.com/au-ts/sddf">sDDF</a>: The sDDF (seL4 Device Driver
+Framework). Provides a suite of generic capabilities (interfaces and
+protocols) and also specific deployments (drivers and examples). The
+contribution is geared for easing the deployment of device drivers atop the
+seL4 Microkernel.</p>
+</li>
+<li>
+<p><a href="https://github.com/au-ts/libvmm">libvmm</a>: A VMM (Virtual Machine Monitor)
+library, permitting the execution of virtualised guest hosts, atop the seL4
+Microkernel.</p>
+</li>
+<li>
+<p><a href="https://lionsos.org">Lions OS</a>: Trustworthy Systems are developing the
+Lions OS (Operating System), building atop both the principles and
+technology associated with the seL4 Microkernel.</p>
+</li>
 </ul>
-<div style="break-before: page; page-break-before: always;"></div><h1 id="sel4-microkernel"><a class="header" href="#sel4-microkernel">seL4 Microkernel</a></h1>
-<p>The <a href="https://sel4.systems">seL4 Microkernel</a> is a technology of increasing interest and has potential to deliver significant benefit across a range of applications that require strong domain separation and software-enforced trusted execution environments.</p>
-<p>seL4 is formally verified software and therefore offers significant benefits over other software-based implementations in terms of the assurance and trust that can be gained. Given it is open source COTS technology, the potential for reduced cost for high assurance products and reduced time to market are significant.</p>
-<p>Developing on top of the seL4 microkernel is currently complex and time-consuming, and the expertise is limited to a small number of individuals and organisations. This developer kit is targeted at reducing the barrier to entry for using (i.e. developing on top of) the seL4 technology and increasing the number of organisations that can cost-effectively adopt seL4 in their products.</p>
+<h3 id="context"><a class="header" href="#context">Context</a></h3>
+<p>The seL4 Microkernel may be reasonably characterised as a technology of
+increasing relevance and interest.</p>
+<p>Historically, it is relatively ordinary for an academic system to deliver
+novel advancements in high-assurance, while sacrificing the algorithmic
+complexity associated with achieving high-performance. Or, conversely, for a
+platform to offer high-performance, while sacrificing the controls and
+constraints associated with achieving high-assurances.  Thus, a key
+differentiator of the seL4 Microkernel is its <em>simultaneous</em> focus, and
+evidenced achievement, of both high-assurance and high-performance.</p>
+<p>In particular, in the current modern climate, it is straight forward to
+identify numerous security critical applications which could immediately
+benefit from building atop an existing high-assurance and high-performance
+platform.</p>
+<p>The formation the seL4 Foundation (07 April 2020) (<a href="https://www.linuxfoundation.org/press/press-release/sel4-microkernel-optimized-for-security-gets-support-of-linux-foundation">press
+release</a>)
+is a key indicator of the growing importance of the seL4 Microkernel, and the
+explicit intention to enhance and mature its associated contributions.</p>
+<p>The two main frameworks for developing seL4 applications are:</p>
+<ul>
+<li><a href="https://github.com/seL4/camkes-manifest">CAmkES</a>: Introduced in 2015.</li>
+<li><a href="https://github.com/seL4/microkit">Microkit</a>: Introduced in 2020.</li>
+</ul>
+<p>These two frameworks adopt very contrasting approaches. CAmkES provides a rich
+feature set, but has greater complexity. Microkit provides a very minimum
+feature set, but has greater simplicity.</p>
+<p>Both frameworks remain supported by the seL4 Foundation, and are accommodated
+in this sel4 developer kit. However, in many respects, Microkit may be
+regarded as a response to the lessons learned from CAmkES, and is gradually
+emerging as the logical default choice for any new development. Perhaps,
+fundamentally, Microkit may be positioned as being closer in spirit to
+Microkernels, in providing essential behaviours only, and thus provides a more
+compelling fit as a seL4 Microkernel component. A guide for translating CAmkES
+applications into Microkit is available externally (<a href="https://github.com/au-ts/camkes_to_microkit_guide/blob/main/guide.md">CAmkES to
+Microkit</a>).</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="avnet-maaxboard"><a class="header" href="#avnet-maaxboard">Avnet MaaxBoard</a></h1>
 <p>The Avnet MaaxBoard is a powerful single-board computer (SBC) designed to cater to a embedded computing applications. Built around the NXP i.MX 8M Quad processor, the MaaxBoard offers robust performance with its quad-core ARM Cortex-A53 CPU and ARM Cortex-M4 co-processor, making it suitable for multimedia, IoT, and industrial automation projects. It features a rich set of I/O options, including multiple USB ports, Gigabit Ethernet, HDMI output, and support for various display and camera interfaces, providing flexibility for diverse development needs. The board is also equipped with 2GB of LPDDR4 memory and 16GB of eMMC storage, ensuring ample resources for running complex applications. With its compatibility with popular Linux distributions and support from a vibrant community, the Avnet MaaxBoard stands out as a versatile and accessible platform for developers looking to prototype and deploy innovative embedded solutions.</p>
 <h2 id="imx8m-processor"><a class="header" href="#imx8m-processor">IMX8M processor</a></h2>
 <p>The Avnet MaaxBoard uses the i.MX 8M Quad processor developed by NXP. The application processor reference manual is a useful document for developing atop this processor. This link for this manual is <a href="https://www.nxp.com/webapp/sps/download/preDownload.jsp?render=true">here</a>. You will to create an NXP account the gain access to the manual.</p>
-<div style="break-before: page; page-break-before: always;"></div><h1 id="repositories-1"><a class="header" href="#repositories-1">Repositories</a></h1>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="repositories"><a class="header" href="#repositories">Repositories</a></h1>
 <div class="table-wrapper"><table><thead><tr><th>Repository</th><th>Purpose</th></tr></thead><tbody>
 <tr><td><a href="resources/">https://github.com/sel4devkit/sel4devkit-manual</a></td><td>User Manual and its hosting on GitHub Pages</td></tr>
 <tr><td><a href="resources/">https://github.com/sel4devkit/sel4devkit-maaxboard-camkes-docker-dev-env</a></td><td>MaaXBoard CAmkES Docker Development Environment</td></tr>
@@ -341,7 +443,7 @@ Kit is presented to support their navigation:</p>
 <tr><td><a href="resources/">https://github.com/sel4devkit/sel4devkit-maaxboard-linux-guest</a></td><td>Coordinate Build of MaaXBoard Linux Guest</td></tr>
 <tr><td><a href="resources/">https://github.com/sel4devkit/sel4devkit-maaxboard-microkit-vmm-single-linux-guest</a></td><td>Coordinate Build of MaaXBoard Microkit VMM Single Linux Guest</td></tr>
 </tbody></table>
-</div><div style="break-before: page; page-break-before: always;"></div><h1 id="glossary-1"><a class="header" href="#glossary-1">Glossary</a></h1>
+</div><div style="break-before: page; page-break-before: always;"></div><h1 id="glossary"><a class="header" href="#glossary">Glossary</a></h1>
 <div class="table-wrapper"><table><thead><tr><th>Term</th><th>Definition</th></tr></thead><tbody>
 <tr><td><a href="https://en.wikipedia.org/wiki/ARM_architecture_family#AArch32">AArch32</a></td><td>Execution state of <a href="https://en.wikipedia.org/wiki/ARM_architecture_family#64/32-bit_architecture">ARMv8</a> architecture using 32-bit wide general-purpose registers.</td></tr>
 <tr><td><a href="https://en.wikipedia.org/wiki/AArch64">AArch64</a></td><td>Execution state of <a href="https://en.wikipedia.org/wiki/ARM_architecture_family#64/32-bit_architecture">ARMv8</a> architecture using 64-bit wide general-purpose registers.</td></tr>
@@ -723,7 +825,7 @@ make get
 <pre><code>make all
 </code></pre>
 <ol start="4">
-<li>The generated file <code>flash.bin</code> is located in the <code>out</code> file and can be written to storage media.</li>
+<li>The generated file <code>flash.bin</code> is located in the <code>/out</code> folder and can be written to storage media.</li>
 </ol>
 <h2 id="writing-u-boot-to-the-sd-card"><a class="header" href="#writing-u-boot-to-the-sd-card">Writing U-Boot to the SD card</a></h2>
 <ol>
@@ -1068,7 +1170,7 @@ uenvcmd=usb start; for devtype in usb mmc; do for devnum in 0 1; do run elf_dev_
 <div style="break-before: page; page-break-before: always;"></div><h1 id="sel4test"><a class="header" href="#sel4test">sel4test</a></h1>
 <p>As a worked example throughout this section the <a href="https://docs.sel4.systems/projects/sel4test">seL4Test</a> project will be used. seL4Test is a test suite for seL4 developed and maintained by the seL4 Foundation.</p>
 <p>This section of the document assumes the <a href="first_boot/../install_and_configure/build_environment_setup.html">build environment setup</a> has been completed and the user is using the <a href="first_boot/../install_and_configure/build_environment_setup.html#camkes">CAmkES docker environment</a>. All commands provided within this section are to be executed within the build environment; i.e. please ensure that you have followed the instructions in the <a href="first_boot/../install_and_configure/build_environment_setup.html#usage">build environment setup's usage</a> section and that you execute the following commands from inside the Docker container.</p>
-<h2 id="context"><a class="header" href="#context">Context</a></h2>
+<h2 id="context-1"><a class="header" href="#context-1">Context</a></h2>
 <p>The seL4Test example that is built in this section is a result of an seL4 port for the Avnet MaaXBoard that we created for this developer kit. Whilst our seL4 port is not documented here in detail, there is some guidance on this in the <a href="first_boot/sel4test.html#appendices">Guide to Porting seL4</a> appendix, which includes links to the Git commits that added the MaaXBoard port to the main seL4 repositories.</p>
 <h2 id="getting-the-code"><a class="header" href="#getting-the-code">Getting the Code</a></h2>
 <p>Clone the repository:</p>
@@ -1270,6 +1372,19 @@ MON|INFO: completed system invocations
 hello, world
 </code></pre>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="activities"><a class="header" href="#activities">Activities</a></h1>
+<p>These techical activities provide a range of examples which seek to demonstrate how to develop with seL4. For each activity our development process is discussed which intends to shed light on the our experience with writing programs in seL4. This aims to show the lessons we learnt along the way and act as inspiration for others wishing to embark on writing their own systems and programs with seL4.</p>
+<ul>
+<li><strong><a href="activities/../activity/camkes_case_study_application/main.html">CAmkES Case Study Application</a></strong> -</li>
+<li><strong><a href="activities/../activity/microkit_case_study_application/main.html">Microkit Case Study Application</a></strong> -</li>
+<li><strong><a href="activities/../activity/device_drivers/main.html">Device Drivers</a></strong> - Guidance on adding device drivers to seL4.</li>
+<li><strong><a href="activities/../activity/microkit_hdmi_driver/main.html">Microkit HDMI Driver</a></strong> - A basic HDMI Driver capable of displaying static images and simple moving images.</li>
+<li><strong><a href="activities/../activity/microkit_memory_probe/main.html">Microkit Memory Probe</a></strong> -</li>
+<li><strong><a href="activities/../activity/microkit_usb_driver/main.html">Microkit USB Driver</a></strong> - A XHCI USB driver with support for Keyboard, Mouse, Resistive Touch Screen, USB Hub and Mass Storage Devices</li>
+<li><strong><a href="activities/../activity/microkit_vmm_single_linux_guest/main.html">Microkit Single Linux VMM</a></strong> - Loads up a single Linux virtual machine with serial I/O.</li>
+<li><strong><a href="activities/../activity/microkit_dual_linux_guest_tty_multiplex/main.html">Microkit Dual Linux VMM with TTY Multiplexing</a></strong> - Loads up two Linux virtual machines with serial I/O and multiplexing for each virtual machine.</li>
+<li><strong><a href="activities/../activity/microkit_dual_linux_guest_usb_routing/main.html">Microkit Dual Linux VMM with USB Routing</a></strong>- An investigation into communication between virtual machines.</li>
+<li><strong><a href="activities/../activity/spi_bus_bmp280_pressure_sensor/main.html">SPI Bus BMP280 Pressure Sensor RENAME</a></strong> -</li>
+</ul>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="todo"><a class="header" href="#todo">TODO</a></h1>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="device-driver-introduction"><a class="header" href="#device-driver-introduction">Device Driver Introduction</a></h1>
 <p>This section seeks to provide guidance on adding device drivers to seL4.</p>
