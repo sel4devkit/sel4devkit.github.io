@@ -199,7 +199,7 @@ cd build
 ninja
 </code></pre>
 <p>where <code>xxx.xxx.xxx.xxx</code> is the IP address to allocate to the MaaXBoard.</p>
-<p>A successful build will result in an executable file called <code>capdl-loader-image-arm-maaxboard</code> in the <code>images</code> subdirectory. This should be copied to a file named <code>sel4_image</code> and then made available to the preferred loading mechanism, such as TFTP, as per <a href="execution_on_target_platform.html">Execution on Target Platform</a>.</p>
+<p>A successful build will result in an executable file called <code>capdl-loader-image-arm-maaxboard</code> in the <code>images</code> subdirectory. This should be copied to a file named <code>sel4_image</code> and then made available to the preferred loading mechanism, such as TFTP, as per <a href="../../first_boot/bootloader.html">Bootloader</a>.</p>
 <p>When the <code>picoserver_uboot</code> application is running on the MaaXBoard, it should confirm that it is listening on port 1234 of the supplied IP address. It will also confirm registration of the protocol stack layers. The application allocates a random MAC address.</p>
 <p>At any time while running, the application may display <code>No such port ....</code> messages as it monitors traffic on the network; this is expected behaviour that may be ignored.</p>
 <p>Meanwhile, from a terminal window on the host machine, use the <code>netcat</code> (<code>nc</code>) command (native to Linux or macOS, or available as a <a href="https://nmap.org/ncat/">download</a> for Windows), where <code>xxx.xxx.xxx.xxx</code> is the IP address of the MaaXBoard, as previously specified:</p>

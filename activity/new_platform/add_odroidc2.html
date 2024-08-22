@@ -196,12 +196,12 @@ GitHub account name <code>rod-chapman</code> for our local forks.</p>
 <ol>
 <li>
 <p>Using the GitHub web GUI, create your own forks of the <code>sel4devkit-maaxboard-camkes-manifest</code>, <code>sel4devkit-maaxboard-camkes</code>,
-and <code>sel4devkit-maaxboard-camkes-projects_libs</code> repositories. You might want to rename using the board being ported.</p>
+and <code>sel4devkit-maaxboard-camkes-projects-libs</code> repositories. You might want to rename using the board being ported.</p>
 </li>
 <li>
 <p>Clone the <code>sel4devkit-maaxboard-camkes-manifest</code> fork into your local machine, and create
 a new branch called <code>addc2</code> to make our changes. In the following commands, remember to change <code>rod-chapman</code> to your own GitHub user name:</p>
-<pre><code class="language-text">git clone https://github.com/rod-chapman/camkes-manifest.git
+<pre><code class="language-text">git clone https://github.com/rod-chapman/sel4devkit-maaxboard-camkes-manifest.git
 cd camkes-manifest
 git checkout -b addc2
 git push --set-upstream origin addc2
@@ -209,14 +209,14 @@ cd ..
 </code></pre>
 </li>
 <li>
-<p>Similarly, clone the <code>sel4devkit-maaxboard-camkes</code> and ``sel4devkit-maaxboard-camkes-projects_libs` forks, and add a new branch to each with the same name.</p>
-<pre><code class="language-text">git clone https://github.com/rod-chapman/camkes.git
+<p>Similarly, clone the <code>sel4devkit-maaxboard-camkes</code> and <code>sel4devkit-maaxboard-camkes-projects-libs</code> forks, and add a new branch to each with the same name.</p>
+<pre><code class="language-text">git clone https://github.com/rod-chapman/sel4devkit-maaxboard-camkes.git
 cd camkes
 git checkout -b addc2
 git push --set-upstream origin addc2
 cd ..
 </code></pre>
-<pre><code class="language-text">git clone https://github.com/rod-chapman/projects_libs.git
+<pre><code class="language-text">git clone https://github.com/rod-chapman/sel4devkit-maaxboard-camkes-projects-libs.git
 cd projects_libs
 git checkout -b addc2
 git push --set-upstream origin addc2
@@ -231,7 +231,7 @@ case called <code>rod</code>) pointing at our own GitHub account.</p>
 </code></pre>
 </li>
 <li>
-<p>Similarly, edit the <code>default.xml</code> file to specify that the <code>sel4devkit-maaxboard-camkes</code> and <code>sel4devkit-maaxboard-camkes-projects_libs</code> repositories
+<p>Similarly, edit the <code>default.xml</code> file to specify that the <code>sel4devkit-maaxboard-camkes</code> and <code>sel4devkit-maaxboard-camkes-projects-libs</code> repositories
 should come from the <code>addc2</code> branches of our own forked repositories. Find the <code>project</code> line for each
 repository and modify its entry to specify our own remote (<code>rod</code>) and branch (<code>addc2</code>).</p>
 <p>For example, the <code>project</code> lines for our forks are:</p>
@@ -383,7 +383,7 @@ and for the set of device drivers that we want to support.</p>
 <p>and</p>
 <pre><code class="language-text">projects_libs/libubootdrivers/src/plat/odroidc2
 </code></pre>
-<p>Following the templates from the <a href="uboot_library_add_platform.html">New Platform</a> section,
+<p>Following the templates from the <a href="main.html">New Platform</a> section,
 we create <code>plat_driver_data.h</code> in the former of those directories.</p>
 <p>There are five UClass Drivers that are effectively mandatory (<code>nop</code>, <code>root</code>, <code>simple_bus</code>, <code>phy</code> and <code>blk</code>),
 and we want to add two more (<code>pinconfig</code> and <code>pinctrl</code>), making a total of 7, so we declare in

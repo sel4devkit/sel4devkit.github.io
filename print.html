@@ -2932,9 +2932,13 @@ systems and programs with seL4.</p>
 <ul>
 <li><a href="activities/../activity/microkit_memory_probe/main.html">Microkit Memory Probe</a>: Simple Microkit program illustrating memory access.</li>
 <li><a href="activities/../activity/device_drivers/main.html">Device Drivers</a>: Guidance on adding device drivers to seL4.</li>
+<li><a href="activities/../activity/picoserver_uboot/main.html">Test application: <code>picoserver_uboot</code></a>: Picoserver U-Boot test application.</li>
+<li><a href="activities/../activity/new_platform/main.html">Porting Device Drivers to a New Platform</a>: Guidance for porting the U-Boot driver library to a new platform.</li>
+<li><a href="activities/../activity/new_driver/">New Driver</a>: Guidance for adding a new driver to the U-Boot driver library</li>
+<li><a href="activities/../activity/guide_to_porting_seL4/">Guide to Porting seL4</a>: Guidance for porting seL4 to a new platform.</li>
 <li><a href="activities/../activity/spi_bus_bmp280_pressure_sensor/main.html">SPI Bus BMP280 Pressure Sensor</a>: Testing the Serial Peripheral Interface (SPI) driver with a pressure sensor.</li>
 <li><a href="activities/../activity/camkes_case_study_application/main.html">CAmkES Case Study Application</a>: Demonstrating device drivers being used within a larger application nominally a keyboard-based encryption device.</li>
-<li><a href="activities/../activity/microkit_case_study_application/main.html">Microkit Case Study Application</a>: Porting of the case study application to Microkit</li>
+<li><a href="activities/../activity/microkit_case_study_application/main.html">Microkit Case Study Application</a>: Porting of the case study application to Microkit.</li>
 <li><a href="activities/../activity/microkit_usb_driver/main.html">Microkit USB Driver</a>: A XHCI USB driver with support for Keyboard, Mouse, Resistive Touch Screen, USB Hub and Mass Storage Devices.</li>
 <li><a href="activities/../activity/microkit_hdmi_driver/main.html">Microkit HDMI Driver</a>: A basic HDMI Driver capable of displaying static images and simple moving images.</li>
 <li><a href="activities/../activity/microkit_vmm_single_linux_guest/main.html">Microkit Single Linux VMM</a>: Loads up a single Linux virtual machine with serial I/O.</li>
@@ -3294,7 +3298,7 @@ terminite</p>
 <p>Users of the library should be aware of its limitations, and potential workarounds for those limitations.</p>
 <ol>
 <li>
-<p><strong>Thread safety</strong>: The library is not thread safe; as such it is the responsibility of the user to serialise access to any single instance of the library. Note, however, that multiple instances of the library may be used. For example, two instances of the library could be used concurrently, each held within separate CAmkES components/ Microkit protection domains. If multiple instances of the library are used, it is the responsibility of the user to ensure that each instance is using disjoint devices, i.e. two instances of the library would not both be able to access the same USB device; however, it should be possible for one instance to access an Ethernet device whilst a second instance accesses a USB device (see the <a href="activity/device_drivers/case_study_intro.html">case study application</a> for an example of this).</p>
+<p><strong>Thread safety</strong>: The library is not thread safe; as such it is the responsibility of the user to serialise access to any single instance of the library. Note, however, that multiple instances of the library may be used. For example, two instances of the library could be used concurrently, each held within separate CAmkES components/ Microkit protection domains. If multiple instances of the library are used, it is the responsibility of the user to ensure that each instance is using disjoint devices, i.e. two instances of the library would not both be able to access the same USB device; however, it should be possible for one instance to access an Ethernet device whilst a second instance accesses a USB device (see the <a href="activity/device_drivers/../camkes_case_study_application/main.html">case study application</a> for an example of this).</p>
 </li>
 <li>
 <p><strong>Performance</strong>: Do not expect great performance from the library. The underlying U-Boot drivers have tended to prioritise simplicity over performance; for example the SPI driver for the Avnet MaaXBoard does not support the use of DMA transfers even though the underlying device can perform DMA transfers. Additionally, the library wrapper adds additional layers of address translations and data copying (e.g. in its support of memory mapped IO and DMA) as part of the trade-off for minimising changes necessary to the U-Boot drivers.</p>
@@ -3424,7 +3428,7 @@ cd build
 </code></pre>
 <pre><code class="language-bash">ninja
 </code></pre>
-<p>A successful build will result in an executable file called <code>capdl-loader-image-arm-maaxboard</code> in the <code>images</code> subdirectory. This should be copied to a file named <code>sel4_image</code> and then made available to the preferred loading mechanism, such as TFTP, as per <a href="activity/device_drivers/execution_on_target_platform.html">Execution on Target Platform</a>.</p>
+<p>A successful build will result in an executable file called <code>capdl-loader-image-arm-maaxboard</code> in the <code>images</code> subdirectory. This should be copied to a file named <code>sel4_image</code> and then made available to the preferred loading mechanism, such as TFTP, as per <a href="activity/device_drivers/../../first_boot/bootloader.html">Bootloader</a>.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="instructions-for-running-the-uboot-driver-example-microkit"><a class="header" href="#instructions-for-running-the-uboot-driver-example-microkit">Instructions for running the <code>uboot-driver-example</code>: Microkit</a></h1>
 <p>As usual, this assumes that the user is already running the Microkit Docker container within the <a href="activity/device_drivers/../../install_and_configure/build_environment_setup.html">build environment</a>, where we can create a directory and clone the code and dependencies.</p>
 <pre><code class="language-text">mkdir /host/uboot_test
@@ -3446,7 +3450,7 @@ run_uboot_command("ping 8.8.8.8"); // An example internet IP address (Google DNS
 <p>From the <code>/host/uboot_test/project_libs</code> directory, execute the following command:</p>
 <pre><code class="language-bash">./init-build.sh -DMICROKIT_APP=uboot_driver_example -DPLATFORM=maaxboard
 </code></pre>
-<p>A successful build will result in an executable file called <code>sel4_image</code> in the <code>project_libs/example/maaxboard/uboot-driver-example/example-build</code> subdirectory. This file should be made available to the preferred loading mechanism, such as TFTP, as per <a href="activity/device_drivers/execution_on_target_platform.html">Execution on Target Platform</a>.</p>
+<p>A successful build will result in an executable file called <code>sel4_image</code> in the <code>examples/maaxboard/uboot-driver-example/example-build</code> subdirectory. This file should be made available to the preferred loading mechanism, such as TFTP, as per <a href="activity/device_drivers/../../first_boot/bootloader.html">Bootloader</a>.</p>
 <p>Once build there is an option to rebuild the entire project using the below command:</p>
 <pre><code class="language-bash">./init-build.sh -DMICROKIT_APP=uboot_driver_example -DPLATFORM=maaxboard -DBUILD_TYPE=rebuild
 </code></pre>
@@ -3473,7 +3477,7 @@ cd build
 ninja
 </code></pre>
 <p>where <code>xxx.xxx.xxx.xxx</code> is the IP address to allocate to the MaaXBoard.</p>
-<p>A successful build will result in an executable file called <code>capdl-loader-image-arm-maaxboard</code> in the <code>images</code> subdirectory. This should be copied to a file named <code>sel4_image</code> and then made available to the preferred loading mechanism, such as TFTP, as per <a href="activity/picoserver_uboot/execution_on_target_platform.html">Execution on Target Platform</a>.</p>
+<p>A successful build will result in an executable file called <code>capdl-loader-image-arm-maaxboard</code> in the <code>images</code> subdirectory. This should be copied to a file named <code>sel4_image</code> and then made available to the preferred loading mechanism, such as TFTP, as per <a href="activity/picoserver_uboot/../../first_boot/bootloader.html">Bootloader</a>.</p>
 <p>When the <code>picoserver_uboot</code> application is running on the MaaXBoard, it should confirm that it is listening on port 1234 of the supplied IP address. It will also confirm registration of the protocol stack layers. The application allocates a random MAC address.</p>
 <p>At any time while running, the application may display <code>No such port ....</code> messages as it monitors traffic on the network; this is expected behaviour that may be ignored.</p>
 <p>Meanwhile, from a terminal window on the host machine, use the <code>netcat</code> (<code>nc</code>) command (native to Linux or macOS, or available as a <a href="https://nmap.org/ncat/">download</a> for Windows), where <code>xxx.xxx.xxx.xxx</code> is the IP address of the MaaXBoard, as previously specified:</p>
@@ -3574,8 +3578,8 @@ echo: Connection closed on socket 2
 </code></pre>
 <ul>
 <li><code>project_libs/boards</code>: Location of platform device trees.</li>
-<li><code>example/&lt;platform&gt;/uboot-driver-example</code>: <a href="activity/new_platform/uboot_driver_usage.html">The test application</a>.</li>
-<li><code>project_libs/libubootdrivers</code>: Referred to as "the library" throughout. See <a href="https://github.com/sel4-cap/dev-kit-libs/tree/main/libubootdrivers">linked Git repository</a>.</li>
+<li><code>example/&lt;platform&gt;/uboot-driver-example</code>: <a href="activity/new_platform/../device_drivers/uboot_driver_usage.html">The test application</a>.</li>
+<li><code>project_libs/libubootdrivers</code>: Referred to as "the library" throughout. See <a href="https://github.com/sel4devkit/sel4devkit-maaxboard-microkit-project-libs/tree/main/libubootdrivers">linked Git repository</a>.</li>
 <li><code>project_libs/uboot</code>: Fork of the U-Boot project source code (note, this is also symlinked to <code>project_libs/libubootdrivers/uboot</code>).</li>
 </ul>
 <h2 id="required-reading"><a class="header" href="#required-reading">Required Reading</a></h2>
@@ -3782,12 +3786,12 @@ GitHub account name <code>rod-chapman</code> for our local forks.</p>
 <ol>
 <li>
 <p>Using the GitHub web GUI, create your own forks of the <code>sel4devkit-maaxboard-camkes-manifest</code>, <code>sel4devkit-maaxboard-camkes</code>,
-and <code>sel4devkit-maaxboard-camkes-projects_libs</code> repositories. You might want to rename using the board being ported.</p>
+and <code>sel4devkit-maaxboard-camkes-projects-libs</code> repositories. You might want to rename using the board being ported.</p>
 </li>
 <li>
 <p>Clone the <code>sel4devkit-maaxboard-camkes-manifest</code> fork into your local machine, and create
 a new branch called <code>addc2</code> to make our changes. In the following commands, remember to change <code>rod-chapman</code> to your own GitHub user name:</p>
-<pre><code class="language-text">git clone https://github.com/rod-chapman/camkes-manifest.git
+<pre><code class="language-text">git clone https://github.com/rod-chapman/sel4devkit-maaxboard-camkes-manifest.git
 cd camkes-manifest
 git checkout -b addc2
 git push --set-upstream origin addc2
@@ -3795,14 +3799,14 @@ cd ..
 </code></pre>
 </li>
 <li>
-<p>Similarly, clone the <code>sel4devkit-maaxboard-camkes</code> and ``sel4devkit-maaxboard-camkes-projects_libs` forks, and add a new branch to each with the same name.</p>
-<pre><code class="language-text">git clone https://github.com/rod-chapman/camkes.git
+<p>Similarly, clone the <code>sel4devkit-maaxboard-camkes</code> and <code>sel4devkit-maaxboard-camkes-projects-libs</code> forks, and add a new branch to each with the same name.</p>
+<pre><code class="language-text">git clone https://github.com/rod-chapman/sel4devkit-maaxboard-camkes.git
 cd camkes
 git checkout -b addc2
 git push --set-upstream origin addc2
 cd ..
 </code></pre>
-<pre><code class="language-text">git clone https://github.com/rod-chapman/projects_libs.git
+<pre><code class="language-text">git clone https://github.com/rod-chapman/sel4devkit-maaxboard-camkes-projects-libs.git
 cd projects_libs
 git checkout -b addc2
 git push --set-upstream origin addc2
@@ -3817,7 +3821,7 @@ case called <code>rod</code>) pointing at our own GitHub account.</p>
 </code></pre>
 </li>
 <li>
-<p>Similarly, edit the <code>default.xml</code> file to specify that the <code>sel4devkit-maaxboard-camkes</code> and <code>sel4devkit-maaxboard-camkes-projects_libs</code> repositories
+<p>Similarly, edit the <code>default.xml</code> file to specify that the <code>sel4devkit-maaxboard-camkes</code> and <code>sel4devkit-maaxboard-camkes-projects-libs</code> repositories
 should come from the <code>addc2</code> branches of our own forked repositories. Find the <code>project</code> line for each
 repository and modify its entry to specify our own remote (<code>rod</code>) and branch (<code>addc2</code>).</p>
 <p>For example, the <code>project</code> lines for our forks are:</p>
@@ -3969,7 +3973,7 @@ and for the set of device drivers that we want to support.</p>
 <p>and</p>
 <pre><code class="language-text">projects_libs/libubootdrivers/src/plat/odroidc2
 </code></pre>
-<p>Following the templates from the <a href="activity/new_platform/uboot_library_add_platform.html">New Platform</a> section,
+<p>Following the templates from the <a href="activity/new_platform/main.html">New Platform</a> section,
 we create <code>plat_driver_data.h</code> in the former of those directories.</p>
 <p>There are five UClass Drivers that are effectively mandatory (<code>nop</code>, <code>root</code>, <code>simple_bus</code>, <code>phy</code> and <code>blk</code>),
 and we want to add two more (<code>pinconfig</code> and <code>pinctrl</code>), making a total of 7, so we declare in
@@ -4470,7 +4474,7 @@ extern struct driver _u_boot_driver__i2c_generic_chip_drv;
 ...
 </code></pre>
 <p>In order to build the new driver files, we need to add them to the <code>libubootdrivers/CMakeLists.txt</code> makefile.</p>
-<p>There are also some U-Boot configuration macros relevant to I<sup>2</sup>C that are needed, which are also set within the makefile. In this example, we can use the guidance in the <a href="activity/new_driver/uboot_library_add_driver.html#updating-cmakeliststxt">Library Extension - New Driver</a> section, and refer to the <code>.config</code> file created during the <a href="activity/new_driver/appendices/building_uboot.html">Building U-Boot for the MaaXBoard</a> appendix. Using the suggested directory name from that appendix, the filepath would be: <code>maaxboard_dockerimage/maaxboard-uboot-build/maaxboard-uboot/uboot-imx/.config</code>.</p>
+<p>There are also some U-Boot configuration macros relevant to I<sup>2</sup>C that are needed, which are also set within the makefile. In this example, we can use the guidance in the <a href="activity/new_driver/main.html#updating-cmakeliststxt">Library Extension - New Driver</a> section, and refer to the <code>.config</code> file created during the <a href="activity/new_driver/../../install_and_configure/building_uboot_manually.html">Building U-Boot for the MaaXBoard</a> document. Using the suggested directory name from that document, the filepath would be: <code>maaxboard_dockerimage/maaxboard-uboot-build/maaxboard-uboot/uboot-imx/.config</code>.</p>
 <p>Extracting I2C-related items (e.g. using <code>grep -i I2C .config</code>), we would see:</p>
 <pre><code class="language-text">CONFIG_SYS_I2C_MXC_I2C1=y
 CONFIG_SYS_I2C_MXC_I2C2=y
@@ -4525,7 +4529,7 @@ CONFIG_SYS_MXC_I2C3_SLAVE=0
 # CONFIG_SYS_I2C_MXC_I2C4 is not set
 CONFIG_SPL_I2C_SUPPORT=y
 </code></pre>
-<p>This is an excellent starting point and may well be complete; however, we may still need to apply some reasoning. For example, we do not need the final item (although it would do no harm), as SPL is only used when compiling the secondary bootloader and <code>CONFIG_SPL_I2C_SUPPORT</code> does not appear in our U-Boot code. The penultimate item concerning I2C4 (currently commented) is inaccurate and is an omission from this <code>maaxboard-uboot/uboot-imx</code> build. Examining the DTS file <code>maaxboard.dts</code> confirms that there are four I<sup>2</sup>C buses, so we will include a set of I2C4 macros. Note that, although inconsistent, it is not an issue that these macros use I2C1-I2C4 labels, whereas the DTS labels them 0-3. Our convention, such as in the following <a href="activity/new_driver/add_driver_worked_example.html#integrating-the-driver-with-camkes">CAmkES</a> section, will be to use 0-3 labels.</p>
+<p>This is an excellent starting point and may well be complete; however, we may still need to apply some reasoning. For example, we do not need the final item (although it would do no harm), as SPL is only used when compiling the secondary bootloader and <code>CONFIG_SPL_I2C_SUPPORT</code> does not appear in our U-Boot code. The penultimate item concerning I2C4 (currently commented) is inaccurate and is an omission from this <code>maaxboard-uboot/uboot-imx</code> build. Examining the DTS file <code>maaxboard.dts</code> confirms that there are four I<sup>2</sup>C buses, so we will include a set of I2C4 macros. Note that, although inconsistent, it is not an issue that these macros use I2C1-I2C4 labels, whereas the DTS labels them 0-3. Our convention, such as in the following <a href="activity/new_driver/add_driver_worked_example.html#integrating-the-driver">CAmkES</a> section, will be to use 0-3 labels.</p>
 <p>Combining the previous paragraphs, we update the <code>libubootdrivers/CMakeLists.txt</code> makefile as follows (showing only extracts relevant to I<sup>2</sup>C).</p>
 <p>The <code>i2c_driver</code> variable, which by default is <code>"none"</code>, is set to <code>"i2c_mxc"</code>:</p>
 <pre><code class="language-makefile"># Set up the applicable drivers and platform dependent configuration.
