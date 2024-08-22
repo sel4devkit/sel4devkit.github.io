@@ -2949,7 +2949,8 @@ endif()
 <p>The <code>list(APPEND uboot_deps ...)</code> lines add the driver files that were identified earlier, ensuring that they are picked out from the rest of the files held in the <code>libubootdrivers/uboot</code> directory and compiled. When they are compiled, they will require extra header files, but those will be picked up automatically from the <code>uboot</code> directory.</p>
 <p>The <code>add_definitions</code> lines establish the configuration macros. Note that <code>CONFIG_CMD_I2C</code>, which was in our previous list of candidates, has been excluded, but only until we discuss it further in the forthcoming <a href="activity/new_driver/add_driver_worked_example.html#establishing-the-driver-api">API</a> section.</p>
 <p>After these changes, within our <code>build</code> directory, <code>init_build</code> followed by <code>ninja</code> should result in a clean build.</p>
-<h2 id="integrating-the-driver-with-camkes"><a class="header" href="#integrating-the-driver-with-camkes">Integrating the driver with CAmkES</a></h2>
+<h2 id="integrating-the-driver"><a class="header" href="#integrating-the-driver">Integrating the driver:</a></h2>
+<h3 id="camkes-4"><a class="header" href="#camkes-4">CAmkES</a></h3>
 <p>We have established the underlying driver code, but it is not yet integrated within the CAmkES component that we shall be using. Assuming that we use the <code>uboot-driver-example</code> test application introduced earlier – see <a href="activity/new_driver/uboot_driver_usage.html#instructions-for-running-the-uboot-driver-example-test">Using the U-Boot Driver Library</a> – we need to modify the file <code>camkes/apps/uboot-driver-example/include/plat/maaxboard/platform_devices.h</code> as follows.</p>
 <p>Firstly, we need to add path definitions so that the devices can be located in the device tree:</p>
 <pre><code class="language-c">#define REG_I2C_0_PATH      "/soc@0/bus@30800000/i2c@30a20000"
@@ -3001,6 +3002,31 @@ endif()
     i2c_2.dtb     = dtb({ "path" : REG_I2C_2_PATH });  \
     i2c_3.dtb     = dtb({ "path" : REG_I2C_3_PATH });  \
     ...
+</code></pre>
+<h3 id="microkit-4"><a class="header" href="#microkit-4">Microkit</a></h3>
+<p>We have established the underlying driver code, but it is not yet integrated within the Microkit protection domain that we shall be using. Assuming that we use the <code>uboot-driver-example</code> test application introduced earlier – see <a href="activity/new_driver/uboot_driver_usage.html#instructions-for-running-the-uboot-driver-example-test">Using the U-Boot Driver Library</a> – we need to modify the file <code>project_libs/include/plat/maaxboard/all_platform_devices.h</code> as follows.</p>
+<p>Firstly, we need to add path definitions so that the devices can be located in the device tree:</p>
+<pre><code class="language-c">#define REG_I2C_0_PATH      "/soc@0/bus@30800000/i2c@30a20000"
+#define REG_I2C_1_PATH      "/soc@0/bus@30800000/i2c@30a30000"
+#define REG_I2C_2_PATH      "/soc@0/bus@30800000/i2c@30a40000"
+#define REG_I2C_3_PATH      "/soc@0/bus@30800000/i2c@30a50000"
+...
+#define DEV_I2C_0_PATH      REG_I2C_0_PATH
+#define DEV_I2C_1_PATH      REG_I2C_1_PATH
+#define DEV_I2C_2_PATH      REG_I2C_2_PATH
+#define DEV_I2C_3_PATH      REG_I2C_3_PATH
+</code></pre>
+<p>These need to be added to <code>DEV_PATHS</code> and <code>DEV_PATH_COUNT</code> should be modified accordingly:</p>
+<pre><code class="language-c">#define DEV_PATH_COUNT 19 // In this example previous size was 15 so +4
+
+#define DEV_PATHS {   \
+    ...               \
+    DEV_I2C_0_PATH,   \
+    DEV_I2C_1_PATH,   \
+    DEV_I2C_2_PATH,   \
+    DEV_I2C_3_PATH,   \
+    ...
+    };
 </code></pre>
 <h2 id="establishing-the-driver-api"><a class="header" href="#establishing-the-driver-api">Establishing the driver API</a></h2>
 <p>We now need to work on the driver's API. We are going to access the driver via the U-Boot <code>i2c</code> command, such as is available at the U-Boot command line:</p>
@@ -3083,7 +3109,7 @@ extern struct cmd_tbl _u_boot_cmd__i2c;
 </code></pre>
 <p>Within our <code>build</code> directory, after <code>init_build</code> and <code>ninja</code>, this should build successfully.</p>
 <h2 id="testing-the-driver"><a class="header" href="#testing-the-driver">Testing the driver</a></h2>
-<p>Now that we have the I<sup>2</sup>C driver and its API, we can call <code>i2c</code> commands from our test application. For example, the following lines can be used within a CAmkES component (in our example, these would be added to file <code>camkes/apps/uboot-driver-example/components/Test/src/test.c</code>):</p>
+<p>Now that we have the I<sup>2</sup>C driver and its API, we can call <code>i2c</code> commands from our test application. For example, the following lines can be used within a CAmkES component or Microkit PD (in our example, these would be added to file <code>camkes/apps/uboot-driver-example/components/Test/src/test.c</code> or <code>examples/maaxboard/uboot_driver_example/uboot_driver_example.c</code>):</p>
 <pre><code class="language-c">    // I2C test
     run_uboot_command("i2c dev 0"); // Set current i2c bus to zero
     run_uboot_command("i2c probe"); // Probe i2c bus 0
@@ -3734,9 +3760,9 @@ run_uboot_command@uboot_wrapper.c:181 --- command 'fatwrite mmc 0:2 0x55b010 tra
 <p>The repository can be found <a href="https://github.com/sel4devkit/sel4devkit-maaxboard-microkit-xhci-driver">here</a>.</p>
 <h2 id="xhci"><a class="header" href="#xhci">xHCI</a></h2>
 <p>xHCI is a standardised interface used for USB host controllers. Also known as the USB 3.0 host controller specification, it is designed to be backward compatible, supporting a wide range of USB devices from older USB 1.x to the more recent USB 3.x versions. Compared to its predecessors (OHCI, UHCI and EHCI) it is designed to handle multiple data transfer speeds within a single unified standard, making it more efficient at handling computer resources. The standard describes the basic communication between the software and the host controller including memory layout, data structures, MMIO and DMA.</p>
-<h2 id="camkes-4"><a class="header" href="#camkes-4">CAmkES</a></h2>
+<h2 id="camkes-5"><a class="header" href="#camkes-5">CAmkES</a></h2>
 <p>For our initial development we used CAmkES with the first goal of interfacing with the hardware. We compiled NetBSD, then traced the initialisation of the xHCI, noting down the input/output read and write commands. We then hardcoded the necessary memory register addresses and worked out the changes that we needed to make to the driver so that it was compatible with seL4 and CAmkES. We were then able to initialise the host controller by setting up the correct memory registers, DMA and interrupts. Once we got it to this point we decided to port the example to Microkit.</p>
-<h2 id="microkit-4"><a class="header" href="#microkit-4">Microkit</a></h2>
+<h2 id="microkit-5"><a class="header" href="#microkit-5">Microkit</a></h2>
 <p>The first goal was to understand the differences between CAmkES and Microkit and become familiar with its features. Compared to CAmkES, Microkit has no standard libraries which meant that we had to export libraries for simple functionality such as logging and memory handling. We also had to create a simple DMA handler, and in the absence of a build system we opted to use GNU Make. Once we had an understanding of Microkit we got our new example to initialise the host controller as we did with CAmkES.</p>
 <p>We created a separate DMA library which can be found <a href="https://github.com/sel4devkit/libmicrokitdma">here</a></p>
 <h3 id="architecture-1"><a class="header" href="#architecture-1">Architecture</a></h3>
