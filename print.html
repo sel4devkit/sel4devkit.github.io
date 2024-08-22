@@ -4885,11 +4885,11 @@ extern struct env_clbk_tbl _u_boot_env_clbk__dnsip;
     pinctrl-0 = &lt;0x25&gt;;
 </code></pre>
 <p>Note that not all devices require pin multiplexer settings; e.g. device outputs may be routed to dedicated SoC pins / pads. The SoC's reference manual should be consulted to determine whether configuration is required for a device.</p>
-<div style="break-before: page; page-break-before: always;"></div><h2 id="guide-to-porting-sel4"><a class="header" href="#guide-to-porting-sel4">Guide to Porting seL4</a></h2>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="guide-to-porting-sel4"><a class="header" href="#guide-to-porting-sel4">Guide to Porting seL4</a></h1>
 <p>The level of work required and complexity of porting seL4 to a new platform is directly related to the level of similarity between the system to be ported and systems already supported by seL4. Porting seL4 to a new system based upon a SoC (system-on-chip) already supported by seL4 is likely to be relatively straightforward whilst porting seL4 to a system with a currently unsupported SoC is likely to require more work, e.g. requiring the addition of new serial and timer drivers.</p>
 <p>As a starting point the user should read and understand the excellent guidance on porting supplied by the seL4 Foundation at <a href="https://docs.sel4.systems/projects/sel4/porting.html">this link</a>.</p>
 <p>The remainder of this section does not seek to repeat any information in the seL4 documentation; instead it provides more detailed guidance and worked examples based upon the experience of porting seL4 to the Avnet MaaXBoard.</p>
-<h3 id="device-tree-dts"><a class="header" href="#device-tree-dts">Device Tree (DTS)</a></h3>
+<h2 id="device-tree-dts"><a class="header" href="#device-tree-dts">Device Tree (DTS)</a></h2>
 <p>A device tree (DTS file) contains plain text data that describes a platform's hardware. A key requirement in porting seL4 to a new platform is the provision of a device tree describing the platform. A device tree can normally either be sourced from the Linux kernel or from a Linux distribution supplied by the platform manufacturer.</p>
 <p>Device tree files are stored within the Linux kernel within the <code>/arch/&lt;arch_identifier&gt;/boot/dts</code> folders. For example, for ARM based devices DTS files may be retrieved from <a href="https://github.com/torvalds/linux/tree/master/arch/arm/boot/dts">this link</a>.</p>
 <p>Support has not been incorporated into the mainline Linux kernel for the Avnet MaaXBoard, and therefore the device tree needed to be sourced from the platform-specific Linux distribution supplied by Avnet at <a href="https://github.com/Avnet/linux-imx/blob/maaxboard_5.4.24_2.1.0/arch/arm64/boot/dts/freescale/maaxboard-base.dts">this link</a>.</p>
@@ -4902,7 +4902,7 @@ dtc -o temp.dtb temp.dts
 dtc -o maaxboard.dts temp.dtb
 </code></pre>
 <p>Following creation of the platform's DTS file it should be stored in the <code>boards</code> directory</p>
-<h3 id="previous-worked-examples"><a class="header" href="#previous-worked-examples">Previous Worked Examples</a></h3>
+<h2 id="previous-worked-examples"><a class="header" href="#previous-worked-examples">Previous Worked Examples</a></h2>
 <p>To help fully understand the guidance supplied by the seL4 documentation, it is informative to examine the changes made previously to the seL4 repositories to support new platforms. To that end the following links are to commits in the seL4 git repositories where support for platforms was added. It should be noted that to perform a basic port of seL4 to a new platform, i.e. sufficient to run and pass the seL4Test application, will require modification to the <a href="https://github.com/seL4/seL4"><code>seL4</code></a>, <a href="https://github.com/seL4/seL4_tools"><code>seL4_tools</code></a> and <a href="https://github.com/seL4/util_libs"><code>util_libs</code></a> git repositories.</p>
 <ul>
 <li>
@@ -4930,7 +4930,7 @@ dtc -o maaxboard.dts temp.dtb
 </ul>
 </li>
 </ul>
-<h3 id="testing-the-port-with-sel4test"><a class="header" href="#testing-the-port-with-sel4test">Testing the Port With seL4Test</a></h3>
+<h2 id="testing-the-port-with-sel4test"><a class="header" href="#testing-the-port-with-sel4test">Testing the Port With seL4Test</a></h2>
 <p>To confirm the correct functionality of a port it is recommended that the <a href="https://docs.sel4.systems/projects/sel4test/">seL4Test</a> test suite is executed.</p>
 <p>To build and execute seL4Test for testing purposes against forks of the seL4 git repositories the following procedure can be used. For the purposes of this example it is envisioned that the developer has forked the <a href="https://github.com/seL4/seL4"><code>sel4</code></a>, <a href="https://github.com/seL4/seL4_tools"><code>seL4_tools</code></a> and <a href="https://github.com/seL4/util_libs"><code>util_libs</code></a> git repositories under GitHub account <code>work_account</code> and performed the required modifications under branches named <code>my_port</code>. When following the instructions the commands will need to be modified to match the name of the developer's GitHub account and branch name.</p>
 <ol>
@@ -4981,7 +4981,7 @@ dtc -o maaxboard.dts temp.dtb
 <img src="activity/spi_bus_bmp280_pressure_sensor/../figures/SPI_top_view.png" alt="SPI GPIO view" />
 <img src="activity/spi_bus_bmp280_pressure_sensor/../figures/SPI_sensor_top.png" alt="SPI sensor top view" />
 <img src="activity/spi_bus_bmp280_pressure_sensor/../figures/SPI_sensor_bottom.png" alt="SPI sensor bottom view" /></p>
-<div style="break-before: page; page-break-before: always;"></div><h1 id="introduction-1"><a class="header" href="#introduction-1">Introduction</a></h1>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="camkes-case-study-application"><a class="header" href="#camkes-case-study-application">CAmkES Case Study Application</a></h1>
 <p>This section works through an example to show some of our device drivers being used within a larger application. It is nominally labelled as a 'security domain' demonstrator (named <code>security_demo</code>) but this is mainly in the context of being a keyboard-based encryption device that was inspired by an Enigma machine! It is intentionally simple and its main purpose is to show data separation and to provide worked examples of inter-component communications using different seL4 mechanisms.</p>
 <p>Extra functionality within the demonstration application is deliberately kept to a minimum to leave the source code less cluttered, so that the developer can readily see the 'more interesting' seL4 inter-component and device interactions without too much extra, feature-supporting code. In line with the rest of the developer kit, the demonstration application is intended to be more of a springboard for a developer kit user than a polished product for an end user.
 This case study works through an example to show some of our device drivers being used within a larger application. It is nominally labelled as a 'security domain' demonstrator (named <code>security_demo</code>) but this is mainly in the context of being a keyboard-based encryption device that was inspired by an Enigma machine! It is intentionally simple and its main purpose is to show data separation and to provide worked examples of inter-component communications using different seL4 mechanisms.</p>
@@ -5199,7 +5199,7 @@ run_uboot_command@uboot_wrapper.c:181 --- command 'fatwrite mmc 0:2 0x55b010 tra
 <p>The application will continue indefinitely. <code>netcat</code> sessions on the host machine may be terminated (Ctrl-C) and restarted, whereupon the application will establish a new connection (buffering output in the meantime).</p>
 <p>If the MaaXBoard is powered off and its SD card removed and transferred to the host machine, the <code>transmitter_log.txt</code> can be accessed from the <code>FILESYS</code> partition as one would expect.</p>
 <p>To reduce the risk of corrupting the SD card, it is advisable to avoid powering off the MaaXBoard during a write operation of the logfile. As this operation lasts in the order of 10 ms and only occurs every 30 seconds (and only then if there are any ciphertext characters that have not yet been logged to file), the risk is both remote and avoidable (e.g. power off soon after a <code>fatwrite</code> command message, or wait for &gt;30 seconds after the last <code>fatwrite</code> command message).</p>
-<div style="break-before: page; page-break-before: always;"></div><h1 id="introduction-2"><a class="header" href="#introduction-2">Introduction</a></h1>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="microkit-case-study-application"><a class="header" href="#microkit-case-study-application">Microkit Case Study Application</a></h1>
 <p>This section works through the changes completed to port the case study application to Microkit.</p>
 <p>As well as the changes to the <a href="activity/microkit_case_study_application/architecture.html">Architecture</a> and <a href="activity/microkit_case_study_application/detail.html">Design</a>, other infrastructure changes had to be made to make the case study compatible with Microkit:</p>
 <h2 id="picolibc"><a class="header" href="#picolibc">Picolibc</a></h2>
@@ -5385,7 +5385,7 @@ run_uboot_command@uboot_wrapper.c:181 --- command 'fatwrite mmc 0:2 0x55b010 tra
 <p>If the MaaXBoard is powered off and its SD card removed and transferred to the host machine, the <code>transmitter_log.txt</code> can be accessed from the <code>FILESYS</code> partition as one would expect.</p>
 <p>To reduce the risk of corrupting the SD card, it is advisable to avoid powering off the MaaXBoard during a write operation of the logfile. As this operation lasts in the order of 10 ms, the risk is both remote and avoidable (e.g. power off soon after a <code>fatwrite</code> command message).</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="microkit-xhci-usb-driver"><a class="header" href="#microkit-xhci-usb-driver">Microkit xHCI USB Driver</a></h1>
-<h2 id="introduction-3"><a class="header" href="#introduction-3">Introduction</a></h2>
+<h2 id="introduction-1"><a class="header" href="#introduction-1">Introduction</a></h2>
 <p>For this activity the goal was to create an Sel4 native xHCI driver. We opted to re-work an existing solution, because writing an entire xHCI driver from scratch would be a long and complicated task. We chose to use NetBSD's xHCI driver because it has good portability, supports a wide range of hardware, is BSD licenced, is updated often, and makes use of interrupts which are more performant compared to other solutions that use polling. The plan was to use this as a base to pull drivers from in the future.</p>
 <p>The repository can be found <a href="https://github.com/sel4devkit/sel4devkit-maaxboard-microkit-xhci-driver">here</a>.</p>
 <h2 id="xhci"><a class="header" href="#xhci">xHCI</a></h2>
@@ -5591,7 +5591,7 @@ MON|ERROR:    dfsc = address size fault, level 0 (0x00000000)
 <h2 id="hot-plugging"><a class="header" href="#hot-plugging">Hot Plugging</a></h2>
 <p>Hot plugging is the ability to set up a USB device while the system is running. This driver is able to support this, and works by calling <code>microkit_notify(HOTPLUG)</code> in software interrupts after a regular software interrupt (line 136). The main driver will check if there is an explore pending and attach the device if necessary. Without this call, any extra device connections are not processed past acknowledging the interrupt.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="hdmi-driver"><a class="header" href="#hdmi-driver">HDMI Driver</a></h1>
-<h2 id="introduction-4"><a class="header" href="#introduction-4">Introduction</a></h2>
+<h2 id="introduction-2"><a class="header" href="#introduction-2">Introduction</a></h2>
 <p>For this task the aim was to create an HDMI display driver. For inspiration we looked at U-Boot’s imx8m display driver because it is BSD licensed and minimally featured which was useful to use as an initial foundation to build upon. We opted to copy the code into our repository rather than have a fork like we did with the xHCI driver. This is because we used a minimal amount of U-Boot's code and it was easier to manage compared to keeping a fork of a large repository up to date.</p>
 <p>The repository for this project is located <a href="https://github.com/sel4devkit/sel4devkit-maaxboard-microkit-hdmi-driver">here</a>.</p>
 <h2 id="displaying-a-static-image"><a class="header" href="#displaying-a-static-image">Displaying a Static Image</a></h2>
@@ -5616,7 +5616,7 @@ MON|ERROR:    dfsc = address size fault, level 0 (0x00000000)
 <h2 id="project-environment"><a class="header" href="#project-environment">Project Environment</a></h2>
 <p>Currently the project is built using a build script that calls make. The dependencies are also built separately with a script for Picolibc and a Makefile for Microkit.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="single-linux-guest"><a class="header" href="#single-linux-guest">Single Linux guest</a></h1>
-<h2 id="introduction-5"><a class="header" href="#introduction-5">Introduction</a></h2>
+<h2 id="introduction-3"><a class="header" href="#introduction-3">Introduction</a></h2>
 <p>For this task, the goal was to load up a virtual machine (VM) on a host with serial TTY pass-through. This was with the intended goal of performing I/O with the Linux guest. Our starting point for this activity was to rework an example from the Trustworthy Systems Libvmm repository so that it runs on the Maaxboard. This repo contains a virtual machine monitor for the seL4 microkernel with various examples built for the Odroid board and the open source emulator Qemu. Libvmm provides a virtual machine monitor (VMM) which is used to start and manage the guest VM.</p>
 <p>The repository for this project is located <a href="https://github.com/sel4devkit/sel4devkit-maaxboard-microkit-vmm-single-linux-guest">here</a>.</p>
 <p>The Trustworthy Systems Libvmm repository can be found <a href="https://github.com/au-ts/libvmm/tree/main">here</a>.</p>
@@ -5642,7 +5642,7 @@ MON|ERROR:    dfsc = address size fault, level 0 (0x00000000)
 <p><code>VMM|ERROR: Unhandled SMC: unknown value service: 0x2, function number: 0x6</code></p>
 <p>The MaaxBoard Firmware provides a small set of SiP Function Identifiers. The Linux Driver "drivers/soc/imx/soc-imx8m.c" compatible with "fsl,imx8mp" leverages MaaxBoard Firmware SiP Function Identifier "0xc2000006" to get version information. If SMC properly declares that "0xc2000006" is absent, this would be interpreted as detecting an earlier version of the Board (that lacked the Function Identifier). A work around has been implemented to handle this service which suppresses the error.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="vmm-with-dual-linux-guests-and-tty-multiplex"><a class="header" href="#vmm-with-dual-linux-guests-and-tty-multiplex">VMM with dual linux guests and TTY Multiplex</a></h1>
-<h2 id="introduction-6"><a class="header" href="#introduction-6">Introduction</a></h2>
+<h2 id="introduction-4"><a class="header" href="#introduction-4">Introduction</a></h2>
 <p>For this activity the goal was to load two Linux Virtual Machines (VM) on one host. We built upon our previous single guest example and took inspiration from an existing <a href="https://github.com/au-ts/libvmm">Libvmm</a> contribution that makes use of VirtIO console.</p>
 <p>The repository for this project is located <a href="https://github.com/sel4devkit/sel4devkit-maaxboard-microkit-vmm-dual-linux-guest-tty-multiplex">here</a>.</p>
 <h2 id="design-2"><a class="header" href="#design-2">Design</a></h2>
@@ -5668,7 +5668,7 @@ MON|ERROR:    dfsc = address size fault, level 0 (0x00000000)
 <li><a href="https://blogs.oracle.com/linux/post/introduction-to-virtio">virtio oracle webiste</a> - For more information on VirtIO</li>
 </ul>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="dual-linux-guest-with-usb-routing"><a class="header" href="#dual-linux-guest-with-usb-routing">Dual Linux Guest with USB routing</a></h1>
-<h2 id="introduction-7"><a class="header" href="#introduction-7">Introduction</a></h2>
+<h2 id="introduction-5"><a class="header" href="#introduction-5">Introduction</a></h2>
 <p>In this activity we explored different options for USB routing. Largely, the need for USB routing comes from virtualisation, where the physical hardware has the physical USB port, and there is a virtual system that we wish the USB port is routed into. In our case we are working towards routing a USB device into one of multiple virtual machines (VM).</p>
 <h2 id="usb-ip"><a class="header" href="#usb-ip">USB IP</a></h2>
 <p>USB/IP Project to develops a general USB device sharing system over an IP network. It uses TCP/IP payloads to transmit USB I/O messages between two different computers. We ran a preconfigured Linux natively on the Maaxboard, which included USB IP functionality. We then connected to another server running Linux and routed the USB keyboard traffic from the Maaxboard to server over IP.</p>

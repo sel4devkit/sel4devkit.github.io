@@ -176,11 +176,11 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h2 id="guide-to-porting-sel4"><a class="header" href="#guide-to-porting-sel4">Guide to Porting seL4</a></h2>
+                        <h1 id="guide-to-porting-sel4"><a class="header" href="#guide-to-porting-sel4">Guide to Porting seL4</a></h1>
 <p>The level of work required and complexity of porting seL4 to a new platform is directly related to the level of similarity between the system to be ported and systems already supported by seL4. Porting seL4 to a new system based upon a SoC (system-on-chip) already supported by seL4 is likely to be relatively straightforward whilst porting seL4 to a system with a currently unsupported SoC is likely to require more work, e.g. requiring the addition of new serial and timer drivers.</p>
 <p>As a starting point the user should read and understand the excellent guidance on porting supplied by the seL4 Foundation at <a href="https://docs.sel4.systems/projects/sel4/porting.html">this link</a>.</p>
 <p>The remainder of this section does not seek to repeat any information in the seL4 documentation; instead it provides more detailed guidance and worked examples based upon the experience of porting seL4 to the Avnet MaaXBoard.</p>
-<h3 id="device-tree-dts"><a class="header" href="#device-tree-dts">Device Tree (DTS)</a></h3>
+<h2 id="device-tree-dts"><a class="header" href="#device-tree-dts">Device Tree (DTS)</a></h2>
 <p>A device tree (DTS file) contains plain text data that describes a platform's hardware. A key requirement in porting seL4 to a new platform is the provision of a device tree describing the platform. A device tree can normally either be sourced from the Linux kernel or from a Linux distribution supplied by the platform manufacturer.</p>
 <p>Device tree files are stored within the Linux kernel within the <code>/arch/&lt;arch_identifier&gt;/boot/dts</code> folders. For example, for ARM based devices DTS files may be retrieved from <a href="https://github.com/torvalds/linux/tree/master/arch/arm/boot/dts">this link</a>.</p>
 <p>Support has not been incorporated into the mainline Linux kernel for the Avnet MaaXBoard, and therefore the device tree needed to be sourced from the platform-specific Linux distribution supplied by Avnet at <a href="https://github.com/Avnet/linux-imx/blob/maaxboard_5.4.24_2.1.0/arch/arm64/boot/dts/freescale/maaxboard-base.dts">this link</a>.</p>
@@ -193,7 +193,7 @@ dtc -o temp.dtb temp.dts
 dtc -o maaxboard.dts temp.dtb
 </code></pre>
 <p>Following creation of the platform's DTS file it should be stored in the <code>boards</code> directory</p>
-<h3 id="previous-worked-examples"><a class="header" href="#previous-worked-examples">Previous Worked Examples</a></h3>
+<h2 id="previous-worked-examples"><a class="header" href="#previous-worked-examples">Previous Worked Examples</a></h2>
 <p>To help fully understand the guidance supplied by the seL4 documentation, it is informative to examine the changes made previously to the seL4 repositories to support new platforms. To that end the following links are to commits in the seL4 git repositories where support for platforms was added. It should be noted that to perform a basic port of seL4 to a new platform, i.e. sufficient to run and pass the seL4Test application, will require modification to the <a href="https://github.com/seL4/seL4"><code>seL4</code></a>, <a href="https://github.com/seL4/seL4_tools"><code>seL4_tools</code></a> and <a href="https://github.com/seL4/util_libs"><code>util_libs</code></a> git repositories.</p>
 <ul>
 <li>
@@ -221,7 +221,7 @@ dtc -o maaxboard.dts temp.dtb
 </ul>
 </li>
 </ul>
-<h3 id="testing-the-port-with-sel4test"><a class="header" href="#testing-the-port-with-sel4test">Testing the Port With seL4Test</a></h3>
+<h2 id="testing-the-port-with-sel4test"><a class="header" href="#testing-the-port-with-sel4test">Testing the Port With seL4Test</a></h2>
 <p>To confirm the correct functionality of a port it is recommended that the <a href="https://docs.sel4.systems/projects/sel4test/">seL4Test</a> test suite is executed.</p>
 <p>To build and execute seL4Test for testing purposes against forks of the seL4 git repositories the following procedure can be used. For the purposes of this example it is envisioned that the developer has forked the <a href="https://github.com/seL4/seL4"><code>sel4</code></a>, <a href="https://github.com/seL4/seL4_tools"><code>seL4_tools</code></a> and <a href="https://github.com/seL4/util_libs"><code>util_libs</code></a> git repositories under GitHub account <code>work_account</code> and performed the required modifications under branches named <code>my_port</code>. When following the instructions the commands will need to be modified to match the name of the developer's GitHub account and branch name.</p>
 <ol>
