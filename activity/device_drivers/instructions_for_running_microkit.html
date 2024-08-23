@@ -177,30 +177,6 @@
                 <div id="content" class="content">
                     <main>
                         <h1 id="instructions-for-running-the-uboot-driver-example-microkit"><a class="header" href="#instructions-for-running-the-uboot-driver-example-microkit">Instructions for running the uboot-driver-example: Microkit</a></h1>
-<p>As usual, this assumes that the user is already running the Microkit Docker container within the <a href="../../install_and_configure/build_environment_setup.html">build environment</a>, where we can create a directory and clone the code and dependencies.</p>
-<pre><code class="language-text">mkdir /host/uboot_test
-cd /host/uboot_test
-</code></pre>
-<pre><code class="language-bash">repo init -u git@github.com:sel4devkit/sel4devkit-maaxboard-microkit_manifest.git
-</code></pre>
-<pre><code class="language-bash">repo sync
-</code></pre>
-<p>The test application includes an Ethernet operation (<code>ping</code>) with hard-coded IP addresses; these need to be customised for an individual's environment. The following lines of the source file <code>examples/maaxboard/uboot-driver-example/uboot-driver-example.c</code> should be edited:</p>
-<pre><code class="language-c">run_uboot_command("setenv ipaddr xxx.xxx.xxx.xxx"); // IP address to allocate to MaaXBoard
-run_uboot_command("ping yyy.yyy.yyy.yyy"); // IP address of host machine
-</code></pre>
-<p>Optionally, to <code>ping</code> to an address beyond the local network:</p>
-<pre><code class="language-c">run_uboot_command("setenv gatewayip zzz.zzz.zzz.zzz"); // IP address of router
-run_uboot_command("setenv netmask 255.255.255.0");
-run_uboot_command("ping 8.8.8.8"); // An example internet IP address (Google DNS)
-</code></pre>
-<p>From the <code>/host/uboot_test/project_libs</code> directory, execute the following command:</p>
-<pre><code class="language-bash">./init-build.sh -DMICROKIT_APP=uboot_driver_example -DPLATFORM=maaxboard
-</code></pre>
-<p>A successful build will result in an executable file called <code>sel4_image</code> in the <code>examples/maaxboard/uboot-driver-example/example-build</code> subdirectory. This file should be made available to the preferred loading mechanism, such as TFTP, as per <a href="../../first_boot/bootloader.html">Bootloader</a>.</p>
-<p>Once build there is an option to rebuild the entire project using the below command:</p>
-<pre><code class="language-bash">./init-build.sh -DMICROKIT_APP=uboot_driver_example -DPLATFORM=maaxboard -DBUILD_TYPE=rebuild
-</code></pre>
 
                     </main>
 

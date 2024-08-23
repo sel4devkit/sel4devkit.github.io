@@ -177,32 +177,6 @@
                 <div id="content" class="content">
                     <main>
                         <h1 id="instructions-for-running-uboot-driver-example-camkes"><a class="header" href="#instructions-for-running-uboot-driver-example-camkes">Instructions for running uboot-driver-example: CAmkES</a></h1>
-<p>As usual, this assumes that the user is already running the CAmkES Docker container within the <a href="../../install_and_configure/build_environment_setup.html">build environment</a>, where we can create a directory and clone the code and dependencies.</p>
-<pre><code class="language-text">mkdir /host/uboot_test
-cd /host/uboot_test
-</code></pre>
-<pre><code class="language-bash">repo init -u https://github.com/sel4devkit/sel4devkit-maaxboard-camkes-manifest.git
-</code></pre>
-<pre><code class="language-bash">repo sync
-</code></pre>
-<p>The test application includes an Ethernet operation (<code>ping</code>) with hard-coded IP addresses; these need to be customised for an individual's environment. The following lines of the source file <code>projects/camkes/apps/uboot-driver-example/components/Test/src/test.c</code> should be edited:</p>
-<pre><code class="language-c">run_uboot_command("setenv ipaddr xxx.xxx.xxx.xxx"); // IP address to allocate to MaaXBoard
-run_uboot_command("ping yyy.yyy.yyy.yyy"); // IP address of host machine
-</code></pre>
-<p>Optionally, to <code>ping</code> to an address beyond the local network:</p>
-<pre><code class="language-c">run_uboot_command("setenv gatewayip zzz.zzz.zzz.zzz"); // IP address of router
-run_uboot_command("setenv netmask 255.255.255.0");
-run_uboot_command("ping 8.8.8.8"); // An example internet IP address (Google DNS)
-</code></pre>
-<p>From the <code>/host/uboot_test</code> directory, execute the following commands:</p>
-<pre><code class="language-text">mkdir build
-cd build
-</code></pre>
-<pre><code class="language-bash">../init-build.sh -DCAMKES_APP=uboot-driver-example -DPLATFORM=maaxboard -DSIMULATION=FALSE
-</code></pre>
-<pre><code class="language-bash">ninja
-</code></pre>
-<p>A successful build will result in an executable file called <code>capdl-loader-image-arm-maaxboard</code> in the <code>images</code> subdirectory. This should be copied to a file named <code>sel4_image</code> and then made available to the preferred loading mechanism, such as TFTP, as per <a href="../../first_boot/bootloader.html">Bootloader</a>.</p>
 
                     </main>
 

@@ -232,7 +232,7 @@ products. It does this by:</p>
 <ul>
 <li>
 <p>Selecting a readily available low-cost SBC (Single Board Computer) as the
-target platform (The <a href="introduction/../avent_maaxboard/main.html">Avnet MaaXBoard</a>).</p>
+target platform (The <a href="introduction/../resources/avent_maaxboard/main.html">Avnet MaaXBoard</a>).</p>
 </li>
 <li>
 <p>Identifying the minimum needed to create a viable development platform, and
@@ -253,7 +253,7 @@ the chosen target platform.</p>
 <p>Once the fundamentals of building and executing an seL4 program are
 established, the seL4 Developer Kit seeks to explain and encourage further
 development through the presentation of a diverse series of technical
-<a href="introduction/../activities/main.html">Activities</a>.</p>
+<a href="introduction/../activity/main.html">Activities</a>.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="structure"><a class="header" href="#structure">Structure</a></h1>
 <p>The seL4 Developer Kit is structured into the following sections to provide a
 step-by-step guide:</p>
@@ -3452,57 +3452,7 @@ permissions</a>.</p>
 <h3 id="configuration-for-different-platforms"><a class="header" href="#configuration-for-different-platforms">Configuration for different platforms</a></h3>
 <p>Although uboot-driver-example was created to demonstrate the device drivers developed for this MaaXBoard developer kit, it is configurable to support other platforms. For example, in the <a href="activity/device_drivers/../../activity/new_platform/add_odroidc2.html">worked example appendix for the Odroid-C2</a>, a small subset of drivers has been developed for that platform, and the <code>test.c</code> source file for <code>uboot-driver-example</code> uses the preprocessor macros <code>CONFIG_PLAT_MAAXBOARD</code> and <code>CONFIG_PLAT_ODROIDC2</code> to configure which commands are run for each platform. By default, all tests are enabled for an unrecognised platform, but this would be readily configured for a new platform's <code>CONFIG_PLAT_...</code> preprocessor macro.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="instructions-for-running-uboot-driver-example-camkes"><a class="header" href="#instructions-for-running-uboot-driver-example-camkes">Instructions for running uboot-driver-example: CAmkES</a></h1>
-<p>As usual, this assumes that the user is already running the CAmkES Docker container within the <a href="activity/device_drivers/../../install_and_configure/build_environment_setup.html">build environment</a>, where we can create a directory and clone the code and dependencies.</p>
-<pre><code class="language-text">mkdir /host/uboot_test
-cd /host/uboot_test
-</code></pre>
-<pre><code class="language-bash">repo init -u https://github.com/sel4devkit/sel4devkit-maaxboard-camkes-manifest.git
-</code></pre>
-<pre><code class="language-bash">repo sync
-</code></pre>
-<p>The test application includes an Ethernet operation (<code>ping</code>) with hard-coded IP addresses; these need to be customised for an individual's environment. The following lines of the source file <code>projects/camkes/apps/uboot-driver-example/components/Test/src/test.c</code> should be edited:</p>
-<pre><code class="language-c">run_uboot_command("setenv ipaddr xxx.xxx.xxx.xxx"); // IP address to allocate to MaaXBoard
-run_uboot_command("ping yyy.yyy.yyy.yyy"); // IP address of host machine
-</code></pre>
-<p>Optionally, to <code>ping</code> to an address beyond the local network:</p>
-<pre><code class="language-c">run_uboot_command("setenv gatewayip zzz.zzz.zzz.zzz"); // IP address of router
-run_uboot_command("setenv netmask 255.255.255.0");
-run_uboot_command("ping 8.8.8.8"); // An example internet IP address (Google DNS)
-</code></pre>
-<p>From the <code>/host/uboot_test</code> directory, execute the following commands:</p>
-<pre><code class="language-text">mkdir build
-cd build
-</code></pre>
-<pre><code class="language-bash">../init-build.sh -DCAMKES_APP=uboot-driver-example -DPLATFORM=maaxboard -DSIMULATION=FALSE
-</code></pre>
-<pre><code class="language-bash">ninja
-</code></pre>
-<p>A successful build will result in an executable file called <code>capdl-loader-image-arm-maaxboard</code> in the <code>images</code> subdirectory. This should be copied to a file named <code>sel4_image</code> and then made available to the preferred loading mechanism, such as TFTP, as per <a href="activity/device_drivers/../../first_boot/bootloader.html">Bootloader</a>.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="instructions-for-running-the-uboot-driver-example-microkit"><a class="header" href="#instructions-for-running-the-uboot-driver-example-microkit">Instructions for running the uboot-driver-example: Microkit</a></h1>
-<p>As usual, this assumes that the user is already running the Microkit Docker container within the <a href="activity/device_drivers/../../install_and_configure/build_environment_setup.html">build environment</a>, where we can create a directory and clone the code and dependencies.</p>
-<pre><code class="language-text">mkdir /host/uboot_test
-cd /host/uboot_test
-</code></pre>
-<pre><code class="language-bash">repo init -u git@github.com:sel4devkit/sel4devkit-maaxboard-microkit_manifest.git
-</code></pre>
-<pre><code class="language-bash">repo sync
-</code></pre>
-<p>The test application includes an Ethernet operation (<code>ping</code>) with hard-coded IP addresses; these need to be customised for an individual's environment. The following lines of the source file <code>examples/maaxboard/uboot-driver-example/uboot-driver-example.c</code> should be edited:</p>
-<pre><code class="language-c">run_uboot_command("setenv ipaddr xxx.xxx.xxx.xxx"); // IP address to allocate to MaaXBoard
-run_uboot_command("ping yyy.yyy.yyy.yyy"); // IP address of host machine
-</code></pre>
-<p>Optionally, to <code>ping</code> to an address beyond the local network:</p>
-<pre><code class="language-c">run_uboot_command("setenv gatewayip zzz.zzz.zzz.zzz"); // IP address of router
-run_uboot_command("setenv netmask 255.255.255.0");
-run_uboot_command("ping 8.8.8.8"); // An example internet IP address (Google DNS)
-</code></pre>
-<p>From the <code>/host/uboot_test/project_libs</code> directory, execute the following command:</p>
-<pre><code class="language-bash">./init-build.sh -DMICROKIT_APP=uboot_driver_example -DPLATFORM=maaxboard
-</code></pre>
-<p>A successful build will result in an executable file called <code>sel4_image</code> in the <code>examples/maaxboard/uboot-driver-example/example-build</code> subdirectory. This file should be made available to the preferred loading mechanism, such as TFTP, as per <a href="activity/device_drivers/../../first_boot/bootloader.html">Bootloader</a>.</p>
-<p>Once build there is an option to rebuild the entire project using the below command:</p>
-<pre><code class="language-bash">./init-build.sh -DMICROKIT_APP=uboot_driver_example -DPLATFORM=maaxboard -DBUILD_TYPE=rebuild
-</code></pre>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="test-application-picoserver_uboot"><a class="header" href="#test-application-picoserver_uboot">Test application: <code>picoserver_uboot</code></a></h1>
 <p>The picoserver_uboot test application has only been built using the camkes framework.</p>
 <h2 id="overview-of-the-picoserver_uboot-test-application"><a class="header" href="#overview-of-the-picoserver_uboot-test-application">Overview of the <code>picoserver_uboot</code> test application</a></h2>
@@ -3641,10 +3591,10 @@ echo: Connection closed on socket 2
 <p><em>CMake</em>: Reference documentation is provided by <a href="https://cmake.org/cmake/help/latest/">the CMake project</a>, including details of the structure and syntax of the CMakeLists.txt file.</p>
 </li>
 <li>
-<p><em>CAmkES</em>: The seL4 foundation provides <a href="https://docs.sel4.systems/projects/camkes/">documentation on its use of CAmkES</a> including tutorials.</p>
+<p><em>CAmkES</em>: The seL4 foundation provides documentation on its use of <a href="https://docs.sel4.systems/projects/camkes/">CAmkES</a> including tutorials.</p>
 </li>
 <li>
-<p><em>Microkit</em>: The seL4 foundation provides <a href="https://github.com/seL4/microkit/blob/main/docs/manual.md">documentation on its use of Microkit</a> including tutorials.</p>
+<p><em>Microkit</em>: The seL4 foundation provides documentation on its use of <a href="https://github.com/seL4/microkit/blob/main/docs/manual.md">Microkit</a> including tutorials.</p>
 </li>
 </ul>
 <h2 id="add-basic-support-to-library"><a class="header" href="#add-basic-support-to-library">Add basic support to library</a></h2>
@@ -4630,7 +4580,7 @@ endif()
 <p>After these changes, within our <code>build</code> directory, <code>init_build</code> followed by <code>ninja</code> should result in a clean build.</p>
 <h2 id="integrating-the-driver"><a class="header" href="#integrating-the-driver">Integrating the driver:</a></h2>
 <h3 id="camkes-4"><a class="header" href="#camkes-4">CAmkES</a></h3>
-<p>We have established the underlying driver code, but it is not yet integrated within the CAmkES component that we shall be using. Assuming that we use the <a href="activity/new_driver/../device_drivers/uboot-driver-example.html">uboot-driver-example test application</a> introduced earlier – see <a href="activity/new_driver/../../activity/device_drivers/instructions_for_running_camkes">Using the U-Boot Driver Library</a> – we need to modify the file <code>camkes/apps/uboot-driver-example/include/plat/maaxboard/platform_devices.h</code> as follows.</p>
+<p>We have established the underlying driver code, but it is not yet integrated within the CAmkES component that we shall be using. Assuming that we use the <a href="activity/new_driver/../device_drivers/uboot-driver-example.html">uboot-driver-example test application</a> introduced earlier – see <a href="activity/new_driver/../../activity/device_drivers/instructions_for_running_camkes.html">Using the U-Boot Driver Library</a> – we need to modify the file <code>camkes/apps/uboot-driver-example/include/plat/maaxboard/platform_devices.h</code> as follows.</p>
 <p>Firstly, we need to add path definitions so that the devices can be located in the device tree:</p>
 <pre><code class="language-c">#define REG_I2C_0_PATH      "/soc@0/bus@30800000/i2c@30a20000"
 #define REG_I2C_1_PATH      "/soc@0/bus@30800000/i2c@30a30000"
@@ -4942,7 +4892,7 @@ extern struct env_clbk_tbl _u_boot_env_clbk__dnsip;
 <p>A device tree (DTS file) contains plain text data that describes a platform's hardware. A key requirement in porting seL4 to a new platform is the provision of a device tree describing the platform. A device tree can normally either be sourced from the Linux kernel or from a Linux distribution supplied by the platform manufacturer.</p>
 <p>Device tree files are stored within the Linux kernel within the <code>/arch/&lt;arch_identifier&gt;/boot/dts</code> folders. For example, for ARM based devices DTS files may be retrieved from <a href="https://github.com/torvalds/linux/tree/master/arch/arm/boot/dts">this link</a>.</p>
 <p>Support has not been incorporated into the mainline Linux kernel for the Avnet MaaXBoard, and therefore the device tree needed to be sourced from the platform-specific Linux distribution supplied by Avnet at <a href="https://github.com/Avnet/linux-imx/blob/maaxboard_5.4.24_2.1.0/arch/arm64/boot/dts/freescale/maaxboard-base.dts">this link</a>.</p>
-<p>Once a DTS file has been located it needs to be processed into a form suitable for inclusion in seL4, e.g. to remove use of C-style includes and macros. For the Avnet MaaXBoard this processing was performed using the following commands to generate DTS file named <code>maaxboard.dts</code>. It is expected the commands should be easily modifiable for other boards and sources of the Linux kernel. The following commands to be are executed within the <a href="activity/guide_to_porting_seL4/../install_and_configure/build_environment_setup.html">build environment</a> (i.e. the Docker container).</p>
+<p>Once a DTS file has been located it needs to be processed into a form suitable for inclusion in seL4, e.g. to remove use of C-style includes and macros. For the Avnet MaaXBoard this processing was performed using the following commands to generate DTS file named <code>maaxboard.dts</code>. It is expected the commands should be easily modifiable for other boards and sources of the Linux kernel. The following commands to be are executed within the <a href="activity/guide_to_porting_seL4/../../install_and_configure/build_environment_setup.html">build environment</a> (i.e. the Docker container).</p>
 <pre><code class="language-text">git clone https://github.com/Avnet/linux-imx.git
 cd linux-imx
 cpp -nostdinc -I include -I arch -undef -x assembler-with-cpp \
@@ -5042,7 +4992,7 @@ This case study works through an example to show some of our device drivers bein
 <h2 id="architecture-overview"><a class="header" href="#architecture-overview">Architecture Overview</a></h2>
 <p>The architecture of the demonstrator is shown below.</p>
 <p><img src="activity/camkes_case_study_application/../../activity/camkes_case_study_application/figures/encrypter_arch.png" alt="Demonstrator architecture" /></p>
-<p>Blue blocks show CAmkES components created specifically for the security demonstrator (or previously created within the developer kit in the case of <a href="activity/camkes_case_study_application/../device_drivers/uboot_driver_usage.html#test-application-picoserver_uboot">EthDriverUboot</a>); grey blocks show CAmkES <a href="https://github.com/seL4/global-components">global components</a>.</p>
+<p>Blue blocks show CAmkES components created specifically for the security demonstrator (or previously created within the developer kit in the case of <a href="activity/camkes_case_study_application/../../activity/picoserver_uboot/main.html">EthDriverUboot</a>; grey blocks show CAmkES <a href="https://github.com/seL4/global-components">global components</a>.</p>
 <p>Arrow directions show an abstracted view of data flow. Arrow labels refer to seL4 connector types (some concerned with data flow, some with control flow), which are elaborated in the key. More details about seL4 connector types may be found in the <a href="https://docs.sel4.systems/projects/camkes/manual.html">CAmkES manual</a>, but the fundamental types are <em>RPC</em> (Remote Procedure Call), <em>SharedData</em>, and <em>Notification</em> (see examples such as <code>seL4RPCCall</code> in the key).</p>
 <p>As the KeyReader and Crypto components handle plaintext and cryptographic data (e.g. keys), they are considered as 'high-side' in terms of security and must be kept separate from the downstream 'low-side' components that handle ciphertext. It is not the role of this developer kit to re-justify the credentials of seL4 (the <a href="https://sel4.systems/About/seL4-whitepaper.pdf">seL4 whitepaper</a> is a good starting point), but suffice to say that seL4's capability-based access controls guarantee protection and separation between all components, regardless of the notional high and low sides that we have overlaid, only allowing interactions between components where explicitly established via the seL4 connector types.</p>
 <p>The following paragraphs briefly describe the data flow, from left to right, highlighting the different seL4 mechanisms used for inter-component communications.</p>
@@ -5253,7 +5203,7 @@ run_uboot_command@uboot_wrapper.c:181 --- command 'fatwrite mmc 0:2 0x55b010 tra
 <p>As well as the changes to the <a href="activity/microkit_case_study_application/../../activity/microkit_case_study_application/architecture.html">Architecture</a> and <a href="activity/microkit_case_study_application/../../activity/microkit_case_study_application/detail.html">Design</a>, other infrastructure changes had to be made to make the case study compatible with Microkit:</p>
 <h2 id="picolibc"><a class="header" href="#picolibc">Picolibc</a></h2>
 <p>Microkit does not contain a bundled libc; therefore, it was decided to port picolibc to Microkit. Picolibc is a C library specifically designed for use in embedded systems, providing a lightweight and efficient implementation of the C standard library functions. This makes it an ideal choice to complement Microkit, enhancing its capabilities without adding unnecessary overhead.</p>
-<p>The ported picolibc for Microkit is linked <a href="https://github.com/sel4devkit/picolibc">here</a> with instructions for building and linking with Microkit. To use dynamic memory allocation (malloc) the __heap_start and __heap_end symbols (defined in the system file) needed to be added to the picosbrk.c file. This tells picolibc where the memory location of the heap.</p>
+<p>The ported picolibc for Microkit is linked <a href="https://github.com/sel4devkit/sel4devkit-maaxboard-microkit-picolibc">here</a> with instructions for building and linking with Microkit. To use dynamic memory allocation (malloc) the __heap_start and __heap_end symbols (defined in the system file) needed to be added to the picosbrk.c file. This tells picolibc where the memory location of the heap.</p>
 <h2 id="u-boot"><a class="header" href="#u-boot">U-Boot</a></h2>
 <p><a href="https://github.com/sel4devkit/u-boot/tree/microkit">U-boot</a> has been ported to be used with Microkit using the fork and patch method. The majority of the changes were made to remove name space clashes with picolibc.</p>
 <h2 id="device-tree"><a class="header" href="#device-tree">Device tree</a></h2>
@@ -5453,12 +5403,12 @@ run_uboot_command@uboot_wrapper.c:181 --- command 'fatwrite mmc 0:2 0x55b010 tra
 <h2 id="technical-details"><a class="header" href="#technical-details">Technical details</a></h2>
 <p>For notes on technical details, see the following sections:</p>
 <ul>
-<li><a href="activity/microkit_usb_driver/activity/microkit_usb_driver/adding_a_new_device.html">Adding a New Device</a></li>
-<li><a href="activity/microkit_usb_driver/activity/microkit_usb_driver/common_errors.html">Common Errors</a></li>
-<li><a href="activity/microkit_usb_driver/activity/microkit_usb_driver/flattened_device_tree.html">Flattened Device Tree</a></li>
-<li><a href="activity/microkit_usb_driver/activity/microkit_usb_driver/memory_sharing.html">Memory Sharing</a></li>
-<li><a href="activity/microkit_usb_driver/activity/microkit_usb_driver/microkit_monitor_errors.html">Microkit Monitor Errors</a></li>
-<li><a href="activity/microkit_usb_driver/activity/microkit_usb_driver/extra_notes.html">Extra Notes</a></li>
+<li><a href="activity/microkit_usb_driver/../../activity/microkit_usb_driver/adding_a_new_device.html">Adding a New Device</a></li>
+<li><a href="activity/microkit_usb_driver/../../activity/microkit_usb_driver/common_errors.html">Common Errors</a></li>
+<li><a href="activity/microkit_usb_driver/../../activity/microkit_usb_driver/flattened_device_tree.html">Flattened Device Tree</a></li>
+<li><a href="activity/microkit_usb_driver/../../activity/microkit_usb_driver/memory_sharing.html">Memory Sharing</a></li>
+<li><a href="activity/microkit_usb_driver/../../activity/microkit_usb_driver/microkit_monitor_errors.html">Microkit Monitor Errors</a></li>
+<li><a href="activity/microkit_usb_driver/../../activity/microkit_usb_driver/extra_notes.html">Extra Notes</a></li>
 </ul>
 <h2 id="examples"><a class="header" href="#examples">Examples</a></h2>
 <p>The following examples have been provided:</p>
