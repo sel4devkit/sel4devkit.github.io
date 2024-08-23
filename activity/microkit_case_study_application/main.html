@@ -208,7 +208,7 @@ INCBIN(device_tree, DTB_PATH);
 const char* _end = incbin_device_tree_end;
 </code></pre>
 <h2 id="dma-library"><a class="header" href="#dma-library">DMA library</a></h2>
-<p>The CAmkES dma allocated has been adapted to work with Microkit. The initialisation of the DMA library was separated out from the IO operations of CAmkES. The CAmkES DMA library allocated multiple pools of dma to be used in each component however in Microkit multiple pools of DMA can be assigned and allocated in the system file therefore the library was adapted so only one pool of DMA memory is allocated. The address and size of the DMA pool are also configured in the <a href="https://github.com/sel4devkit/microkit_examples/blob/main/security_demo/security_demo.system">system file</a>.</p>
+<p>The CAmkES dma allocated has been adapted to work with Microkit. The initialisation of the DMA library was separated out from the IO operations of CAmkES. The CAmkES DMA library allocated multiple pools of dma to be used in each component however in Microkit multiple pools of DMA can be assigned and allocated in the system file therefore the library was adapted so only one pool of DMA memory is allocated. The address and size of the DMA pool are also configured in the <a href="https://github.com/sel4devkit/sel4devkit-maaxboard-microkit-security-demo-example/blob/main/security_demo.system">system file</a>.</p>
 
                     </main>
 
