@@ -181,7 +181,7 @@
 U-Boot Driver Library to build with seL4 on the Odroid-C2 platform for the CAmkES framework.</p>
 <p>This document gives details of how this was achieved, following the structure
 of those earlier sections, but adding details of exact changes to each file.</p>
-<p>Our goal is to get the U-Boot <a href="../device_drivers/uboot-driver-example.html">test application</a> running
+<p>Our goal is to get the U-Boot <a href="../../activity/device_drivers/uboot-driver-example.html">test application</a> running
 on the Odroid-C2.</p>
 <h2 id="repository-setup-and-forks"><a class="header" href="#repository-setup-and-forks">Repository setup and forks</a></h2>
 <p>To work on a new platform build, we need to modify some of the existing repositories.
@@ -255,7 +255,7 @@ cd ..
 <p>Having made no other changes at this point, we should be able to build and run
 the U-Boot Driver Example program for the MaaxBoard from those newly forked
 repositories, just to make sure that creating the forks hasn't broken anything.</p>
-<p>The earlier instructions in the <a href="main.html">New Platform</a>
+<p>The earlier instructions in the <a href="../../activity/new_platform/main.html">New Platform</a>
 section should be followed with one significant change: the first <code>repo init</code> command
 specifies our fork and branch of the <code>sel4devkit-maaxboard-camkes-manifest</code> repository.</p>
 <p>For example:</p>
@@ -281,7 +281,7 @@ cd c2new
 repo init -u https://github.com/rod-chapman/sel4devkit-maaxboard-camkes-manifest.git -b addc2
 repo sync
 </code></pre>
-<p>At this point, we return to the structure of the <a href="main.html">New Platform</a>
+<p>At this point, we return to the structure of the <a href="../../activity/new_platform/main.html">New Platform</a>
 section.</p>
 <h2 id="update-the-librarys-cmake-file-to-support-the-platform"><a class="header" href="#update-the-librarys-cmake-file-to-support-the-platform">Update the library's CMake file to support the platform</a></h2>
 <p>We need to update the file <code>projects/projects_libs/libubootdrivers/CMakeLists.txt</code> to
@@ -383,7 +383,7 @@ and for the set of device drivers that we want to support.</p>
 <p>and</p>
 <pre><code class="language-text">projects_libs/libubootdrivers/src/plat/odroidc2
 </code></pre>
-<p>Following the templates from the <a href="main.html">New Platform</a> section,
+<p>Following the templates from the <a href="../../activity/new_platform/main.html">New Platform</a> section,
 we create <code>plat_driver_data.h</code> in the former of those directories.</p>
 <p>There are five UClass Drivers that are effectively mandatory (<code>nop</code>, <code>root</code>, <code>simple_bus</code>, <code>phy</code> and <code>blk</code>),
 and we want to add two more (<code>pinconfig</code> and <code>pinctrl</code>), making a total of 7, so we declare in
@@ -662,7 +662,7 @@ U_BOOT_DRIVER(led_gpio_wrap) = {
 have been built and run under seL4 on the Odroid-C2. We've also shown how the basic GPIO "pinctrl"
 driver from U-Boot can be added to our configuration for that platform and how the
 U-Boot <code>dm tree</code> command works and shows the presence of that device. We then went on to add support for the <code>pinmux</code> and <code>led</code> commands and demonstrated their use in a simple test application.</p>
-<p><img src="../new_platform/figures/odroidc2_boots.png" alt="C2_Boots" /></p>
+<p><img src="../../activity/new_platform/figures/odroidc2_boots.png" alt="C2_Boots" /></p>
 
                     </main>
 

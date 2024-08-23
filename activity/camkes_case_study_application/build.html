@@ -209,7 +209,7 @@ cd build
 <h3 id="implementation-note"><a class="header" href="#implementation-note">Implementation note</a></h3>
 <p>There is a known race condition with the CMake configuration of picoserver, which, if only run once, results in <code>fatal error: pico_device.h: No such file or directory</code>. A workaround is to run the command twice, or run CMake again, by typing <code>cmake .</code> (see <a href="https://lists.sel4.systems/hyperkitty/list/devel@sel4.systems/thread/O5B42BFF4FZ2WSCPUK6C6QUAJHD6DETN/">here</a>).</p>
 <h2 id="preparing-to-run"><a class="header" href="#preparing-to-run">Preparing to Run</a></h2>
-<p>A successful build will result in an executable file called <code>capdl-loader-image-arm-maaxboard</code> in the <code>images</code> subdirectory. This should be copied to a file named <code>sel4_image</code> and then made available to the preferred loading mechanism, such as TFTP, as per <a href="../../first_boot/bootloader.html">Bootloader</a>.</p>
+<p>A successful build will result in an executable file called <code>capdl-loader-image-arm-maaxboard</code> in the <code>images</code> subdirectory.</p>
 <p>Running the <code>security_demo</code> application requires the following:</p>
 <ul>
 <li>Connect a keyboard to the USB socket<sup class="footnote-reference"><a href="#1">1</a></sup> of the MaaXBoard;</li>

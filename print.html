@@ -508,12 +508,12 @@ architecture</a>.</p>
 needed to use the seL4 Developer Kit. The requirements are presented as
 follows:</p>
 <ul>
-<li><a href="development_platform/../development_platform/hardware_requirements.html">Hardware Requirements</a></li>
-<li><a href="development_platform/../development_platform/software_requirements.html">Software Requirements</a></li>
+<li><a href="development_platform/../../activity/development_platform/hardware_requirements.html">Hardware Requirements</a></li>
+<li><a href="development_platform/../../activity/development_platform/software_requirements.html">Software Requirements</a></li>
 </ul>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="hardware-requirements"><a class="header" href="#hardware-requirements">Hardware Requirements</a></h1>
 <p>This section details the hardware related to the target platform that the guide assumes is available to the developer. Before following the guide the developer will need to have access to all items marked as mandatory.</p>
-<p>As detailed in the <a href="development_platform/../first_boot/bootloader.html">Bootloader</a> section, there are multiple methods of transferring a compiled seL4 binary from the host machine to the target platform. Where a hardware item is required to support only one potential transfer method it is marked as 'optional'. The developer should decide which transfer method(s) are to be used to determine which items need to be available.</p>
+<p>As detailed in the <a href="development_platform/../install_and_configure/configure_uboot.html">Configure U-Boot</a> section, there are multiple methods of transferring a compiled seL4 binary from the host machine to the target platform. Where a hardware item is required to support only one potential transfer method it is marked as 'optional'. The developer should decide which transfer method(s) are to be used to determine which items need to be available.</p>
 <p>For convenience, the following table includes order codes and hyperlinks for the <a href="https://uk.farnell.com">Farnell UK store</a> correct as of 16th August 2024; clearly, equivalent items are available from many other sources.</p>
 <div class="table-wrapper"><table><thead><tr><th>Item</th><th>Notes</th><th>Order Code</th></tr></thead><tbody>
 <tr><td>Avnet MaaXBoard (AES-MC-SBC-IMX8M-G)</td><td>Mandatory</td><td><a href="https://uk.farnell.com/avnet/aes-mc-sbc-imx8m-g/sbc-quad-arm-cortex-a53-cortex/dp/3436577?ost=3436577">3436577</a></td></tr>
@@ -536,7 +536,7 @@ follows:</p>
 <p>This guide assumes the following basic hardware capabilities of the user's development environment:</p>
 <ol>
 <li>
-<p>The ability to connect the MaaXBoard to a wired network to which the host machine is also connected. This is required if the user wishes to perform TFTP transfer of executables from the host environment to the target platform (see the <a href="development_platform/../first_boot/bootloader.html#loading-via-tftp">Bootloader</a> section).</p>
+<p>The ability to connect the MaaXBoard to a wired network to which the host machine is also connected. This is required if the user wishes to perform TFTP transfer of executables from the host environment to the target platform (see the <a href="development_platform/../install_and_configure/configure_uboot.html#loading-via-tftp">Configure U-Boot</a> section).</p>
 </li>
 <li>
 <p>The ability to connect USB devices (i.e. the USB flash drive and USB SD card reader / writer) to the host machine.</p>
@@ -1237,7 +1237,7 @@ make all
 </code></pre>
 <p>On completion of the compilation, the resulting executable is available at <code>/host/sel4devkit-maaxboard-first-boot-sel4test/out/program.elf</code> on the build environment, or available at <code>/&lt;host_directory&gt;/sel4devkit-maaxboard-first-boot-sel4test/out/program.elf</code> on the host machine, where <code>/&lt;host_directory&gt;</code> was the directory on the host mapped to the build environment.</p>
 <h2 id="example-output"><a class="header" href="#example-output">Example Output</a></h2>
-<p>The example output when executed on the target (as described in <a href="first_boot/../first_boot/bootloader.html">bootloader</a>) is demonstrated below:</p>
+<p>The example output when executed on the target is demonstrated below:</p>
 <pre><code>u-boot=&gt; bootelf 0x50000000
 ## Starting application at 0x40a39000 ...
 
@@ -2842,7 +2842,7 @@ make all
 </code></pre>
 <p>On completion of the compilation, the resulting executable is available at <code>/host/sel4devkit-maaxboard-camkes-first-boot-adder/out/program.img</code> on the build environment, or available at <code>/&lt;host_directory&gt;/sel4devkit-maaxboard-camkes-first-boot-adder/out/program.img</code> on the host machine, where <code>/&lt;host_directory&gt;</code> was the directory on the host mapped to the build environment.</p>
 <h2 id="example-output-1"><a class="header" href="#example-output-1">Example output</a></h2>
-<p>The example output when executed on the target (as described in <a href="first_boot/../first_boot/bootloader.html">bootloader</a>) is demonstrated below:</p>
+<p>The example output when executed on the target is demonstrated below:</p>
 <pre><code>u-boot=&gt; bootelf 0x50000000
 ## Starting application at 0x4085e000 ...
 
@@ -2894,7 +2894,7 @@ make all
 </code></pre>
 <p>On completion of the compilation, the resulting executable is available at <code>/host/sel4devkit-maaxboard-microkit-first-boot-hello-world/out/program.img</code> on the build environment, or available at <code>/&lt;host_directory&gt;/sel4devkit-maaxboard-microkit-first-boot-hello-world/out/program.img</code> on the host machine, where <code>/&lt;host_directory&gt;</code> was the directory on the host mapped to the build environment.</p>
 <h2 id="example-output-2"><a class="header" href="#example-output-2">Example output</a></h2>
-<p>The example output when executed on the target (as described in <a href="first_boot/../first_boot/bootloader.html">bootloader</a>) is demonstrated below:</p>
+<p>The example output when executed on the target is demonstrated below:</p>
 <pre><code>u-boot=&gt; go 0x50000000
 ## Starting application at 0x50000000 ...
 LDR|INFO: altloader for seL4 starting
@@ -3079,7 +3079,7 @@ from a standard USB Type C connection, it may also be used for our purpose.</p>
 <p>The physical deployment is straight forward. The Host Machine is connected to
 the PPPS USB Hub, and a PPPS USB Hub Port is connected to supply power to the
 the MaaXBoard. The arrangement is illustrated below.</p>
-<p><img src="activity/remote_power_cycle/../remote_power_cycle/figures/PPPS_physical_deployment.png" alt="PPPS Physical Deployment" /></p>
+<p><img src="activity/remote_power_cycle/../../activity/remote_power_cycle/figures/PPPS_physical_deployment.png" alt="PPPS Physical Deployment" /></p>
 <p>Once the physical deployment is complete, the controlling software needs to be
 established. The <a href="https://github.com/mvp/uhubctlk">uhubctl</a> project provides a
 complete and self-contained solution. The exact configuration of uhubctl will
@@ -3133,7 +3133,7 @@ permissions</a>.</p>
 </ul>
 <p>In line with the goals stated above this guide therefore focuses on the porting of drivers from U-Boot to seL4.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="u-boot-driver-library-overview"><a class="header" href="#u-boot-driver-library-overview">U-Boot Driver Library Overview</a></h1>
-<p>To achieve the goals specified in <a href="activity/device_drivers/main.html">device driver introduction</a> section, an extensible library of device drivers ported from U-Boot has been created. This library provides an extensive set of drivers for the Avnet MaaXBoard platform as a worked example of its usage. The library is supported by documentation in the following sections on usage, maintenance, and guidance on the extension of the library to support additional platforms and devices.</p>
+<p>To achieve the goals specified in <a href="activity/device_drivers/../../activity/device_drivers/main.html">device driver introduction</a> section, an extensible library of device drivers ported from U-Boot has been created. This library provides an extensive set of drivers for the Avnet MaaXBoard platform as a worked example of its usage. The library is supported by documentation in the following sections on usage, maintenance, and guidance on the extension of the library to support additional platforms and devices.</p>
 <p>Information on the design and structure of the library is provided under the following sections:</p>
 <ul>
 <li><a href="activity/device_drivers/uboot_driver_library.html#design-summary">Design Summary</a></li>
@@ -3488,7 +3488,7 @@ run_uboot_command("ping 8.8.8.8"); // An example internet IP address (Google DNS
 <p>From the <code>/host/uboot_test/project_libs</code> directory, execute the following command:</p>
 <pre><code class="language-bash">./init-build.sh -DMICROKIT_APP=uboot_driver_example -DPLATFORM=maaxboard
 </code></pre>
-<p>A successful build will result in an executable file called <code>sel4_image</code> in the <code>examples/maaxboard/uboot-driver-example/example-build</code> subdirectory. This file should be made available to the preferred loading mechanism, such as TFTP, as per <a href="activity/device_drivers/../../first_boot/bootloader.html">Bootloader</a>.</p>
+<p>A successful build will result in an executable file called <code>sel4_image</code> in the <code>examples/maaxboard/uboot-driver-example/example-build</code> subdirectory.</p>
 <p>Once build there is an option to rebuild the entire project using the below command:</p>
 <pre><code class="language-bash">./init-build.sh -DMICROKIT_APP=uboot_driver_example -DPLATFORM=maaxboard -DBUILD_TYPE=rebuild
 </code></pre>
@@ -3496,8 +3496,8 @@ run_uboot_command("ping 8.8.8.8"); // An example internet IP address (Google DNS
 <p>The picoserver_uboot test application has only been built using the camkes framework.</p>
 <h2 id="overview-of-the-picoserver_uboot-test-application"><a class="header" href="#overview-of-the-picoserver_uboot-test-application">Overview of the <code>picoserver_uboot</code> test application</a></h2>
 <p>It is not the purpose of this developer kit to give a CAmkES tutorial (e.g. see <a href="https://docs.sel4.systems/projects/camkes/">seL4's documentation</a>), but this application is based on the following CAmkES model:</p>
-<p><img src="activity/picoserver_uboot/../picoserver_uboot/figures/picoserver-camkes.png" alt="Picoserver CAmkES overview" /></p>
-<p>EthDriverUboot is a simple implementation of an Ethernet driver that has been ported from U-Boot. PicoServer provides a picoTCP TCP/IP stack on top of this, and the Echo component simply listens on port 1234 of a given IP address, echoing received characters on the display. (An additional component TimeServer has been omitted from the diagram for clarity, but see the <a href="activity/picoserver_uboot/../camkes_case_study_application/main.html">case study application</a> for more details.)</p>
+<p><img src="activity/picoserver_uboot/../../activity/picoserver_uboot/figures/picoserver-camkes.png" alt="Picoserver CAmkES overview" /></p>
+<p>EthDriverUboot is a simple implementation of an Ethernet driver that has been ported from U-Boot. PicoServer provides a picoTCP TCP/IP stack on top of this, and the Echo component simply listens on port 1234 of a given IP address, echoing received characters on the display. (An additional component TimeServer has been omitted from the diagram for clarity, but see the <a href="activity/picoserver_uboot/../../activity/camkes_case_study_application/main.html">case study application</a> for more details.)</p>
 <h2 id="instructions-for-running-picoserver_uboot"><a class="header" href="#instructions-for-running-picoserver_uboot">Instructions for running <code>picoserver_uboot</code></a></h2>
 <p>As usual, this assumes that the user is already running a the CAmkES docker container within the <a href="activity/picoserver_uboot/../../install_and_configure/build_environment_setup.html">build environment</a>, where we can create a directory and clone the code and dependencies.</p>
 <pre><code class="language-text">mkdir /host/uboot_pico
@@ -3515,7 +3515,7 @@ cd build
 ninja
 </code></pre>
 <p>where <code>xxx.xxx.xxx.xxx</code> is the IP address to allocate to the MaaXBoard.</p>
-<p>A successful build will result in an executable file called <code>capdl-loader-image-arm-maaxboard</code> in the <code>images</code> subdirectory. This should be copied to a file named <code>sel4_image</code> and then made available to the preferred loading mechanism, such as TFTP, as per <a href="activity/picoserver_uboot/../../first_boot/bootloader.html">Bootloader</a>.</p>
+<p>A successful build will result in an executable file called <code>capdl-loader-image-arm-maaxboard</code> in the <code>images</code> subdirectory.</p>
 <p>When the <code>picoserver_uboot</code> application is running on the MaaXBoard, it should confirm that it is listening on port 1234 of the supplied IP address. It will also confirm registration of the protocol stack layers. The application allocates a random MAC address.</p>
 <p>At any time while running, the application may display <code>No such port ....</code> messages as it monitors traffic on the network; this is expected behaviour that may be ignored.</p>
 <p>Meanwhile, from a terminal window on the host machine, use the <code>netcat</code> (<code>nc</code>) command (native to Linux or macOS, or available as a <a href="https://nmap.org/ncat/">download</a> for Windows), where <code>xxx.xxx.xxx.xxx</code> is the IP address of the MaaXBoard, as previously specified:</p>
@@ -3548,8 +3548,8 @@ echo: Connection closed on socket 2
 </ul>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="porting-device-drivers-to-a-new-platform"><a class="header" href="#porting-device-drivers-to-a-new-platform">Porting Device Drivers to a New Platform</a></h1>
 <p>This section documents the required actions and guidance to add support for a new platform to the library.</p>
-<p>By the end of this section, an seL4 executable will be built for the new platform that can initialise the library (although the library may not support any of the platform's devices). Later sections of this guide cover the required actions to add driver support into the library for the new platform (e.g. see the <a href="activity/new_platform/../new_platform/add_odroidc2.html">Odroid-C2 worked example</a>).</p>
-<p>Throughout the sections of this guide devoted to extension of the U-Boot driver library, it is expected the developer is working within the folder structure created by the <code>repo</code> tool (e.g. as used to build the <a href="activity/new_platform/../device_drivers/uboot_driver_usage.html">test applications</a>). Key folders and files within the hierarchy are shown below:</p>
+<p>By the end of this section, an seL4 executable will be built for the new platform that can initialise the library (although the library may not support any of the platform's devices). Later sections of this guide cover the required actions to add driver support into the library for the new platform (e.g. see the <a href="activity/new_platform/../../activity/new_platform/add_odroidc2.html">Odroid-C2 worked example</a>).</p>
+<p>Throughout the sections of this guide devoted to extension of the U-Boot driver library, it is expected the developer is working within the folder structure created by the <code>repo</code> tool (e.g. as used to build the <a href="activity/new_platform/../../activity/device_drivers/uboot_driver_usage.html">test applications</a>). Key folders and files within the hierarchy are shown below:</p>
 <h3 id="camkes-2"><a class="header" href="#camkes-2">CAmkES</a></h3>
 <pre><code class="language-text">&lt;manifest root&gt;
 |
@@ -3582,7 +3582,7 @@ echo: Connection closed on socket 2
 </code></pre>
 <ul>
 <li><code>kernel/tools/dts</code>: Location of platform device trees.</li>
-<li><code>projects/project_libs/camkes/apps/uboot-driver-example</code>: <a href="activity/new_platform/../device_drivers/uboot_driver_usage.html">The test application</a>.</li>
+<li><code>projects/project_libs/camkes/apps/uboot-driver-example</code>: <a href="activity/new_platform/../../activity/device_drivers/uboot_driver_usage.html">The test application</a>.</li>
 <li><code>projects/project_libs/libubootdrivers</code>: Referred to as "the library" throughout. See <a href="https://github.com/sel4devkit/projects_libs/tree/master/libubootdrivers">linked Git repository</a>.</li>
 <li><code>projects/uboot</code>: Fork of the U-Boot project source code (note, this is also symlinked to <code>projects/project_libs/libubootdrivers/uboot</code>).</li>
 </ul>
@@ -3616,7 +3616,7 @@ echo: Connection closed on socket 2
 </code></pre>
 <ul>
 <li><code>project_libs/boards</code>: Location of platform device trees.</li>
-<li><code>example/&lt;platform&gt;/uboot-driver-example</code>: <a href="activity/new_platform/../device_drivers/uboot_driver_usage.html">The test application</a>.</li>
+<li><code>example/&lt;platform&gt;/uboot-driver-example</code>: <a href="activity/new_platform/../../activity/device_drivers/uboot_driver_usage.html">The test application</a>.</li>
 <li><code>project_libs/libubootdrivers</code>: Referred to as "the library" throughout. See <a href="https://github.com/sel4devkit/sel4devkit-maaxboard-microkit-project-libs/tree/main/libubootdrivers">linked Git repository</a>.</li>
 <li><code>project_libs/uboot</code>: Fork of the U-Boot project source code (note, this is also symlinked to <code>project_libs/libubootdrivers/uboot</code>).</li>
 </ul>
@@ -3662,7 +3662,7 @@ echo: Connection closed on socket 2
 <p>It should also be noted that U-Boot drivers can support multiple devices. For example, many of the drivers added to support the Avnet MaaXBoard support multiple iMX SoCs. If previously supported drivers are compatible with the new platform, this support can be added now; for example, if platform <code>foo</code> has a GPIO device supported by the <code>gpio_mxc</code> driver (as used by the Avnet MaaXBoard), then the line <code>set(gpio_driver "gpio_mxc")</code> could be added to the <code>foo</code> platform's settings to enable support.</p>
 <p>To enable access to platform specific header files it is necessary to create a symlink within the U-Boot code structure named <code>arch</code> to one of the many <code>arch-xxx</code> folders provided by U-Boot; this mimics an equivalent action taken by U-Boot's native build system. As an example it can be seen that for the iMX8MQ based platforms the <code>arch</code> symlink points to the <code>arch-imx8m</code> folder. It is expected that identification of the correct folder to link to will in most cases will be possible through naming convention alone. To definitively determine the folder to link, the symlink created during a build of U-Boot could be inspected.</p>
 <h3 id="define-platform-specific-linker-lists-data-structure"><a class="header" href="#define-platform-specific-linker-lists-data-structure">Define platform specific Linker Lists data structure</a></h3>
-<p>As documented within the <a href="activity/new_platform/../device_drivers/uboot_driver_library.html#linker-lists">Linker Lists section of the library overview</a>, the library requires a global data structure named <code>driver_data</code> to be declared to allow the U-Boot source code to access optional functionality included in the executable.</p>
+<p>As documented within the <a href="activity/new_platform/../../activity/device_drivers/uboot_driver_library.html#linker-lists">Linker Lists section of the library overview</a>, the library requires a global data structure named <code>driver_data</code> to be declared to allow the U-Boot source code to access optional functionality included in the executable.</p>
 <p>To define <code>driver_data</code> for the new platform, new platform-specific files must be added to the library. The code blocks that follow provide minimal templates for these files that include the base device classes, drivers for those classes, and base commands that are required by all platforms.</p>
 <p>File <code>include/plat/foo/plat_driver_data.h</code>:</p>
 <pre><code class="language-c">/*
@@ -3748,7 +3748,7 @@ void initialise_driver_data(void) {
 </code></pre>
 <p>As support for additional optional objects (e.g. drivers, driver classes, commands, etc.) are added for a platform, these files will be updated to reference the associated objects. See the files for the Avnet MaaXBoard platform for an example of these how these files provide more extensive support.</p>
 <h2 id="add-support-to-example-application"><a class="header" href="#add-support-to-example-application">Add support to example application</a></h2>
-<p>Section <a href="activity/new_platform/../device_drivers/uboot_driver_usage.html">Using the U-Boot Driver Library</a> introduced the demonstration application <a href="activity/new_platform/../device_drivers/uboot-driver-example.html">uboot-driver-example</a>. This section documents the changes required to the <code>uboot-driver-example</code> application to allow it to be built for the new platform.</p>
+<p>Section <a href="activity/new_platform/../../activity/device_drivers/uboot_driver_usage.html">Using the U-Boot Driver Library</a> introduced the demonstration application <a href="activity/new_platform/../../activity/device_drivers/uboot-driver-example.html">uboot-driver-example</a>. This section documents the changes required to the <code>uboot-driver-example</code> application to allow it to be built for the new platform.</p>
 <p>The following empty template file needs to be added to the application <code>include/plat/foo/platform_devices.h</code>:</p>
 <h3 id="camkes-3"><a class="header" href="#camkes-3">CAmkES</a></h3>
 <pre><code class="language-c">#pragma once
@@ -3792,7 +3792,7 @@ void initialise_driver_data(void) {
 <p>The order in which drivers need to be added is likely to depend on the intended usage of the library; e.g. support for a single device or support for multiple devices, and the internal needs of the device drivers to be added.</p>
 <p>The following drivers are likely to form the core of the support for a platform and underpin the capabilities of other drivers. It may be possible to support some devices without these core drivers, but that would need to checked on a case-by-case basis.</p>
 <h3 id="timer-1"><a class="header" href="#timer-1">Timer</a></h3>
-<p>As documented <a href="activity/new_platform/../device_drivers/uboot_driver_library.html#timer">in the library overview</a>, some U-Boot drivers rely upon access to a monotonic timer to underpin their timing needs.</p>
+<p>As documented <a href="activity/new_platform/../../activity/device_drivers/uboot_driver_library.html#timer">in the library overview</a>, some U-Boot drivers rely upon access to a monotonic timer to underpin their timing needs.</p>
 <p>By default a platform will be supported by the <code>dummy</code> timer driver (see library file <code>src/timer/timer_dummy.c</code>). Whilst the dummy timer driver allows the library to build cleanly, it will raise an assertion error / exception, thereby halting execution, should any of the timing routines be used. Some simple drivers (e.g. GPIO drivers) typically do not require any timing routines and so can be supported without the need to provide a functional timer; however, a functional timer will typically need to be provided to support more complex devices such as Ethernet or USB.</p>
 <p>The means of providing a timer driver is architecture- and platform-dependent, so detailed guidance cannot be provided. A worked example of a timer driver for the iMX8MQ SoC is provided in file <code>src/timer/timer_imx8mq.c</code>; it is expected that this driver could be extended to cover multiple iMX SoCs.</p>
 <h3 id="clock"><a class="header" href="#clock">Clock</a></h3>
@@ -3809,7 +3809,7 @@ void initialise_driver_data(void) {
 U-Boot Driver Library to build with seL4 on the Odroid-C2 platform for the CAmkES framework.</p>
 <p>This document gives details of how this was achieved, following the structure
 of those earlier sections, but adding details of exact changes to each file.</p>
-<p>Our goal is to get the U-Boot <a href="activity/new_platform/../device_drivers/uboot-driver-example.html">test application</a> running
+<p>Our goal is to get the U-Boot <a href="activity/new_platform/../../activity/device_drivers/uboot-driver-example.html">test application</a> running
 on the Odroid-C2.</p>
 <h2 id="repository-setup-and-forks"><a class="header" href="#repository-setup-and-forks">Repository setup and forks</a></h2>
 <p>To work on a new platform build, we need to modify some of the existing repositories.
@@ -3883,7 +3883,7 @@ cd ..
 <p>Having made no other changes at this point, we should be able to build and run
 the U-Boot Driver Example program for the MaaxBoard from those newly forked
 repositories, just to make sure that creating the forks hasn't broken anything.</p>
-<p>The earlier instructions in the <a href="activity/new_platform/main.html">New Platform</a>
+<p>The earlier instructions in the <a href="activity/new_platform/../../activity/new_platform/main.html">New Platform</a>
 section should be followed with one significant change: the first <code>repo init</code> command
 specifies our fork and branch of the <code>sel4devkit-maaxboard-camkes-manifest</code> repository.</p>
 <p>For example:</p>
@@ -3909,7 +3909,7 @@ cd c2new
 repo init -u https://github.com/rod-chapman/sel4devkit-maaxboard-camkes-manifest.git -b addc2
 repo sync
 </code></pre>
-<p>At this point, we return to the structure of the <a href="activity/new_platform/main.html">New Platform</a>
+<p>At this point, we return to the structure of the <a href="activity/new_platform/../../activity/new_platform/main.html">New Platform</a>
 section.</p>
 <h2 id="update-the-librarys-cmake-file-to-support-the-platform-1"><a class="header" href="#update-the-librarys-cmake-file-to-support-the-platform-1">Update the library's CMake file to support the platform</a></h2>
 <p>We need to update the file <code>projects/projects_libs/libubootdrivers/CMakeLists.txt</code> to
@@ -4011,7 +4011,7 @@ and for the set of device drivers that we want to support.</p>
 <p>and</p>
 <pre><code class="language-text">projects_libs/libubootdrivers/src/plat/odroidc2
 </code></pre>
-<p>Following the templates from the <a href="activity/new_platform/main.html">New Platform</a> section,
+<p>Following the templates from the <a href="activity/new_platform/../../activity/new_platform/main.html">New Platform</a> section,
 we create <code>plat_driver_data.h</code> in the former of those directories.</p>
 <p>There are five UClass Drivers that are effectively mandatory (<code>nop</code>, <code>root</code>, <code>simple_bus</code>, <code>phy</code> and <code>blk</code>),
 and we want to add two more (<code>pinconfig</code> and <code>pinctrl</code>), making a total of 7, so we declare in
@@ -4290,7 +4290,7 @@ U_BOOT_DRIVER(led_gpio_wrap) = {
 have been built and run under seL4 on the Odroid-C2. We've also shown how the basic GPIO "pinctrl"
 driver from U-Boot can be added to our configuration for that platform and how the
 U-Boot <code>dm tree</code> command works and shows the presence of that device. We then went on to add support for the <code>pinmux</code> and <code>led</code> commands and demonstrated their use in a simple test application.</p>
-<p><img src="activity/new_platform/../new_platform/figures/odroidc2_boots.png" alt="C2_Boots" /></p>
+<p><img src="activity/new_platform/../../activity/new_platform/figures/odroidc2_boots.png" alt="C2_Boots" /></p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="new-driver"><a class="header" href="#new-driver">New Driver</a></h1>
 <p>This section provides guidance on the addition of a new device driver to support a device on an existing platform.</p>
 <p>Adding support for a new device can be broken down into logical steps:</p>
@@ -4619,7 +4619,7 @@ endif()
 <p>After these changes, within our <code>build</code> directory, <code>init_build</code> followed by <code>ninja</code> should result in a clean build.</p>
 <h2 id="integrating-the-driver"><a class="header" href="#integrating-the-driver">Integrating the driver:</a></h2>
 <h3 id="camkes-4"><a class="header" href="#camkes-4">CAmkES</a></h3>
-<p>We have established the underlying driver code, but it is not yet integrated within the CAmkES component that we shall be using. Assuming that we use the <a href="activity/new_driver/../device_drivers/uboot-driver-example.html">uboot-driver-example test application</a> introduced earlier – see <a href="activity/new_driver/../../activity/device_drivers/instructions_for_running_camkes.html">Using the U-Boot Driver Library</a> – we need to modify the file <code>camkes/apps/uboot-driver-example/include/plat/maaxboard/platform_devices.h</code> as follows.</p>
+<p>We have established the underlying driver code, but it is not yet integrated within the CAmkES component that we shall be using. Assuming that we use the <a href="activity/new_driver/../../activity/device_drivers/uboot-driver-example.html">uboot-driver-example test application</a> introduced earlier – see <a href="activity/new_driver/../../activity/device_drivers/instructions_for_running_camkes.html">Using the U-Boot Driver Library</a> – we need to modify the file <code>camkes/apps/uboot-driver-example/include/plat/maaxboard/platform_devices.h</code> as follows.</p>
 <p>Firstly, we need to add path definitions so that the devices can be located in the device tree:</p>
 <pre><code class="language-c">#define REG_I2C_0_PATH      "/soc@0/bus@30800000/i2c@30a20000"
 #define REG_I2C_1_PATH      "/soc@0/bus@30800000/i2c@30a30000"
@@ -5004,7 +5004,7 @@ dtc -o maaxboard.dts temp.dtb
 </ol>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="spi-bus-bmp280-pressure-sensor"><a class="header" href="#spi-bus-bmp280-pressure-sensor">SPI Bus BMP280 Pressure Sensor</a></h1>
 <p>Having added a Serial Peripheral Interface (SPI) driver, it was tested with a widely available and inexpensive board module that uses the <a href="https://www.bosch-sensortec.com/products/environmental-sensors/pressure-sensors/bmp280/">Bosch BMP280</a> barometric pressure / temperature sensor. Here is a link for a typical example, but there are many alternative sources: <a href="https://www.amazon.co.uk/AZDelivery-Generic-BMP280-Barometric-Pressure/dp/B07D8TPVVY">Amazon link</a>. You may also need some suitable cabling, such as female-to-female ribbon cable <a href="https://www.amazon.co.uk/UMTMedia-Dupont-Cables-Breadboard-Arduino/dp/B09MJZ8D61/ref=sr_1_10?crid=25HYJ98OWY607&amp;dib=eyJ2IjoiMSJ9.dajI1jr1pnKAHRRPg5jVeV16AJBbWbUOkq_1S6o_PISIxSCWvITMRJt_v1RMYUfo1qPpMy4Lz5FpSks35etKTZ0Ex0XrGyDAE1i90x7NK_7r7fM5HWuSjqsOHNTRnHdjgpxGVhbVfDNDapOTnl5ICxALBrXAaHTI2jdZPdaAT7QTIRIc2wLUEc7bxycPMMOzNUl6HyzfwhVv6ghtL3dPNItSiebcLvEKKUc40yu3I-93yKM1sT-i6uv-nJx_ynn1ilCITgq0nuQptgSKYYo-d-JwXcKyXSAg_9m6DBNyGBY.-vOZfJhVxSB99BAiI798WsI_CbM4ryCOFkwabxcYIi4&amp;dib_tag=se&amp;keywords=female+to+female+ribbon+cable&amp;qid=1724337680&amp;sprefix=female+to+female+ribbon+cable%2Caps%2C91&amp;sr=8-10">(example here)</a> and a soldering iron to connect the pin header.</p>
-<p>If this sensor is connected, the <a href="activity/spi_bus_bmp280_pressure_sensor/../device_drivers/uboot-driver-example.html">uboot-driver-example test application</a> will use it (see <a href="activity/spi_bus_bmp280_pressure_sensor/../device_drivers/uboot_driver_usage.html">Using the U-Boot Driver Library</a>).</p>
+<p>If this sensor is connected, the <a href="activity/spi_bus_bmp280_pressure_sensor/../../activity/device_drivers/uboot-driver-example.html">uboot-driver-example test application</a> will use it (see <a href="activity/spi_bus_bmp280_pressure_sensor/../../activity/device_drivers/uboot_driver_usage.html">Using the U-Boot Driver Library</a>).</p>
 <p>The wiring connections using the MaaXBoard's 40-pin GPIO connector are as follows, accompanied by some reference photographs.</p>
 <div class="table-wrapper"><table><thead><tr><th>GPIO Pin</th><th>Sensor Pin</th></tr></thead><tbody>
 <tr><td>17</td><td>VCC</td></tr>
@@ -5015,10 +5015,10 @@ dtc -o maaxboard.dts temp.dtb
 <tr><td>24</td><td>CSB (SSO)</td></tr>
 </tbody></table>
 </div>
-<p><img src="activity/spi_bus_bmp280_pressure_sensor/../spi_bus_bmp280_pressure_sensor/figures/SPI_side_view.png" alt="SPI GPIO view" />
-<img src="activity/spi_bus_bmp280_pressure_sensor/../spi_bus_bmp280_pressure_sensor/figures/SPI_top_view.png" alt="SPI GPIO view" />
-<img src="activity/spi_bus_bmp280_pressure_sensor/../spi_bus_bmp280_pressure_sensor/figures/SPI_sensor_top.png" alt="SPI sensor top view" />
-<img src="activity/spi_bus_bmp280_pressure_sensor/../spi_bus_bmp280_pressure_sensor/figures/SPI_sensor_bottom.png" alt="SPI sensor bottom view" /></p>
+<p><img src="activity/spi_bus_bmp280_pressure_sensor/../../activity/spi_bus_bmp280_pressure_sensor/figures/SPI_side_view.png" alt="SPI GPIO view" />
+<img src="activity/spi_bus_bmp280_pressure_sensor/../../activity/spi_bus_bmp280_pressure_sensor/figures/SPI_top_view.png" alt="SPI GPIO view" />
+<img src="activity/spi_bus_bmp280_pressure_sensor/../../activity/spi_bus_bmp280_pressure_sensor/figures/SPI_sensor_top.png" alt="SPI sensor top view" />
+<img src="activity/spi_bus_bmp280_pressure_sensor/../../activity/spi_bus_bmp280_pressure_sensor/figures/SPI_sensor_bottom.png" alt="SPI sensor bottom view" /></p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="camkes-case-study-application"><a class="header" href="#camkes-case-study-application">CAmkES Case Study Application</a></h1>
 <p>This section works through an example to show some of our device drivers being used within a larger application. It is nominally labelled as a 'security domain' demonstrator (named <code>security_demo</code>) but this is mainly in the context of being a keyboard-based encryption device that was inspired by an Enigma machine! It is intentionally simple and its main purpose is to show data separation and to provide worked examples of inter-component communications using different seL4 mechanisms.</p>
 <p>Extra functionality within the demonstration application is deliberately kept to a minimum to leave the source code less cluttered, so that the developer can readily see the 'more interesting' seL4 inter-component and device interactions without too much extra, feature-supporting code. In line with the rest of the developer kit, the demonstration application is intended to be more of a springboard for a developer kit user than a polished product for an end user.
@@ -5191,7 +5191,7 @@ cd build
 <h3 id="implementation-note-1"><a class="header" href="#implementation-note-1">Implementation note</a></h3>
 <p>There is a known race condition with the CMake configuration of picoserver, which, if only run once, results in <code>fatal error: pico_device.h: No such file or directory</code>. A workaround is to run the command twice, or run CMake again, by typing <code>cmake .</code> (see <a href="https://lists.sel4.systems/hyperkitty/list/devel@sel4.systems/thread/O5B42BFF4FZ2WSCPUK6C6QUAJHD6DETN/">here</a>).</p>
 <h2 id="preparing-to-run"><a class="header" href="#preparing-to-run">Preparing to Run</a></h2>
-<p>A successful build will result in an executable file called <code>capdl-loader-image-arm-maaxboard</code> in the <code>images</code> subdirectory. This should be copied to a file named <code>sel4_image</code> and then made available to the preferred loading mechanism, such as TFTP, as per <a href="activity/camkes_case_study_application/../../first_boot/bootloader.html">Bootloader</a>.</p>
+<p>A successful build will result in an executable file called <code>capdl-loader-image-arm-maaxboard</code> in the <code>images</code> subdirectory.</p>
 <p>Running the <code>security_demo</code> application requires the following:</p>
 <ul>
 <li>Connect a keyboard to the USB socket<sup class="footnote-reference"><a href="#1">1</a></sup> of the MaaXBoard;</li>
@@ -5395,7 +5395,7 @@ cd /host/security_demo
 <pre><code class="language-bash">./init-build.sh -DMICROKIT_APP=security_demo -DPLATFORM=maaxboard -DBUILD_TYPE=rebuild
 </code></pre>
 <h2 id="preparing-to-run-1"><a class="header" href="#preparing-to-run-1">Preparing to Run</a></h2>
-<p>A successful build will result in an executable file called <code>sel4_image</code> in the <code>example/&lt;platform&gt;/security_demo/example-build</code> subdirectory. This file should be made available to the preferred loading mechanism, such as TFTP, as per <a href="activity/microkit_case_study_application/../../first_boot/bootloader.html">Bootloader</a>.</p>
+<p>A successful build will result in an executable file called <code>sel4_image</code> in the <code>example/&lt;platform&gt;/security_demo/example-build</code> subdirectory.</p>
 <p>Running the <code>security_demo</code> application requires the following:</p>
 <ul>
 <li>Connect a keyboard to the USB socket<sup class="footnote-reference"><a href="#1">1</a></sup> of the MaaXBoard;</li>
@@ -5440,7 +5440,7 @@ run_uboot_command@uboot_wrapper.c:181 --- command 'fatwrite mmc 0:2 0x55b010 tra
 <p>The first goal was to understand the differences between CAmkES and Microkit and become familiar with its features. Compared to CAmkES, Microkit has no standard libraries which meant that we had to export libraries for simple functionality such as logging and memory handling. We also had to create a simple DMA handler, and in the absence of a build system we opted to use GNU Make. Once we had an understanding of Microkit we got our new example to initialise the host controller as we did with CAmkES.</p>
 <p>We created a separate DMA library which can be found <a href="https://github.com/sel4devkit/libmicrokitdma">here</a></p>
 <h3 id="architecture-1"><a class="header" href="#architecture-1">Architecture</a></h3>
-<p><img src="activity/microkit_usb_driver/../microkit_usb_driver/figures/system_architecture.png" alt="screenshot" /></p>
+<p><img src="activity/microkit_usb_driver/../../activity/microkit_usb_driver/figures/system_architecture.png" alt="screenshot" /></p>
 <p>One Protection Domain (PD) acts as a central driver which handles all of the initialization and communicates with the hardware via MMIO. There are additional PD's for the memory handler, software interrupts and hardware interrupts.</p>
 <h3 id="memory-considerations"><a class="header" href="#memory-considerations">Memory Considerations</a></h3>
 <p>Between the core driver PD and the software interrupt PD there are some function pointers to callback functions. In NetBSD's implementation it expects these function callbacks to be running in the same memory address space. However, with our setup this part of the communication is done between PD's, meaning that they don't have access to the same blocks of memory. Our first attempt at resolving this solution involved using a master PD that handled all of these functions, where the driver would call into the master PD, then the master PD would call into the software interrupt PD. This however was not a viable solution because the software interrupt PD was of a lower priority than the driver PD resulting in an affect on performance. Instead we opted to use a context switch, where both PD's at initialisation notify each other of the memory addresses that they will be using for the function pointers. The appropriate memory address is then selected during the function callback.</p>
@@ -5662,8 +5662,11 @@ MON|ERROR:    dfsc = address size fault, level 0 (0x00000000)
 <li>rotating_bars - Displays 4 colour bars rotating across the screen.</li>
 <li>moving_square - A small square that moves around the screen, changing direction each time it hits the side of the screen.</li>
 </ul>
-<p>Currently the project is built using a build script that calls make. The dependencies are also built separately with a script for Picolibc and a Makefile for Microkit. For information on how to build and run the examples see:</p>
-<p><a href="https://github.com/sel4devkit/sel4devkit-maaxboard-microkit-hdmi-driver">sel4devkit-maaxboard-microkit-hdmi-driver</a></p>
+<p>Currently the project is built using a build script that calls make. The
+dependencies are also built separately with a script for Picolibc and a
+Makefile for Microkit. For information on how to build and run the examples
+see:
+<a href="https://github.com/sel4devkit/sel4devkit-maaxboard-microkit-hdmi-driver">sel4devkit-maaxboard-microkit-hdmi-driver</a></p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="single-linux-guest"><a class="header" href="#single-linux-guest">Single Linux guest</a></h1>
 <h2 id="introduction-3"><a class="header" href="#introduction-3">Introduction</a></h2>
 <p>For this task, the goal was to load up a virtual machine (VM) on a host with serial TTY pass-through. This was with the intended goal of performing I/O with the Linux guest. Our starting point for this activity was to rework an example from the Trustworthy Systems Libvmm repository so that it runs on the Maaxboard. This repo contains a virtual machine monitor for the seL4 microkernel with various examples built for the Odroid board and the open source emulator Qemu. Libvmm provides a virtual machine monitor (VMM) which is used to start and manage the guest VM.</p>
@@ -5728,6 +5731,9 @@ MON|ERROR:    dfsc = address size fault, level 0 (0x00000000)
 <h2 id="notes"><a class="header" href="#notes">Notes</a></h2>
 <p>The exploration into USB IP gave us understanding on how we could send USB data between two instances of Linux. In theory we should be able to plug a USB device to the Maaxboard and pass it through to 1 of the Linux guests. If only one VM was given pass-through to the USB device then this VM could act as the USB IP "server" and using VirtIO Net it could route the USB traffic to the other VM over IP.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="licensing"><a class="header" href="#licensing">Licensing</a></h1>
+<p>This work is © Crown Copyright NCSC, licensed under a <a href="http://creativecommons.org/licenses/by/4.0/">Creative Commons
+Attribution 4.0 International
+License</a>.</p>
 
                     </main>
 

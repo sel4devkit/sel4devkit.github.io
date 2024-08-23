@@ -180,8 +180,8 @@
 <p>The picoserver_uboot test application has only been built using the camkes framework.</p>
 <h2 id="overview-of-the-picoserver_uboot-test-application"><a class="header" href="#overview-of-the-picoserver_uboot-test-application">Overview of the <code>picoserver_uboot</code> test application</a></h2>
 <p>It is not the purpose of this developer kit to give a CAmkES tutorial (e.g. see <a href="https://docs.sel4.systems/projects/camkes/">seL4's documentation</a>), but this application is based on the following CAmkES model:</p>
-<p><img src="../picoserver_uboot/figures/picoserver-camkes.png" alt="Picoserver CAmkES overview" /></p>
-<p>EthDriverUboot is a simple implementation of an Ethernet driver that has been ported from U-Boot. PicoServer provides a picoTCP TCP/IP stack on top of this, and the Echo component simply listens on port 1234 of a given IP address, echoing received characters on the display. (An additional component TimeServer has been omitted from the diagram for clarity, but see the <a href="../camkes_case_study_application/main.html">case study application</a> for more details.)</p>
+<p><img src="../../activity/picoserver_uboot/figures/picoserver-camkes.png" alt="Picoserver CAmkES overview" /></p>
+<p>EthDriverUboot is a simple implementation of an Ethernet driver that has been ported from U-Boot. PicoServer provides a picoTCP TCP/IP stack on top of this, and the Echo component simply listens on port 1234 of a given IP address, echoing received characters on the display. (An additional component TimeServer has been omitted from the diagram for clarity, but see the <a href="../../activity/camkes_case_study_application/main.html">case study application</a> for more details.)</p>
 <h2 id="instructions-for-running-picoserver_uboot"><a class="header" href="#instructions-for-running-picoserver_uboot">Instructions for running <code>picoserver_uboot</code></a></h2>
 <p>As usual, this assumes that the user is already running a the CAmkES docker container within the <a href="../../install_and_configure/build_environment_setup.html">build environment</a>, where we can create a directory and clone the code and dependencies.</p>
 <pre><code class="language-text">mkdir /host/uboot_pico
@@ -199,7 +199,7 @@ cd build
 ninja
 </code></pre>
 <p>where <code>xxx.xxx.xxx.xxx</code> is the IP address to allocate to the MaaXBoard.</p>
-<p>A successful build will result in an executable file called <code>capdl-loader-image-arm-maaxboard</code> in the <code>images</code> subdirectory. This should be copied to a file named <code>sel4_image</code> and then made available to the preferred loading mechanism, such as TFTP, as per <a href="../../first_boot/bootloader.html">Bootloader</a>.</p>
+<p>A successful build will result in an executable file called <code>capdl-loader-image-arm-maaxboard</code> in the <code>images</code> subdirectory.</p>
 <p>When the <code>picoserver_uboot</code> application is running on the MaaXBoard, it should confirm that it is listening on port 1234 of the supplied IP address. It will also confirm registration of the protocol stack layers. The application allocates a random MAC address.</p>
 <p>At any time while running, the application may display <code>No such port ....</code> messages as it monitors traffic on the network; this is expected behaviour that may be ignored.</p>
 <p>Meanwhile, from a terminal window on the host machine, use the <code>netcat</code> (<code>nc</code>) command (native to Linux or macOS, or available as a <a href="https://nmap.org/ncat/">download</a> for Windows), where <code>xxx.xxx.xxx.xxx</code> is the IP address of the MaaXBoard, as previously specified:</p>
