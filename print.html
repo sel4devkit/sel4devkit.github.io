@@ -563,7 +563,7 @@ follows:</p>
 </li>
 </ul>
 <h2 id="optional-requirements"><a class="header" href="#optional-requirements">Optional Requirements</a></h2>
-<p>If the user wishes to perform TFTP transfer of executables from the host environment to the target platform (see the <a href="development_platform/../first_boot/bootloader.html">Bootloader</a> section) then installation of a TFTP server is required.</p>
+<p>If the user wishes to perform TFTP transfer of executables from the host environment to the target platform (see the <a href="development_platform/../install_and_configure/configure_uboot.html#loading-via-tftp">Configure U-Boot</a> section) then installation of a TFTP server is required.</p>
 <p>Full details of the installation and configuration of a TFTP server is considered to be outside the scope of this developer kit, however the following guidance is offered:</p>
 <ul>
 <li>
@@ -3466,7 +3466,7 @@ cd build
 </code></pre>
 <pre><code class="language-bash">ninja
 </code></pre>
-<p>A successful build will result in an executable file called <code>capdl-loader-image-arm-maaxboard</code> in the <code>images</code> subdirectory. This should be copied to a file named <code>sel4_image</code> and then made available to the preferred loading mechanism, such as TFTP, as per <a href="activity/device_drivers/../../first_boot/bootloader.html">Bootloader</a>.</p>
+<p>A successful build will result in an executable file called <code>capdl-loader-image-arm-maaxboard</code> in the <code>images</code> subdirectory. This should be copied to a file named <code>sel4_image</code> and then made available to the preferred loading mechanism, such as TFTP, as per <a href="activity/device_drivers/../../install_and_configure/configure_uboot.html#loading-via-tftp">Bootloader</a>.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="instructions-for-running-the-uboot-driver-example-microkit"><a class="header" href="#instructions-for-running-the-uboot-driver-example-microkit">Instructions for running the uboot-driver-example: Microkit</a></h1>
 <p>As usual, this assumes that the user is already running the Microkit Docker container within the <a href="activity/device_drivers/../../install_and_configure/build_environment_setup.html">build environment</a>, where we can create a directory and clone the code and dependencies.</p>
 <pre><code class="language-text">mkdir /host/uboot_test
@@ -4999,7 +4999,7 @@ dtc -o maaxboard.dts temp.dtb
 </code></pre>
 </li>
 <li>
-<p>Building and executing seL4Test can be performed by following the instructions previously provided in the <a href="activity/guide_to_porting_seL4/../../first_boot/sel4test.html">seL4test</a> and <a href="activity/guide_to_porting_seL4/../../first_boot/bootloader.html">Bootloader</a> sections with the build commands modified appropriately to target the newly added platform.</p>
+<p>Building and executing seL4Test can be performed by following the instructions previously provided in the <a href="activity/guide_to_porting_seL4/../../first_boot/sel4test.html">seL4test</a> and <a href="activity/guide_to_porting_seL4/../../install_and_configure/bootloader_setup.html">Bootloader Setup</a> sections with the build commands modified appropriately to target the newly added platform.</p>
 </li>
 </ol>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="spi-bus-bmp280-pressure-sensor"><a class="header" href="#spi-bus-bmp280-pressure-sensor">SPI Bus BMP280 Pressure Sensor</a></h1>
@@ -5195,7 +5195,7 @@ cd build
 <p>Running the <code>security_demo</code> application requires the following:</p>
 <ul>
 <li>Connect a keyboard to the USB socket<sup class="footnote-reference"><a href="#1">1</a></sup> of the MaaXBoard;</li>
-<li>Establish an Ethernet connection between the MaaXBoard and the host machine, which can be direct or via a network, as outlined in <a href="activity/camkes_case_study_application/../../first_boot/bootloader.html#loading-via-tftp">an earlier section</a> (e.g. it will already be in place if TFTP is being used to transfer executables).</li>
+<li>Establish an Ethernet connection between the MaaXBoard and the host machine, which can be direct or via a network, as outlined in <a href="activity/camkes_case_study_application/../../install_and_configure/configure_uboot.html#loading-via-tftp">an earlier section</a> (e.g. it will already be in place if TFTP is being used to transfer executables).</li>
 </ul>
 <div class="footnote-definition" id="1"><sup class="footnote-definition-label">1</sup>
 <p>Note: Currently, only the upper USB port on the Avnet MaaXBoard is active (i.e. the port furthest away from the PCB); the lower USB port does not function. This is a feature of the power domains on the board, not the USB driver.</p>
